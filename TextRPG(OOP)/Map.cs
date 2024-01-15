@@ -8,5 +8,6 @@ namespace TextRPG_OOP_
 {
     internal class Map
     {
+       
     }
 }

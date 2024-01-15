@@ -8,5 +8,18 @@ namespace TextRPG_OOP_
 {
     internal class Player
     {
+        public HealthSystem PlayerHealth;
+        public int Score;
+
+        struct Position
+        {
+            public int X;
+            public int Y;
+        }
+        public Player()
+        {
+            PlayerHealth = new HealthSystem();
+            Score = 0;
+        }
     }
 }

@@ -45,7 +45,7 @@
   <ItemGroup>
     <Compile Include="Enemy.cs" />
     <Compile Include="GameLoop.cs" />
-    <Compile Include="HeathSystem.cs" />
+    <Compile Include="HealthSystem.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

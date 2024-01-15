@@ -8,5 +8,11 @@ namespace TextRPG_OOP_
 {
     internal class Enemy
     {
+        public HealthSystem EnemyHealth;
+
+        public Enemy()
+        {
+            EnemyHealth = new HealthSystem();
+        }
     }
 }
