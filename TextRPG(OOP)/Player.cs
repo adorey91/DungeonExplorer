@@ -8,8 +8,14 @@ namespace TextRPG_OOP_
 { 
     internal class Player
     {
+        static int playerMaxX;
+        static int playerMaxY;
         public HealthSystem PlayerHealth;
         public int Score;
+        static int playerDamage;
+        static int playerCoins;
+        static int playerX;
+        static int playerY;
         public Player()
         {
             PlayerHealth = new HealthSystem();

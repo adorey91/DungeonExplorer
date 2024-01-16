@@ -10,8 +10,10 @@ namespace TextRPG_OOP_
     {
         static Player MainPlayer;
         static Enemy firstEnemy;
+        static Map gameMap;
         static void Main(string[] args)
         {
+            gameMap = new Map();
             MainPlayer = new Player();
             firstEnemy = new Enemy();
             Console.WriteLine("Welcome to my Text RPG game!");
@@ -26,7 +28,7 @@ namespace TextRPG_OOP_
             firstEnemy.EnemyHealth.Heal(10);
             Console.WriteLine("The players HP: " + MainPlayer.PlayerHealth.health);
             Console.WriteLine("The Enemies HP: " + firstEnemy.EnemyHealth.health);
-            Console.WriteLine();
+            Console.WriteLine(gameMap);
             Console.WriteLine("Press any key to exit.");
             Console.ReadKey(true);
         }
