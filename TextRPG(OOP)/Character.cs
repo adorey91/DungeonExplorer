@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TextRPG_OOP_
 {
-    internal class Character
+    internal abstract class Character
     {
         private HealthSystem healthSystem;
         public Character()
