@@ -20,7 +20,6 @@ namespace TextRPG_OOP_
             firstEnemy.enemyName = "Slime";
             Console.WriteLine("Welcome to my Text RPG game!");
             Console.WriteLine();
-
             //Testing v
             Console.WriteLine("The players HP: " + mainPlayer.healthSystem.health);
             Console.WriteLine("The Enemies HP: " + firstEnemy.healthSystem.health);
@@ -39,7 +38,6 @@ namespace TextRPG_OOP_
             Console.WriteLine(string.Format("{0} has a position of {1}X : {2}Y",mainPlayer.playerName, mainPlayer.position.x,mainPlayer.position.y));
             Console.WriteLine(string.Format("{0} has a position of {1}X : {2}Y",firstEnemy.enemyName, firstEnemy.position.x, firstEnemy.position.y));
             //Testing ^
-            
             Console.WriteLine(gameMap);
             Console.WriteLine("Press any key to exit.");
             Console.ReadKey(true);
