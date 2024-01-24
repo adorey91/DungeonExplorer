@@ -8,16 +8,14 @@ namespace TextRPG_OOP_
 {
     internal class HealthSystem
     {
-        public int maxHeath;
         public int health;
         public int armor;
 
         public HealthSystem() //Constructor
         {
-            maxHeath = 100;
-            health = maxHeath;
+
         }
-        public void Heal(int HpGain)
+        public void Heal(int HpGain, int maxHeath) //Health gain and health max needed to not over heal. 
         {
             health += HpGain;
             if(health > maxHeath)
@@ -32,6 +30,10 @@ namespace TextRPG_OOP_
             {
                 health = 0;
             }
+        }
+        public void SetHealth(int maxHP)
+        {
+            health = maxHP;
         }
     }
 }

@@ -11,9 +11,14 @@ namespace TextRPG_OOP_
         //public HealthSystem EnemyHealth; old
         public int enemyDamage;
         public int expDrop;
+        public int enemyMaxHP;
+        public string enemyName;
         public Enemy()
         {
-           //EnemyHealth = new HealthSystem(); old
+            enemyMaxHP = 50;
+            expDrop = 5;
+            enemyDamage = 10;
+            healthSystem.SetHealth(enemyMaxHP);
         }
     }
 }
