@@ -18,7 +18,8 @@ namespace TextRPG_OOP_
             firstEnemy = new Enemy();
             Console.WriteLine("Welcome to my Text RPG game!");
             Console.WriteLine();
-            //OLD V
+
+            //OLD v
             //Console.WriteLine("The players HP: " + MainPlayer.PlayerHealth.health);
             //Console.WriteLine("The Enemies HP: " + firstEnemy.EnemyHealth.health);
             //MainPlayer.PlayerHealth.TakeDamage(10);
@@ -30,6 +31,7 @@ namespace TextRPG_OOP_
             //Console.WriteLine("The players HP: " + MainPlayer.PlayerHealth.health);
             //Console.WriteLine("The Enemies HP: " + firstEnemy.EnemyHealth.health);
             //OLD ^
+            
             Console.WriteLine(gameMap);
             Console.WriteLine("Press any key to exit.");
             Console.ReadKey(true);

@@ -8,12 +8,14 @@ namespace TextRPG_OOP_
 { 
     internal class Player : Character
     {
-        public int Score;
+        public int experience;
         static int playerDamage;
         static int playerCoins;
         public Player()
         {
-            Score = 0;
+            experience = 0;
+            playerCoins = 0;
+            playerDamage = 1;
         }
     }
 }
