@@ -18,8 +18,8 @@ namespace TextRPG_OOP_
         {
             experience = 0;
             playerCoins = 0;
-            playerDamage = 10;
-            PlayerMaxHP = 100;
+            playerDamage = 10; // player starting damage
+            PlayerMaxHP = 100; // % health out of 100.
             healthSystem.SetHealth(PlayerMaxHP);
             playerName = "Koal"; // Testing for passing string.
         }
