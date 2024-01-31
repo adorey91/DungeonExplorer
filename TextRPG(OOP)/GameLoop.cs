@@ -42,12 +42,23 @@ namespace TextRPG_OOP_
             Console.Clear();
             //Map Test v
             gameMap.DrawMap();
+            gameMap.GetPlayerMaxPosition(mainPlayer);
             gameMap.SetPlayerSpawn(mainPlayer);
+            mainPlayer.SetMaxPlayerPosition(gameMap);
+            firstEnemy.SetEnemyMaxPosition(gameMap);
             gameMap.SetEnemySpawns(firstEnemy);
             gameMap.DrawEnemyToMap(firstEnemy);
             gameMap.DrawPlayerToMap(mainPlayer.position.x, mainPlayer.position.y);
+            while(mainPlayer.gameIsOver != true && mainPlayer.gameWon != true)
+            {
+                mainPlayer.GetPlayerInput(gameMap);
+                firstEnemy.MoveEnemy(gameMap);
+                gameMap.DrawMap();
+                gameMap.DrawPlayerToMap(mainPlayer.position.x, mainPlayer.position.y);
+                gameMap.DrawEnemyToMap(firstEnemy);
+            }
             //Map Test ^
-            Console.ReadKey(true);
+            //Console.ReadKey(true);
         }
         static void StartUp()
         {

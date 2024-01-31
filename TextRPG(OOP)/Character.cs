@@ -21,6 +21,8 @@ namespace TextRPG_OOP_
         {
             public int x;
             public int y;
+            public int maxX;
+            public int maxY;
         }
     }
 }

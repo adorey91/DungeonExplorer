@@ -35,14 +35,16 @@ namespace TextRPG_OOP_
         public static int mapY;
         public int playerX;
         public int playerY;
-        static int enemy1X;
-        static int enemy1Y;
-        static int enemy2X;
-        static int enemy2Y;
-        static int enemy3X;
-        static int enemy3Y;
-        static int enemy4X;
-        static int enemy4Y;
+        public int playerMaxX;
+        public int playerMaxY;
+        public int enemy1X;
+        public int enemy1Y;
+        public int enemy2X;
+        public int enemy2Y;
+        public int enemy3X;
+        public int enemy3Y;
+        public int enemy4X;
+        public int enemy4Y;
         public Map() //Constructor
         {
             Initialization();
@@ -127,6 +129,11 @@ namespace TextRPG_OOP_
         {
             Console.SetCursorPosition(x,y);
             DrawPlayer();
+        }
+        public void GetPlayerMaxPosition(Player player)
+        {
+            playerMaxX = player.position.maxX;
+            playerMaxY = player.position.maxY;
         }
         public void SetEnemySpawns(Enemy enemy1) /*Enemy enemy2,Enemy enemy3,Enemy enemy4*/
         {
