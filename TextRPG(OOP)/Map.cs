@@ -10,9 +10,9 @@ namespace TextRPG_OOP_
     internal class Map
     {
         public string path;
-        string path1 = @"Floor1Map.txt";
-        string path2 = @"Floor2Map.txt";
-        string path3 = @"Floor3Map.txt";
+        public string path1 = @"Map.txt";
+        public string path2 = @"Floor2Map.txt";
+        public string path3 = @"Floor3Map.txt";
         public string[] floorMap;
         public char[,] activeMap;
         int levelNumber;
@@ -26,34 +26,20 @@ namespace TextRPG_OOP_
         public char finalLoot = ((char)165);
         public char coin = ((char)164);
         public char healthPickup = ((char)3);
-        int mapX;
-        int mapY;
+        public int mapX;
+        public int mapY;
         public Map() //Constructor
         {
             Initialization();
         }
         public void Initialization()
         {
-            path = path1;
-            floorMap = File.ReadAllLines(path);
+            //path = path1;
+            floorMap = File.ReadAllLines(path1);
             activeMap = new char[floorMap.Length, floorMap[0].Length];
             MakeDungeonMap();
         }
-        public void DrawMap(char[,] dungeonMap)
-        {
-            //Draws the map of the current level
-            Console.SetCursorPosition(0,0);
-            for(int y = 0; y < mapY; y++)
-            {
-                for(int x = 0; x < mapX; x++)
-                {
-                    char tile = dungeonMap[y,x];
-                    DrawTile(tile);     
-                }
-                Console.Write("\n");
-            }
-            Console.SetCursorPosition(0,0);
-        }
+        
         public void MakeDungeonMap()
         {
             for (int i = 0; i < floorMap.Length; i++)
@@ -130,7 +116,7 @@ namespace TextRPG_OOP_
             Console.Write(player);
             SetColorDefault();
         }
-        void DrawTile(Char tile)
+        public void DrawTile(Char tile)
         {
             // draws the correct tile based on the floorMap
             if(tile == '-')

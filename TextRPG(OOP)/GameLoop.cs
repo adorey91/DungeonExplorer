@@ -34,7 +34,8 @@ namespace TextRPG_OOP_
             // Console.WriteLine("The Enemies HP: " + firstEnemy.healthSystem.health);
             // Console.WriteLine(string.Format("{0} has a position of {1}X : {2}Y",mainPlayer.playerName, mainPlayer.position.x,mainPlayer.position.y));
             // Console.WriteLine(string.Format("{0} has a position of {1}X : {2}Y",firstEnemy.enemyName, firstEnemy.position.x, firstEnemy.position.y));
-            gameMap.DrawMap(gameMap.activeMap);
+            Console.Write(gameMap.activeMap);
+            DrawMap();
             //Testing ^
             Console.WriteLine("Press any key to exit.");
             Console.ReadKey(true);
@@ -44,7 +45,23 @@ namespace TextRPG_OOP_
             gameMap = new Map();
             mainPlayer = new Player();
             firstEnemy = new Enemy();
+            gameMap.Initialization();
             firstEnemy.enemyName = "Slime";
+        }
+        static void DrawMap()
+        {
+            //Draws the map of the current level
+            Console.SetCursorPosition(0,0);
+            for(int y = 0; y < gameMap.mapY; y++)
+            {
+                for(int x = 0; x < gameMap.mapX; x++)
+                {
+                    char tile = gameMap.activeMap[y,x];
+                    gameMap.DrawTile(tile);     
+                }
+                Console.Write("\n");
+            }
+            Console.SetCursorPosition(0,0);
         }
     }
 }
