@@ -34,12 +34,12 @@ namespace TextRPG_OOP_
         public Map() //Constructor
         {
             Initialization();
-            Console.Write("Initialized Map");
+            //Console.Write("Initialized Map");
         }
         public void Initialization()
         {
-            Console.Write("Initializing Map");
-            Console.ReadKey();
+            //Console.Write("Initializing Map");
+            //Console.ReadKey();
             //path = path1;
             floorMap = File.ReadAllLines(path1);
             activeMap = new char[floorMap.Length, floorMap[0].Length];

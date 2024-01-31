@@ -19,7 +19,7 @@ namespace TextRPG_OOP_
             expDrop = 5;
             enemyDamage = 10;
             healthSystem.SetHealth(enemyMaxHP);
-            Console.Write("Initialized enemy");
+            //Console.Write("Initialized enemy");
         }
     }
 }
