@@ -22,6 +22,12 @@ namespace TextRPG_OOP_
             PlayerMaxHP = 100; // % health out of 100.
             healthSystem.SetHealth(PlayerMaxHP);
             playerName = "Koal"; // Testing for passing string.
+            Console.Write("Initialized" + playerName);
+        }
+        public void SetPlayerPosition(int x, int y)
+        {
+            position.x = x;
+            position.y = y;
         }
     }
 }

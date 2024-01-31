@@ -4,39 +4,47 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
 
 namespace TextRPG_OOP_
 {
     internal class Map
     {
-        public string path;
-        public string path1 = @"Map.txt";
-        public string path2 = @"Floor2Map.txt";
-        public string path3 = @"Floor3Map.txt";
-        public string[] floorMap;
+        public static string path;
+        public static string path1 = @"Map.txt";
+        public static string path2 = @"Floor2Map.txt";
+        public static string path3 = @"Floor3Map.txt";
+        public static string[] floorMap;
         public char[,] activeMap;
         int levelNumber;
         bool levelChanged;
-        public char dungeonFloor = ((char)18);
-        public char dungeonWall = ((char)35);
-        public char spikeTrap = ((char)23);
-        public char player = ((char)2);
-        public char stairsDown = ((char)30);
-        public char stairsUp = ((char)31);
-        public char finalLoot = ((char)165);
-        public char coin = ((char)164);
-        public char healthPickup = ((char)3);
-        public int mapX;
-        public int mapY;
+        public static char dungeonFloor = ((char)18);
+        public static char dungeonWall = ((char)35);
+        public static char spikeTrap = ((char)23);
+        public static char player = ((char)2);
+        public static char stairsDown = ((char)30);
+        public static char startPos = ((char)31);
+        public static char finalLoot = ((char)165);
+        public static char coin = ((char)164);
+        public static char healthPickup = ((char)3);
+        public static int mapX;
+        public static int mapY;
+        public int playerX;
+        public int playerY;
         public Map() //Constructor
         {
             Initialization();
+            Console.Write("Initialized Map");
         }
         public void Initialization()
         {
+            Console.Write("Initializing Map");
+            Console.ReadKey();
             //path = path1;
             floorMap = File.ReadAllLines(path1);
             activeMap = new char[floorMap.Length, floorMap[0].Length];
+            mapX = activeMap.GetLength(1);
+            mapY = activeMap.GetLength(0);
             MakeDungeonMap();
         }
         
@@ -50,7 +58,29 @@ namespace TextRPG_OOP_
                 }
             } 
         }
-        void DrawFloor()
+        public void DrawMap()
+        {
+            //Draws the map of the current level
+            Console.SetCursorPosition(0,0);
+            for(int y = 0; y < mapY; y++)
+            {
+                for(int x = 0; x < mapX; x++)
+                {
+                    char tile = activeMap[y,x];
+                    if(tile == '=' && levelChanged == false)
+                    {
+                        playerX = x;
+                        playerY = y-1;
+                        levelChanged = true;
+                        activeMap[y,x] = '#';
+                    }
+                    //Console.Write("test");
+                    DrawTile(tile);
+                }
+                Console.Write("\n");
+            }
+        }
+        static void DrawFloor()
         {
             // used to draw a floor tile
             Console.ForegroundColor = ConsoleColor.Gray;
@@ -58,7 +88,7 @@ namespace TextRPG_OOP_
             Console.Write(dungeonFloor);
             SetColorDefault();
         }
-        void DrawWall()
+        static void DrawWall()
         {
             // used to draw a wall tile
             Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -66,7 +96,7 @@ namespace TextRPG_OOP_
             Console.Write(dungeonWall);
             SetColorDefault();
         }
-        void DrawSpikes()
+        static void DrawSpikes()
         {
             // used to draw a spikes tile
             Console.ForegroundColor = ConsoleColor.DarkRed;
@@ -74,41 +104,41 @@ namespace TextRPG_OOP_
             Console.Write(spikeTrap);
             SetColorDefault();
         }
-        void DrawFinalLoot()
+        static void DrawFinalLoot()
         {
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.Write(finalLoot);
             SetColorDefault();
         }
-        void DrawCoin()
+        static void DrawCoin()
         {
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.Write(coin);
             SetColorDefault();
         }
-        void SetColorDefault()
+        static void SetColorDefault()
         {
             // sets console color back to default. 
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Black;
         }
-        void DrawStairsDown()
+        static void DrawStairsDown()
         {
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.Write(stairsDown);
             SetColorDefault();
         }
-        void DrawHealthPickup()
+        static void DrawHealthPickup()
         {
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.Write(healthPickup);
             SetColorDefault();
         }
-        void DrawPlayer(int PosX, int PosY)
+        static void DrawPlayer()
         {
             // used to draw the player
             Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -116,7 +146,7 @@ namespace TextRPG_OOP_
             Console.Write(player);
             SetColorDefault();
         }
-        public void DrawTile(Char tile)
+        public static void DrawTile(Char tile)
         {
             // draws the correct tile based on the floorMap
             if(tile == '-')
@@ -184,6 +214,15 @@ namespace TextRPG_OOP_
                 Console.Write(tile);
             }
         }
+        public void GetPlayerPosition(Player player)
+        {
+            player.position.x = playerX;
+            player.position.y = playerY;
+        }
+        public void DrawPlayerToMap(int x, int y)
+        {
+            Console.SetCursorPosition(x,y);
+            DrawPlayer();
+        }
     }
-
 }
