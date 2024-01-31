@@ -13,6 +13,7 @@ namespace TextRPG_OOP_
         public int expDrop;
         public int enemyMaxHP;
         public string enemyName;
+        public int enemyNumber;
         public Enemy()
         {
             enemyMaxHP = 50;

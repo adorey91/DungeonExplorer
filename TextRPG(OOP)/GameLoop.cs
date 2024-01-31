@@ -42,7 +42,9 @@ namespace TextRPG_OOP_
             Console.Clear();
             //Map Test v
             gameMap.DrawMap();
-            gameMap.GetPlayerPosition(mainPlayer);
+            gameMap.SetPlayerSpawn(mainPlayer);
+            gameMap.SetEnemySpawns(firstEnemy);
+            gameMap.DrawEnemyToMap(firstEnemy);
             gameMap.DrawPlayerToMap(mainPlayer.position.x, mainPlayer.position.y);
             //Map Test ^
             Console.ReadKey(true);
@@ -52,7 +54,8 @@ namespace TextRPG_OOP_
             gameMap = new Map();
             mainPlayer = new Player();
             firstEnemy = new Enemy();
-            gameMap.GetPlayerPosition(mainPlayer);
+            firstEnemy.enemyNumber = 1;
+            //gameMap.SetPlayerSpawn(mainPlayer);
             firstEnemy.enemyName = "Slime";
         }  
     }

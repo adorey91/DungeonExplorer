@@ -27,10 +27,22 @@ namespace TextRPG_OOP_
         public static char finalLoot = ((char)165);
         public static char coin = ((char)164);
         public static char healthPickup = ((char)3);
+        static char enemy1 = ((char)4);
+        static char enemy2 = ((char)6);
+        static char enemy3 = ((char)5);
+        static char enemy4 = ((char)127);
         public static int mapX;
         public static int mapY;
         public int playerX;
         public int playerY;
+        static int enemy1X;
+        static int enemy1Y;
+        static int enemy2X;
+        static int enemy2Y;
+        static int enemy3X;
+        static int enemy3Y;
+        static int enemy4X;
+        static int enemy4Y;
         public Map() //Constructor
         {
             Initialization();
@@ -74,12 +86,92 @@ namespace TextRPG_OOP_
                         levelChanged = true;
                         activeMap[y,x] = '#';
                     }
+                    if(tile == '!' && levelChanged == false || tile == '?' && levelChanged == false
+                    || tile == '&' && levelChanged == false || tile == '^' && levelChanged == false)
+                    {
+                        if(tile == '?')
+                        {
+                            enemy1X = x;
+                            enemy1Y = y;
+                        }
+                        if(tile == '!')
+                        {
+                            enemy2X = x;
+                            enemy2Y = y;
+                        }
+                        if(tile == '&')
+                        {
+                            enemy3X = x;
+                            enemy3Y = y; 
+                        }
+                        if(tile == '^')
+                        {
+                            enemy4X = x;
+                            enemy4Y = y;
+                        }
+                    }
                     //Console.Write("test");
                     DrawTile(tile);
                 }
                 Console.Write("\n");
             }
         }
+        // Sets player spawn point
+        public void SetPlayerSpawn(Player player)
+        {
+            player.position.x = playerX;
+            player.position.y = playerY;
+        }
+        // Draws the player at current position.
+        public void DrawPlayerToMap(int x , int y) // X = players position.x Y = players position.Y
+        {
+            Console.SetCursorPosition(x,y);
+            DrawPlayer();
+        }
+        public void SetEnemySpawns(Enemy enemy1) /*Enemy enemy2,Enemy enemy3,Enemy enemy4*/
+        {
+            enemy1.position.x = enemy1X;
+            enemy1.position.y = enemy1Y;
+            // enemy2.position.x = enemy2X;
+            // enemy2.position.y = enemy2Y;
+            // enemy3.position.x = enemy3X;
+            // enemy3.position.y = enemy3Y;
+            // enemy4.position.x = enemy4X;
+            // enemy4.position.y = enemy4Y;
+        }
+        public void DrawEnemyToMap(Enemy enemy)
+        {
+
+            Console.SetCursorPosition(enemy.position.x,enemy.position.y);
+            DrawEnemy(enemy.enemyNumber);
+        }
+        static void DrawEnemy(int enemyNumber)
+        {
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            if(enemyNumber > 4 || enemyNumber < 1)
+            {
+                enemyNumber = 1;
+            }
+            if(enemyNumber == 1)
+            {
+                Console.Write(enemy1);
+            }
+            if(enemyNumber == 2)
+            {
+                Console.Write(enemy2);
+            }
+            if(enemyNumber == 3)
+            {
+                Console.Write(enemy3);
+            }
+            if(enemyNumber == 4)
+            {
+                Console.Write(enemy4);
+            }
+            SetColorDefault();
+        }
+        //Code for tiles color and ascii
         static void DrawFloor()
         {
             // used to draw a floor tile
@@ -146,6 +238,7 @@ namespace TextRPG_OOP_
             Console.Write(player);
             SetColorDefault();
         }
+        //Determines what tile is what during print.
         public static void DrawTile(Char tile)
         {
             // draws the correct tile based on the floorMap
@@ -213,16 +306,6 @@ namespace TextRPG_OOP_
             {
                 Console.Write(tile);
             }
-        }
-        public void GetPlayerPosition(Player player)
-        {
-            player.position.x = playerX;
-            player.position.y = playerY;
-        }
-        public void DrawPlayerToMap(int x, int y)
-        {
-            Console.SetCursorPosition(x,y);
-            DrawPlayer();
         }
     }
 }
