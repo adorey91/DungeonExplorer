@@ -17,15 +17,17 @@ namespace TextRPG_OOP_
         public ConsoleKeyInfo playerInput;
         public bool gameIsOver;
         public bool gameWon;
+        private List<Enemy> enemies;
         public Player()
         {
             experience = 0;
             playerCoins = 0;
-            playerDamage = 10; // player starting damage
-            PlayerMaxHP = 100; // % health out of 100.
+            playerDamage = 1; // player starting damage
+            PlayerMaxHP = 10; // % health out of 10.
             healthSystem.SetHealth(PlayerMaxHP);
             playerName = "Koal"; // Testing for passing string.
             //Console.Write("Initialized" + playerName);
+            enemies = new List<Enemy>();
         }
         public void SetMaxPlayerPosition(Map map)
         {
@@ -59,24 +61,24 @@ namespace TextRPG_OOP_
                     {
                         moveY = 0; //Locks top of screen
                     }
-                    if(moveY == collisionMap.enemy1Y && position.x == collisionMap.enemy1X)
+                    if(collisionMap.activeMap[moveY,position.x] == collisionMap.activeMap[collisionMap.enemy1Y,collisionMap.enemy1X])
                     {
-                        //DoDamage(playerDamage, 1);
+                        enemies[0].healthSystem.TakeDamage(playerDamage);
                         return;
                     }
-                    if(moveY == collisionMap.enemy2Y && position.x == collisionMap.enemy2X)
+                    if(collisionMap.activeMap[moveY,position.x] == collisionMap.activeMap[collisionMap.enemy2Y,collisionMap.enemy2X])
                     {
-                        //DoDamage(playerDamage, 2);
+                        enemies[1].healthSystem.TakeDamage(playerDamage);
                         return;
                     }
-                    if(moveY == collisionMap.enemy3Y && position.x == collisionMap.enemy3X)
+                    if(collisionMap.activeMap[moveY,position.x] == collisionMap.activeMap[collisionMap.enemy3Y,collisionMap.enemy3X])
                     {
-                        //DoDamage(playerDamage, 3);
+                        enemies[2].healthSystem.TakeDamage(playerDamage);
                         return;
                     }
-                    if(moveY == collisionMap.enemy4Y && position.x == collisionMap.enemy4X)
+                    if(collisionMap.activeMap[moveY,position.x] == collisionMap.activeMap[collisionMap.enemy4Y,collisionMap.enemy4X])
                     {
-                        //DoDamage(playerDamage, 4);
+                        enemies[3].healthSystem.TakeDamage(playerDamage);
                         return;
                     }
                     if(collisionMap.activeMap[moveY,position.x] == '#')
@@ -103,24 +105,24 @@ namespace TextRPG_OOP_
                     {
                         moveY = position.maxY; //Locks top of screen
                     }
-                    if(moveY == collisionMap.enemy1Y && position.x == collisionMap.enemy1X)
+                    if(collisionMap.activeMap[moveY,position.x] == collisionMap.activeMap[collisionMap.enemy1Y,collisionMap.enemy1X])
                     {
-                        //DoDamage(playerDamage, 1);
+                        enemies[0].healthSystem.TakeDamage(playerDamage);
                         return;
                     }
-                    if(moveY == collisionMap.enemy2Y && position.x == collisionMap.enemy2X)
+                    if(collisionMap.activeMap[moveY,position.x] == collisionMap.activeMap[collisionMap.enemy2Y,collisionMap.enemy2X])
                     {
-                        //DoDamage(playerDamage, 2);
+                        enemies[1].healthSystem.TakeDamage(playerDamage);
                         return;
                     }
-                    if(moveY == collisionMap.enemy3Y && position.x == collisionMap.enemy3X)
+                    if(collisionMap.activeMap[moveY,position.x] == collisionMap.activeMap[collisionMap.enemy3Y,collisionMap.enemy3X])
                     {
-                        //DoDamage(playerDamage, 3);
+                        enemies[2].healthSystem.TakeDamage(playerDamage);
                         return;
                     }
-                    if(moveY == collisionMap.enemy4Y && position.x == collisionMap.enemy4X)
+                    if(collisionMap.activeMap[moveY,position.x] == collisionMap.activeMap[collisionMap.enemy4Y,collisionMap.enemy4X])
                     {
-                        //DoDamage(playerDamage, 4);
+                        enemies[3].healthSystem.TakeDamage(playerDamage);
                         return;
                     }
                     if(collisionMap.activeMap[moveY,position.x] == '#')
@@ -147,27 +149,26 @@ namespace TextRPG_OOP_
                     {
                         moveX = 0; //Locks top of screen
                     }
-                    if(moveX == collisionMap.enemy1X && position.y == collisionMap.enemy1Y)
+                    if(collisionMap.activeMap[position.y, moveX] == collisionMap.activeMap[collisionMap.enemy1Y,collisionMap.enemy1X])
                     {
-                        //DoDamage(playerDamage, 1);
+                        enemies[0].healthSystem.TakeDamage(playerDamage);
                         return;
                     }
-                    if(moveX == collisionMap.enemy2X && position.y == collisionMap.enemy2Y)
+                    if(collisionMap.activeMap[position.y, moveX] == collisionMap.activeMap[collisionMap.enemy2Y,collisionMap.enemy2X])
                     {
-                        //DoDamage(playerDamage, 2);
+                        enemies[1].healthSystem.TakeDamage(playerDamage);
                         return;
                     }
-                    if(moveX == collisionMap.enemy3X && position.y == collisionMap.enemy3Y)
+                    if(collisionMap.activeMap[position.y, moveX] == collisionMap.activeMap[collisionMap.enemy3Y,collisionMap.enemy3X])
                     {
-                        //DoDamage(playerDamage, 3);
+                        enemies[2].healthSystem.TakeDamage(playerDamage);
                         return;
                     }
-                    if(moveX == collisionMap.enemy4X && position.y == collisionMap.enemy4Y)
+                    if(collisionMap.activeMap[position.y, moveX] == collisionMap.activeMap[collisionMap.enemy4Y,collisionMap.enemy4X])
                     {
-                        //DoDamage(playerDamage, 4);
+                        enemies[3].healthSystem.TakeDamage(playerDamage);
                         return;
                     }
-                    
                     if(collisionMap.activeMap[position.y,moveX] == '#')
                     {
                         moveX = position.x;
@@ -192,24 +193,24 @@ namespace TextRPG_OOP_
                     {
                         moveX = position.maxX; //Locks top of screen
                     }
-                    if(moveX == collisionMap.enemy1X && position.y == collisionMap.enemy1Y)
+                    if(collisionMap.activeMap[position.y, moveX] == collisionMap.activeMap[collisionMap.enemy1Y,collisionMap.enemy1X])
                     {
-                        //DoDamage(playerDamage, 1);
+                        enemies[0].healthSystem.TakeDamage(playerDamage);
                         return;
                     }
-                    if(moveX == collisionMap.enemy2X && position.y == collisionMap.enemy2Y)
+                    if(collisionMap.activeMap[position.y, moveX] == collisionMap.activeMap[collisionMap.enemy2Y,collisionMap.enemy2X])
                     {
-                        //DoDamage(playerDamage, 2);
+                        enemies[1].healthSystem.TakeDamage(playerDamage);
                         return;
                     }
-                    if(moveX == collisionMap.enemy3X && position.y == collisionMap.enemy3Y)
+                    if(collisionMap.activeMap[position.y, moveX] == collisionMap.activeMap[collisionMap.enemy3Y,collisionMap.enemy3X])
                     {
-                        //DoDamage(playerDamage, 3);
+                        enemies[2].healthSystem.TakeDamage(playerDamage);
                         return;
                     }
-                    if(moveX == collisionMap.enemy4X && position.y == collisionMap.enemy4Y)
+                    if(collisionMap.activeMap[position.y, moveX] == collisionMap.activeMap[collisionMap.enemy4Y,collisionMap.enemy4X])
                     {
-                        //DoDamage(playerDamage, 4);
+                        enemies[3].healthSystem.TakeDamage(playerDamage);
                         return;
                     }
                     
@@ -231,13 +232,13 @@ namespace TextRPG_OOP_
                 }
                 if(collisionMap.activeMap[position.y,position.x] == '$')
                 {
-                    //gameWon = true;
-                    //gameIsOver = true;
+                    gameWon = true;
+                    gameIsOver = true;
                 }
-                //if(collisionMap.activeMap[position.y,position.x] == '~' && enemyCount <= 0)
+                if(collisionMap.activeMap[position.y,position.x] == '~')
                 {
-                    //levelNumber += 1;
-                    //ChangeLevels();
+                    collisionMap.levelNumber += 1;
+                    collisionMap.ChangeLevels();
                 }
                 if(collisionMap.activeMap[position.y,position.x] == '@')
                 {
@@ -263,6 +264,10 @@ namespace TextRPG_OOP_
                     Environment.Exit(0);
                 }
             }
+        }
+        public void AddActiveEnemies(Enemy enemy)
+        {
+            enemies.Add(enemy);
         }
     }
 }

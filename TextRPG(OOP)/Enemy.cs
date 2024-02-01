@@ -17,11 +17,12 @@ namespace TextRPG_OOP_
         public int enemyNumber;
         public int enemyMaxX;
         public int enemyMaxY;
+        private Player ActivePlayer;
         public Enemy()
         {
-            enemyMaxHP = 50;
+            enemyMaxHP = 2;
             expDrop = 5;
-            enemyDamage = 10;
+            enemyDamage = 1;
             healthSystem.SetHealth(enemyMaxHP);
             //Console.Write("Initialized enemy");
         }
@@ -50,7 +51,7 @@ namespace TextRPG_OOP_
                 }
                 if(enemyMoveY == gameMap.playerY && position.x == gameMap.playerX)
                 {
-                    //TakeDamage(enemyDamage);
+                    ActivePlayer.healthSystem.TakeDamage(enemyDamage);
                     return;
                 }
                 if(gameMap.activeMap[enemyMoveY,position.x] == '#')
@@ -79,7 +80,7 @@ namespace TextRPG_OOP_
                 }
                 if(enemyMoveY == gameMap.playerY && position.x == gameMap.playerX)
                 {
-                    //TakeDamage(enemyDamage);
+                    ActivePlayer.healthSystem.TakeDamage(enemyDamage);
                     return;
                 }
                 if(gameMap.activeMap[enemyMoveY,position.x] == '#')
@@ -112,7 +113,7 @@ namespace TextRPG_OOP_
                 }
                 if(enemyMoveX == gameMap.playerX && position.y == gameMap.playerY)
                 {
-                    //TakeDamage(enemyDamage);
+                    ActivePlayer.healthSystem.TakeDamage(enemyDamage);
                     return;
                 }
                 if(gameMap.activeMap[position.y,enemyMoveX] == '#')
@@ -137,7 +138,7 @@ namespace TextRPG_OOP_
                 enemyMoveX = position.x + 1;
                 if(enemyMoveX == gameMap.playerX && position.y == gameMap.playerY)
                 {
-                    //TakeDamage(enemyDamage);
+                    ActivePlayer.healthSystem.TakeDamage(enemyDamage);
                     return;
                 }
                 if(gameMap.activeMap[position.y, enemyMoveX] == '#')
@@ -156,6 +157,10 @@ namespace TextRPG_OOP_
                     }
                 }
             }
+        }
+        public void SetActivePlayer(Player player)
+        {
+            ActivePlayer = player;
         }
     }
 }

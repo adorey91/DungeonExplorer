@@ -16,8 +16,8 @@ namespace TextRPG_OOP_
         public static string path3 = @"Floor3Map.txt";
         public static string[] floorMap;
         public char[,] activeMap;
-        int levelNumber;
-        bool levelChanged;
+        public int levelNumber;
+        public bool levelChanged;
         public static char dungeonFloor = ((char)18);
         public static char dungeonWall = ((char)35);
         public static char spikeTrap = ((char)23);
@@ -139,12 +139,16 @@ namespace TextRPG_OOP_
         {
             enemy1.position.x = enemy1X;
             enemy1.position.y = enemy1Y;
+            activeMap[enemy1Y,enemy1X] = dungeonFloor;
             // enemy2.position.x = enemy2X;
             // enemy2.position.y = enemy2Y;
+            activeMap[enemy2Y,enemy2X] = dungeonFloor;
             // enemy3.position.x = enemy3X;
             // enemy3.position.y = enemy3Y;
+            activeMap[enemy3Y,enemy3X] = dungeonFloor;
             // enemy4.position.x = enemy4X;
             // enemy4.position.y = enemy4Y;
+            activeMap[enemy4Y,enemy4X] = dungeonFloor;
         }
         public void DrawEnemyToMap(Enemy enemy)
         {
@@ -313,6 +317,36 @@ namespace TextRPG_OOP_
             {
                 Console.Write(tile);
             }
+        }
+        public void ChangeLevels()
+        {
+            levelChanged = false;
+            // used to change maps
+            if(levelNumber == 1)
+            {
+                path = path1;
+                floorMap = File.ReadAllLines(path);
+            }
+            if(levelNumber == 2)
+            {
+                levelNumber = 2;
+                path = path2;
+                floorMap = File.ReadAllLines(path);
+            }
+            if(levelNumber == 3)
+            {
+                levelNumber = 3;
+                path = path3;
+                floorMap = File.ReadAllLines(path);
+            }
+            if(levelNumber > 3 || levelNumber <= 0)
+            {
+                Console.Clear();
+                Console.WriteLine("Level Out of range, Loading level 1");
+                path = path1;
+                floorMap = File.ReadAllLines(path);
+            }
+            MakeDungeonMap();
         }
     }
 }

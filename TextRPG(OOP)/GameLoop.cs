@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace TextRPG_OOP_
 {
@@ -65,6 +66,8 @@ namespace TextRPG_OOP_
             gameMap = new Map();
             mainPlayer = new Player();
             firstEnemy = new Enemy();
+            mainPlayer.AddActiveEnemies(firstEnemy);
+            firstEnemy.SetActivePlayer(mainPlayer);
             firstEnemy.enemyNumber = 1;
             //gameMap.SetPlayerSpawn(mainPlayer);
             firstEnemy.enemyName = "Slime";
