@@ -49,7 +49,7 @@ namespace TextRPG_OOP_
             int moveY;
             bool playerMoved;
             playerMoved = false;
-            playerInput = Console.ReadKey(true);
+            while(Console.KeyAvailable) playerInput = Console.ReadKey(true);
             //Console.WriteLine(playerInput.Key); //debug to see what key is pressed
             if(playerMoved == false)
             {
@@ -269,5 +269,6 @@ namespace TextRPG_OOP_
         {
             enemies.Add(enemy);
         }
+
     }
 }
