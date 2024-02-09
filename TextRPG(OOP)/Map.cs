@@ -27,6 +27,7 @@ namespace TextRPG_OOP_
         public static char finalLoot = ((char)165);
         public static char coin = ((char)164);
         public static char healthPickup = ((char)3);
+        public static char armorPickup = ((char)934);
         static char enemy1 = ((char)4);
         static char enemy2 = ((char)6);
         static char enemy3 = ((char)5);
@@ -85,7 +86,7 @@ namespace TextRPG_OOP_
                     char tile = activeMap[y,x];
                     if(tile == '=' && levelChanged == false)
                     {
-                        playerX = x+1;
+                        playerX = x;
                         playerY = y-1;
                         levelChanged = true;
                         activeMap[y,x] = '#';
@@ -227,6 +228,13 @@ namespace TextRPG_OOP_
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Black;
         }
+        static void DrawArmor()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.Write(armorPickup);
+            SetColorDefault();
+        }
         static void DrawStairsDown()
         {
             Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -313,6 +321,11 @@ namespace TextRPG_OOP_
                 DrawFloor();
                 return;
             }
+            if(tile == '+')
+            {
+                DrawArmor();
+                return;
+            }
             else
             {
                 Console.Write(tile);
@@ -326,21 +339,18 @@ namespace TextRPG_OOP_
             {
                 path = path1;
                 floorMap = File.ReadAllLines(path);
-                RestCharacters();
             }
             if(levelNumber == 2)
             {
                 levelNumber = 2;
                 path = path2;
                 floorMap = File.ReadAllLines(path);
-                RestCharacters();
             }
             if(levelNumber == 3)
             {
                 levelNumber = 3;
                 path = path3;
                 floorMap = File.ReadAllLines(path);
-                RestCharacters();
             }
             if(levelNumber > 3 || levelNumber <= 0)
             {
@@ -351,6 +361,7 @@ namespace TextRPG_OOP_
             }
             MakeDungeonMap();
             DrawMap();
+            RestCharacters();
         }
         public bool CretureInTarget(int y, int x)
         {
@@ -362,7 +373,7 @@ namespace TextRPG_OOP_
                     IsTarget = true;
                     return IsTarget;
                 }
-                if(index > characters.Count())
+                if(index > characters.Count() || index < 0)
                 {
                     index = 0;
                 }
@@ -372,10 +383,6 @@ namespace TextRPG_OOP_
         public void AddToCharacterList(Character character)
         {
             characters.Add(character);
-        }
-        public void ClearCharacterList()
-        {
-            characters.Clear();
         }
         public bool CheckTile(int y, int x)
         {

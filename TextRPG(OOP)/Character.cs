@@ -11,6 +11,7 @@ namespace TextRPG_OOP_
     {
         public HealthSystem healthSystem;
         public Position position;
+        public string name;
         public Character()
         {
             healthSystem = new HealthSystem();

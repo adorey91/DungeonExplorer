@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,11 +28,18 @@ namespace TextRPG_OOP_
         }
         public void TakeDamage(int Damage)
         {
-            health -= Damage - armor;
-            if(health <= 0 )
+            if(Damage - armor <= 0)
             {
-                health = 0;
-                IsAlive = false;
+                Debug.WriteLine("Armor is too hard to damage");
+            }
+            else
+            {
+                health -= Damage - armor;
+                if(health <= 0 )
+                {
+                    health = 0;
+                    IsAlive = false;
+                }
             }
         }
         public void SetHealth(int maxHP)

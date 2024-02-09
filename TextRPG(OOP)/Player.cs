@@ -15,10 +15,12 @@ namespace TextRPG_OOP_
         public static int playerCoins;
         public int PlayerMaxHP;
         private static int playerHP;
-        public string playerName;
         public ConsoleKeyInfo playerInput;
         public bool gameIsOver;
         public bool gameWon;
+        private string enemyHitName;
+        private int enemyHitHealth;
+        private int enemyHitArmor;
         public Player()
         {
             experience = 0;
@@ -26,8 +28,9 @@ namespace TextRPG_OOP_
             playerDamage = 1; // player starting damage
             PlayerMaxHP = 10; // % health out of 10.
             healthSystem.SetHealth(PlayerMaxHP);
-            playerName = "Koal"; // Testing for passing string.
+            name = "Koal"; // Testing for passing string.
             playerHP = healthSystem.GetHealth();
+            enemyHitName = "Nothing";
             //Console.Write("Initialized" + playerName);
         }
         public void SetMaxPlayerPosition(Map map)
@@ -69,6 +72,9 @@ namespace TextRPG_OOP_
                     if(collisionMap.CretureInTarget(moveY, position.x) && collisionMap.index != 0) // Player should always be 0, need to prevent self harm.
                     {
                         collisionMap.characters[collisionMap.index].healthSystem.TakeDamage(playerDamage);
+                        enemyHitName = collisionMap.characters[collisionMap.index].name;
+                        enemyHitHealth = collisionMap.characters[collisionMap.index].healthSystem.health;
+                        enemyHitArmor = collisionMap.characters[collisionMap.index].healthSystem.armor;
                         return;
                     }
                     if(collisionMap.CheckTile(moveY, position.x) == false)
@@ -99,6 +105,9 @@ namespace TextRPG_OOP_
                     if(collisionMap.CretureInTarget(moveY, position.x) && collisionMap.index != 0)
                     {
                         collisionMap.characters[collisionMap.index].healthSystem.TakeDamage(playerDamage);
+                        enemyHitName = collisionMap.characters[collisionMap.index].name;
+                        enemyHitHealth = collisionMap.characters[collisionMap.index].healthSystem.health;
+                        enemyHitArmor = collisionMap.characters[collisionMap.index].healthSystem.armor;
                         return;
                     }
                     if(collisionMap.CheckTile(moveY, position.x) == false)
@@ -129,6 +138,9 @@ namespace TextRPG_OOP_
                     if(collisionMap.CretureInTarget(position.y, moveX) && collisionMap.index != 0)
                     {
                         collisionMap.characters[collisionMap.index].healthSystem.TakeDamage(playerDamage);
+                        enemyHitName = collisionMap.characters[collisionMap.index].name;
+                        enemyHitHealth = collisionMap.characters[collisionMap.index].healthSystem.health;
+                        enemyHitArmor = collisionMap.characters[collisionMap.index].healthSystem.armor;
                         return;
                     }
                     if(collisionMap.CheckTile(position.y, moveX) == false)
@@ -159,6 +171,9 @@ namespace TextRPG_OOP_
                     if(collisionMap.CretureInTarget(position.y, moveX) && collisionMap.index != 0)
                     {
                         collisionMap.characters[collisionMap.index].healthSystem.TakeDamage(playerDamage);
+                        enemyHitName = collisionMap.characters[collisionMap.index].name;
+                        enemyHitHealth = collisionMap.characters[collisionMap.index].healthSystem.health;
+                        enemyHitArmor = collisionMap.characters[collisionMap.index].healthSystem.armor;
                         return;
                     }
                     if(collisionMap.CheckTile(position.y, moveX) == false)
@@ -200,9 +215,14 @@ namespace TextRPG_OOP_
                     collisionMap.activeMap[position.y,position.x] = '-';
                 }
                 if(collisionMap.activeMap[position.y,position.x] == '*')
-                    {
-                        healthSystem.health -= 1;
-                    }
+                {
+                    healthSystem.health -= 1;
+                }
+                if(collisionMap.activeMap[position.y,position.x] == '+')
+                {
+                    healthSystem.armor += 1;
+                    collisionMap.activeMap[position.y,position.x] = '-';
+                }
                 if(playerInput.Key == ConsoleKey.Escape)
                 {
                     Environment.Exit(0);
@@ -215,12 +235,20 @@ namespace TextRPG_OOP_
             int damage;
             int Coins;
             int armor;
+            int enemyHP;
+            int enemyArmor;
+            string enemyName;
             health = healthSystem.health;
             armor = healthSystem.armor;
             damage = playerDamage;
             Coins = playerCoins;
-            string FormatString = "HP: {0}  Damage: {1}    Coins: {2}   Armor: {3}    ";
+            enemyHP = enemyHitHealth;
+            enemyName = enemyHitName;
+            enemyArmor = enemyHitArmor;
+            string enemyHUDString = "{0} has Hp: {1} Armor: {2}     ";
+            string FormatString = "HP: {0}  Damage: {1}    " +((char)164) + "=Coins: {2}  " + ((Char)934) + "=Armor: {3}    ";
             Console.WriteLine(string.Format(FormatString, health, damage, Coins, armor));
+            Console.WriteLine(string.Format(enemyHUDString,enemyName,enemyHP,enemyArmor));
         }
         public void PlayerIsDead()
         {
@@ -244,17 +272,17 @@ namespace TextRPG_OOP_
                 playerDamage = 1;
                 healthSystem.armor = 0;
             }
-            if(playerCoins > 3 && playerCoins < 6)
+            if(playerCoins >= 3 && playerCoins < 6)
             {
                 playerDamage = 2;
                 healthSystem.armor = 1;
             }
-            if(playerCoins > 6 && playerCoins < 9)
+            if(playerCoins >= 6 && playerCoins < 9)
             {
                 playerDamage = 3;
                 healthSystem.armor = 2;
             }
-            if(playerCoins > 9)
+            if(playerCoins >= 9)
             {
                 playerDamage = 5;
                 healthSystem.armor = 3;
