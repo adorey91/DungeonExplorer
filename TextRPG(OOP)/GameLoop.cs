@@ -24,31 +24,38 @@ namespace TextRPG_OOP_
             Console.ReadKey(true);
             Console.Clear();
             gameMap.DrawMap();
+            mainPlayer.DrawHUD();
             gameMap.GetPlayerMaxPosition(mainPlayer);
             gameMap.SetPlayerSpawn(mainPlayer);
             mainPlayer.SetMaxPlayerPosition(gameMap);
             firstEnemy.SetEnemyMaxPosition(gameMap);
-            gameMap.SetEnemySpawns(firstEnemy);
+            gameMap.SetEnemySpawns(firstEnemy, firstEnemy.enemyNumber);
             gameMap.DrawEnemyToMap(firstEnemy);
             gameMap.DrawPlayerToMap(mainPlayer.position.x, mainPlayer.position.y);
             while(mainPlayer.gameIsOver != true && mainPlayer.gameWon != true)
             {
+                mainPlayer.CheckPlayerCondition();
                 mainPlayer.GetPlayerInput(gameMap);
                 firstEnemy.MoveEnemy(gameMap);
                 gameMap.DrawMap();
+                mainPlayer.DrawHUD();
                 gameMap.DrawPlayerToMap(mainPlayer.position.x, mainPlayer.position.y);
-                gameMap.DrawEnemyToMap(firstEnemy);
+                if(firstEnemy.healthSystem.IsAlive)
+                {
+                    gameMap.DrawEnemyToMap(firstEnemy);
+                }
             }
             //Map Test ^
             //Console.ReadKey(true);
         }
         static void StartUp()
         {
+            Console.CursorVisible = false;
             gameMap = new Map();
             mainPlayer = new Player();
             firstEnemy = new Enemy();
-            mainPlayer.AddActiveEnemies(firstEnemy);
-            firstEnemy.SetActivePlayer(mainPlayer);
+            gameMap.AddToCharacterList(mainPlayer);
+            gameMap.AddToCharacterList(firstEnemy);
             firstEnemy.enemyNumber = 1;
             //gameMap.SetPlayerSpawn(mainPlayer);
             firstEnemy.enemyName = "Slime";

@@ -17,7 +17,6 @@ namespace TextRPG_OOP_
         public int enemyNumber;
         public int enemyMaxX;
         public int enemyMaxY;
-        private Player ActivePlayer;
         public Enemy()
         {
             enemyMaxHP = 2;
@@ -42,6 +41,11 @@ namespace TextRPG_OOP_
             Random moveRoll = new Random();
             int moveResult = moveRoll.Next(1,5);
             // move up
+            if(healthSystem.IsAlive == false)
+            {
+                position.x = 0;
+                position.y = 0;
+            }
             if(moveResult == 1)
             {
                 enemyMoveY = position.y - 1;
@@ -49,20 +53,21 @@ namespace TextRPG_OOP_
                 {
                     enemyMoveY = 0;
                 }
-                if(enemyMoveY == gameMap.playerY && position.x == gameMap.playerX)
+                if(gameMap.CretureInTarget(enemyMoveY, position.x) && gameMap.index != enemyNumber) // != enemyNumber is needed to prevent enemies from self harming
                 {
-                    ActivePlayer.healthSystem.TakeDamage(enemyDamage);
+                    gameMap.characters[gameMap.index].healthSystem.TakeDamage(enemyDamage);
                     return;
                 }
-                if(gameMap.activeMap[enemyMoveY,position.x] == '#')
+                if(gameMap.CheckTile(enemyMoveY, position.x) == false)
                 {
-                    enemyMoveY = gameMap.enemy1Y;
+                    Debug.WriteLine("HitWall");
+                    enemyMoveY = position.y;
                     position.y = enemyMoveY;
                     return;
                 }
                 else
                 {
-                    Debug.WriteLine("Moved up");
+                    //Debug.WriteLine("Moved up");
                     position.y = enemyMoveY;
                     if(position.y <= 0)
                     {
@@ -78,14 +83,15 @@ namespace TextRPG_OOP_
                 {
                     enemyMoveY = enemyMaxY;
                 }
-                if(enemyMoveY == gameMap.playerY && position.x == gameMap.playerX)
+                if(gameMap.CretureInTarget(enemyMoveY, position.x) && gameMap.index != enemyNumber)
                 {
-                    ActivePlayer.healthSystem.TakeDamage(enemyDamage);
+                    gameMap.characters[gameMap.index].healthSystem.TakeDamage(enemyDamage);
                     return;
                 }
-                if(gameMap.activeMap[enemyMoveY,position.x] == '#')
+                if(gameMap.CheckTile(enemyMoveY, position.x) == false)
                 {
-                    enemyMoveY = gameMap.enemy1Y;
+                    Debug.WriteLine("HitWall");
+                    enemyMoveY = position.y;
                     position.y = enemyMoveY;
                     return;
                 }
@@ -111,20 +117,21 @@ namespace TextRPG_OOP_
                 {
                     enemyMoveX = 0;
                 }
-                if(enemyMoveX == gameMap.playerX && position.y == gameMap.playerY)
+                if(gameMap.CretureInTarget(position.y, enemyMoveX)&& gameMap.index != enemyNumber)
                 {
-                    ActivePlayer.healthSystem.TakeDamage(enemyDamage);
+                    gameMap.characters[gameMap.index].healthSystem.TakeDamage(enemyDamage);
                     return;
                 }
-                if(gameMap.activeMap[position.y,enemyMoveX] == '#')
+                if(gameMap.CheckTile(position.y, enemyMoveX) == false)
                 {
+                    Debug.WriteLine("HitWall");
                     enemyMoveX = position.x;
                     position.x = enemyMoveX;
                     return;
                 }
                 else
                 {
-                    Debug.WriteLine("Moved left");
+                    //Debug.WriteLine("Moved left");
                     position.x = enemyMoveX;
                     if(position.x <= 0)
                     {
@@ -136,20 +143,21 @@ namespace TextRPG_OOP_
             if(moveResult == 4)
             {
                 enemyMoveX = position.x + 1;
-                if(enemyMoveX == gameMap.playerX && position.y == gameMap.playerY)
+                if(gameMap.CretureInTarget(position.y, enemyMoveX)&& gameMap.index != enemyNumber)
                 {
-                    ActivePlayer.healthSystem.TakeDamage(enemyDamage);
+                    gameMap.characters[gameMap.index].healthSystem.TakeDamage(enemyDamage);
                     return;
                 }
-                if(gameMap.activeMap[position.y, enemyMoveX] == '#')
+                if(gameMap.CheckTile(position.y, enemyMoveX) == false)
                 {
+                    Debug.WriteLine("HitWall");
                     enemyMoveX = position.x;
                     position.x = enemyMoveX;
                     return;
                 }
                 else
                 {
-                    Debug.WriteLine("Moved right");
+                    //Debug.WriteLine("Moved right");
                     position.x = enemyMoveX;
                     if(position.x >= enemyMaxX)
                     {
@@ -157,10 +165,6 @@ namespace TextRPG_OOP_
                     }
                 }
             }
-        }
-        public void SetActivePlayer(Player player)
-        {
-            ActivePlayer = player;
         }
     }
 }

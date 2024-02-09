@@ -43,8 +43,8 @@ namespace TextRPG_OOP_
         public int enemy2Y;
         public int enemy3X;
         public int enemy3Y;
-        public int enemy4X;
-        public int enemy4Y;
+        public List<Character> characters;
+        public int index;
         public Map() //Constructor
         {
             Initialization();
@@ -54,8 +54,10 @@ namespace TextRPG_OOP_
         {
             //Console.Write("Initializing Map");
             //Console.ReadKey();
-            //path = path1;
-            floorMap = File.ReadAllLines(path1);
+            levelNumber = 1;
+            path = path1;
+            characters = new List<Character>();
+            floorMap = File.ReadAllLines(path);
             activeMap = new char[floorMap.Length, floorMap[0].Length];
             mapX = activeMap.GetLength(1);
             mapY = activeMap.GetLength(0);
@@ -83,7 +85,7 @@ namespace TextRPG_OOP_
                     char tile = activeMap[y,x];
                     if(tile == '=' && levelChanged == false)
                     {
-                        playerX = x;
+                        playerX = x+1;
                         playerY = y-1;
                         levelChanged = true;
                         activeMap[y,x] = '#';
@@ -91,12 +93,12 @@ namespace TextRPG_OOP_
                     if(tile == '!' && levelChanged == false || tile == '?' && levelChanged == false
                     || tile == '&' && levelChanged == false || tile == '^' && levelChanged == false)
                     {
-                        if(tile == '?')
+                        if(tile == '!')
                         {
                             enemy1X = x;
                             enemy1Y = y;
                         }
-                        if(tile == '!')
+                        if(tile == '?')
                         {
                             enemy2X = x;
                             enemy2Y = y;
@@ -106,11 +108,6 @@ namespace TextRPG_OOP_
                             enemy3X = x;
                             enemy3Y = y; 
                         }
-                        if(tile == '^')
-                        {
-                            enemy4X = x;
-                            enemy4Y = y;
-                        }
                     }
                     //Console.Write("test");
                     DrawTile(tile);
@@ -119,7 +116,7 @@ namespace TextRPG_OOP_
             }
         }
         // Sets player spawn point
-        public void SetPlayerSpawn(Player player)
+        public void SetPlayerSpawn(Character player)
         {
             player.position.x = playerX;
             player.position.y = playerY;
@@ -135,20 +132,23 @@ namespace TextRPG_OOP_
             playerMaxX = player.position.maxX;
             playerMaxY = player.position.maxY;
         }
-        public void SetEnemySpawns(Enemy enemy1) /*Enemy enemy2,Enemy enemy3,Enemy enemy4*/
+        public void SetEnemySpawns(Character enemy, int enemyNumber) /*Enemy enemy2,Enemy enemy3*/
         {
-            enemy1.position.x = enemy1X;
-            enemy1.position.y = enemy1Y;
-            activeMap[enemy1Y,enemy1X] = dungeonFloor;
-            // enemy2.position.x = enemy2X;
-            // enemy2.position.y = enemy2Y;
-            activeMap[enemy2Y,enemy2X] = dungeonFloor;
-            // enemy3.position.x = enemy3X;
-            // enemy3.position.y = enemy3Y;
-            activeMap[enemy3Y,enemy3X] = dungeonFloor;
-            // enemy4.position.x = enemy4X;
-            // enemy4.position.y = enemy4Y;
-            activeMap[enemy4Y,enemy4X] = dungeonFloor;
+            if(enemyNumber == 1)
+            {
+                enemy.position.x = enemy1X;
+                enemy.position.y = enemy1Y;
+            }
+            if(enemyNumber == 2)
+            {
+                enemy.position.x = enemy2X;
+                enemy.position.y = enemy2Y;
+            }
+            if(enemyNumber == 3)
+            {
+                enemy.position.x = enemy3X;
+                enemy.position.y = enemy3Y;
+            }
         }
         public void DrawEnemyToMap(Enemy enemy)
         {
@@ -326,18 +326,21 @@ namespace TextRPG_OOP_
             {
                 path = path1;
                 floorMap = File.ReadAllLines(path);
+                RestCharacters();
             }
             if(levelNumber == 2)
             {
                 levelNumber = 2;
                 path = path2;
                 floorMap = File.ReadAllLines(path);
+                RestCharacters();
             }
             if(levelNumber == 3)
             {
                 levelNumber = 3;
                 path = path3;
                 floorMap = File.ReadAllLines(path);
+                RestCharacters();
             }
             if(levelNumber > 3 || levelNumber <= 0)
             {
@@ -347,6 +350,61 @@ namespace TextRPG_OOP_
                 floorMap = File.ReadAllLines(path);
             }
             MakeDungeonMap();
+            DrawMap();
+        }
+        public bool CretureInTarget(int y, int x)
+        {
+            bool IsTarget = false;
+            for(index = 0; index < characters.Count(); index++)
+            {
+                if(x == characters[index].position.x && y == characters[index].position.y)
+                {
+                    IsTarget = true;
+                    return IsTarget;
+                }
+                if(index > characters.Count())
+                {
+                    index = 0;
+                }
+            }
+            return IsTarget;
+        }
+        public void AddToCharacterList(Character character)
+        {
+            characters.Add(character);
+        }
+        public void ClearCharacterList()
+        {
+            characters.Clear();
+        }
+        public bool CheckTile(int y, int x)
+        {
+            bool CanMove = false;
+            if(activeMap[y,x] == dungeonWall)
+            {
+                CanMove = false;
+            }
+            else
+            {
+                CanMove = true;
+            }
+            return CanMove;
+        }
+        public void RestCharacters()
+        {
+            for(int i = 0; i < characters.Count(); i++)
+            {
+                characters[i].healthSystem.IsAlive = true;
+                if(i == 0)
+                {
+                    SetPlayerSpawn(characters[0]);
+                }
+                if(i > 0)
+                {
+                    SetEnemySpawns(characters[i], i);
+                }
+            }
+
         }
     }
 }
