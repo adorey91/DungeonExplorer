@@ -215,7 +215,7 @@ namespace TextRPG_OOP_
             Console.Write(finalLoot);
             SetColorDefault();
         }
-        static void DrawCoin()
+        public static void DrawCoin()
         {
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.BackgroundColor = ConsoleColor.Gray;
@@ -411,7 +411,16 @@ namespace TextRPG_OOP_
                     SetEnemySpawns(characters[i], i);
                 }
             }
-
+        }
+        public void DrawEnemyLegend()
+        {
+            Console.WriteLine();
+            DrawEnemy(1);
+            Console.WriteLine(" = Slime");
+            DrawEnemy(2);
+            Console.WriteLine(" = Living Armor");
+            DrawEnemy(3);
+            Console.WriteLine(" = Kobald");
         }
     }
 }

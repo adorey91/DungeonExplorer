@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
@@ -20,10 +21,10 @@ namespace TextRPG_OOP_
         {
             StartUp();
             Console.WriteLine("Welcome to my Text RPG game!");
-            Console.WriteLine("Find your way to the challace.");
-            Console.WriteLine("Collect coins to increase your attack power.");
+            Console.WriteLine("Find your way to the challace. " + ((char)165));
+            Console.WriteLine("Collect coins (" + ((char)164) +  ") to increase your attack power.");
             Console.WriteLine("Collect hearts to heal.");
-            Console.WriteLine("Collect peices of armor to up your defence.");
+            Console.WriteLine("Collect peices of armor (" + ((char)934) +") to up your defence.");
             Console.WriteLine("Avoid monsters!");
             Console.WriteLine("Press any key to get started!");
             Console.ReadKey(true);
@@ -50,6 +51,7 @@ namespace TextRPG_OOP_
                 cowardKobald.MoveEnemy(gameMap);
                 gameMap.DrawMap();
                 mainPlayer.DrawHUD();
+                gameMap.DrawEnemyLegend();
                 gameMap.DrawPlayerToMap(mainPlayer.position.x, mainPlayer.position.y);
                 if(slimeEnemy.healthSystem.IsAlive)
                 {
@@ -64,8 +66,7 @@ namespace TextRPG_OOP_
                     gameMap.DrawEnemyToMap(cowardKobald);
                 }
             }
-            //Map Test ^
-            //Console.ReadKey(true);
+                WinGame();
         }
         static void StartUp()
         {
@@ -94,6 +95,7 @@ namespace TextRPG_OOP_
             //Intial map draw / setup
             gameMap.DrawMap();
             mainPlayer.DrawHUD();
+            gameMap.DrawEnemyLegend();
             gameMap.GetPlayerMaxPosition(mainPlayer);
             gameMap.SetPlayerSpawn(mainPlayer);
             mainPlayer.SetMaxPlayerPosition(gameMap);
@@ -113,6 +115,16 @@ namespace TextRPG_OOP_
             cowardKobald.SetLevelNumber(gameMap.levelNumber);
             cowardKobald.SetEnemyStats();
             gameMap.DrawPlayerToMap(mainPlayer.position.x, mainPlayer.position.y);
+        }
+        static void WinGame()
+        {
+            Console.Clear();
+            Console.WriteLine("You Won!");
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("CONGRADULATIONS!");
+            Thread.Sleep(3000);
+            Environment.Exit(0);
         }
     }
 }

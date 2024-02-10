@@ -246,7 +246,7 @@ namespace TextRPG_OOP_
             enemyName = enemyHitName;
             enemyArmor = enemyHitArmor;
             string enemyHUDString = "{0} has Hp: {1} Armor: {2}     ";
-            string FormatString = "HP: {0}  Damage: {1}    " +((char)164) + "=Coins: {2}  " + ((Char)934) + "=Armor: {3}    ";
+            string FormatString = "HP: {0}  Damage: {1}  Coins: {2}  Armor: {3}    ";
             Console.WriteLine(string.Format(FormatString, health, damage, Coins, armor));
             Console.WriteLine(string.Format(enemyHUDString,enemyName,enemyHP,enemyArmor));
         }
