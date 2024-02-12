@@ -18,16 +18,16 @@ namespace TextRPG_OOP_
         public char[,] activeMap;
         public int levelNumber;
         public bool levelChanged;
-        public static char dungeonFloor = ((char)18);
-        public static char dungeonWall = ((char)35);
-        public static char spikeTrap = ((char)23);
-        public static char player = ((char)2);
-        public static char stairsDown = ((char)30);
-        public static char startPos = ((char)31);
-        public static char finalLoot = ((char)165);
-        public static char coin = ((char)164);
-        public static char healthPickup = ((char)3);
-        public static char armorPickup = ((char)21);
+        public static char dungeonFloor = ((char)18); // ↕
+        public static char dungeonWall = ((char)35); // #
+        public static char spikeTrap = ((char)23); // ↨
+        public static char player = ((char)2);  // ☻
+        public static char stairsDown = ((char)30); // ▲
+        public static char startPos = ((char)31); // ▼
+        public static char finalLoot = ((char)165); 
+        public static char coin = ((char)164); 
+        public static char healthPickup = ((char)3); // ♥
+        public static char armorPickup = ((char)21); // §
         static char enemy1 = ((char)4);
         static char enemy2 = ((char)6);
         static char enemy3 = ((char)5);
