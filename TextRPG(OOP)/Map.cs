@@ -11,7 +11,7 @@ namespace TextRPG_OOP_
     internal class Map
     {
         public static string path;
-        public static string path1 = @"Map.txt";
+        public static string path1 = @"Floor1Map.txt";
         public static string path2 = @"Floor2Map.txt";
         public static string path3 = @"Floor3Map.txt";
         public static string[] floorMap;
@@ -27,7 +27,7 @@ namespace TextRPG_OOP_
         public static char finalLoot = ((char)165);
         public static char coin = ((char)164);
         public static char healthPickup = ((char)3);
-        public static char armorPickup = ((char)934);
+        public static char armorPickup = ((char)21);
         static char enemy1 = ((char)4);
         static char enemy2 = ((char)6);
         static char enemy3 = ((char)5);

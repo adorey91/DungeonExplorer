@@ -24,7 +24,7 @@ namespace TextRPG_OOP_
             Console.WriteLine("Find your way to the challace. " + ((char)165));
             Console.WriteLine("Collect coins (" + ((char)164) +  ") to increase your attack power.");
             Console.WriteLine("Collect hearts to heal.");
-            Console.WriteLine("Collect peices of armor (" + ((char)934) +") to up your defence.");
+            Console.WriteLine("Collect peices of armor (" + ((char)21) +  ") to up your defence.");
             Console.WriteLine("Avoid monsters!");
             Console.WriteLine("Press any key to get started!");
             Console.ReadKey(true);
@@ -32,6 +32,7 @@ namespace TextRPG_OOP_
             SetUpMap();
             while(mainPlayer.gameIsOver != true && mainPlayer.gameWon != true)
             {
+                Console.CursorVisible = false;
                 if(!slimeEnemy.healthSystem.IsAlive)
                 {
                     slimeEnemy.SetEnemyStats();
