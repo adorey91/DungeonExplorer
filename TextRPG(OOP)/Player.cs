@@ -270,22 +270,22 @@ namespace TextRPG_OOP_
             if(playerCoins < 3)
             {
                 playerDamage = 1;
-                healthSystem.armor = 0;
+                //healthSystem.armor = 0;
             }
             if(playerCoins >= 3 && playerCoins < 6)
             {
                 playerDamage = 2;
-                healthSystem.armor = 1;
+                //healthSystem.armor = 1;
             }
             if(playerCoins >= 6 && playerCoins < 9)
             {
                 playerDamage = 3;
-                healthSystem.armor = 2;
+                //healthSystem.armor = 2;
             }
             if(playerCoins >= 9)
             {
                 playerDamage = 5;
-                healthSystem.armor = 3;
+                //healthSystem.armor = 3;
             }
         }
     }

@@ -20,54 +20,10 @@ namespace TextRPG_OOP_
         static void Main(string[] args)
         {
             StartUp();
-            Console.WriteLine("Welcome to my Text RPG game!");
-            Console.WriteLine("Find your way to the challace. " + ((char)165));
-            Console.WriteLine("Collect coins (" + ((char)164) +  ") to increase your attack power.");
-            Console.WriteLine("Collect hearts to heal.");
-            Console.WriteLine("Collect peices of armor (" + ((char)21) +  ") to up your defence.");
-            Console.WriteLine("Avoid monsters!");
-            Console.WriteLine("Press any key to get started!");
-            Console.ReadKey(true);
-            Console.Clear();
+            Intro();
             SetUpMap();
-            while(mainPlayer.gameIsOver != true && mainPlayer.gameWon != true)
-            {
-                Console.CursorVisible = false;
-                if(!slimeEnemy.healthSystem.IsAlive)
-                {
-                    slimeEnemy.SetEnemyStats();
-                }
-                if(!livingArmor.healthSystem.IsAlive)
-                {
-                    livingArmor.SetEnemyStats();
-                }
-                if(!cowardKobald.healthSystem.IsAlive)
-                {
-                    cowardKobald.SetEnemyStats();
-                }
-                mainPlayer.CheckPlayerCondition();
-                mainPlayer.GetPlayerInput(gameMap);
-                slimeEnemy.MoveEnemy(gameMap);
-                livingArmor.MoveEnemy(gameMap);
-                cowardKobald.MoveEnemy(gameMap);
-                gameMap.DrawMap();
-                mainPlayer.DrawHUD();
-                gameMap.DrawEnemyLegend();
-                gameMap.DrawPlayerToMap(mainPlayer.position.x, mainPlayer.position.y);
-                if(slimeEnemy.healthSystem.IsAlive)
-                {
-                    gameMap.DrawEnemyToMap(slimeEnemy);
-                }
-                if(livingArmor.healthSystem.IsAlive)
-                {
-                    gameMap.DrawEnemyToMap(livingArmor);
-                }
-                if(cowardKobald.healthSystem.IsAlive)
-                {
-                    gameMap.DrawEnemyToMap(cowardKobald);
-                }
-            }
-                WinGame();
+            GamePlay();
+            WinGame();
         }
         static void StartUp()
         {
@@ -126,6 +82,58 @@ namespace TextRPG_OOP_
             Console.WriteLine("CONGRADULATIONS!");
             Thread.Sleep(3000);
             Environment.Exit(0);
+        }
+        static void Intro()
+        {
+            Console.WriteLine("Welcome to my Text RPG game!");
+            Console.WriteLine("Find your way to the challace. " + ((char)165));
+            Console.WriteLine("Collect coins (" + ((char)164) +  ") to increase your attack power.");
+            Console.WriteLine("Collect hearts to heal.");
+            Console.WriteLine("Collect peices of armor (" + ((char)21) +  ") to up your defence.");
+            Console.WriteLine("Avoid monsters!");
+            Console.WriteLine("Press any key to get started!");
+            Console.ReadKey(true);
+            Console.Clear();
+        }
+        static void GamePlay()
+        {
+            while(mainPlayer.gameIsOver != true && mainPlayer.gameWon != true)
+            {
+                Console.CursorVisible = false;
+                if(!slimeEnemy.healthSystem.IsAlive)
+                {
+                    slimeEnemy.SetEnemyStats();
+                }
+                if(!livingArmor.healthSystem.IsAlive)
+                {
+                    livingArmor.SetEnemyStats();
+                }
+                if(!cowardKobald.healthSystem.IsAlive)
+                {
+                    cowardKobald.SetEnemyStats();
+                }
+                mainPlayer.CheckPlayerCondition();
+                mainPlayer.GetPlayerInput(gameMap);
+                slimeEnemy.MoveEnemy(gameMap);
+                livingArmor.MoveEnemy(gameMap);
+                cowardKobald.MoveEnemy(gameMap);
+                gameMap.DrawMap();
+                mainPlayer.DrawHUD();
+                gameMap.DrawEnemyLegend();
+                gameMap.DrawPlayerToMap(mainPlayer.position.x, mainPlayer.position.y);
+                if(slimeEnemy.healthSystem.IsAlive)
+                {
+                    gameMap.DrawEnemyToMap(slimeEnemy);
+                }
+                if(livingArmor.healthSystem.IsAlive)
+                {
+                    gameMap.DrawEnemyToMap(livingArmor);
+                }
+                if(cowardKobald.healthSystem.IsAlive)
+                {
+                    gameMap.DrawEnemyToMap(cowardKobald);
+                }
+            }
         }
     }
 }
