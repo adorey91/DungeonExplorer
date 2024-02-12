@@ -10,27 +10,26 @@ namespace TextRPG_OOP_
 { 
     internal class Player : Character
     {
-        public int experience;
-        public static int playerDamage;
-        public static int playerCoins;
+        public int playerDamage;
+        public int playerCoins;
         public int PlayerMaxHP;
-        private static int playerHP;
         public ConsoleKeyInfo playerInput;
         public bool gameIsOver;
         public bool gameWon;
-        private string enemyHitName;
-        private int enemyHitHealth;
-        private int enemyHitArmor;
+        public string enemyHitName;
+        public int enemyHitHealth;
+        public int enemyHitArmor;
         public Player()
         {
-            experience = 0;
+            healthSystem.IsAlive = true;
+            gameIsOver = false;
+            gameWon = false;
             playerCoins = 0;
-            playerDamage = 1; // player starting damage
-            PlayerMaxHP = 10; // % health out of 10.
+            playerDamage = 1;
+            PlayerMaxHP = 10;
             healthSystem.SetHealth(PlayerMaxHP);
             name = "Koal"; // Testing for passing string.
-            playerHP = healthSystem.GetHealth();
-            enemyHitName = "Nothing";
+            enemyHitName = "";
             //Console.Write("Initialized" + playerName);
         }
         public void SetMaxPlayerPosition(Map map)
@@ -227,42 +226,6 @@ namespace TextRPG_OOP_
                 {
                     Environment.Exit(0);
                 }
-            }
-        }
-        public void DrawHUD()
-        {
-            int health;
-            int damage;
-            int Coins;
-            int armor;
-            int enemyHP;
-            int enemyArmor;
-            string enemyName;
-            health = healthSystem.health;
-            armor = healthSystem.armor;
-            damage = playerDamage;
-            Coins = playerCoins;
-            enemyHP = enemyHitHealth;
-            enemyName = enemyHitName;
-            enemyArmor = enemyHitArmor;
-            string enemyHUDString = "{0} has Hp: {1} Armor: {2}     ";
-            string FormatString = "HP: {0}  Damage: {1}  Coins: {2}  Armor: {3}    ";
-            Console.WriteLine(string.Format(FormatString, health, damage, Coins, armor));
-            Console.WriteLine(string.Format(enemyHUDString,enemyName,enemyHP,enemyArmor));
-        }
-        public void PlayerIsDead()
-        {
-            Thread.Sleep(3000); 
-            Console.Clear();
-            Console.WriteLine("You have lost. Reload the game to try again!");
-            Thread.Sleep(5000);
-            Environment.Exit(0);
-        }
-        public void CheckPlayerCondition()
-        {
-            if(!healthSystem.IsAlive)
-            {
-                PlayerIsDead();
             }
         }
         void UpPlayerStats()

@@ -18,16 +18,16 @@ namespace TextRPG_OOP_
         public char[,] activeMap;
         public int levelNumber;
         public bool levelChanged;
-        public static char dungeonFloor = ((char)18); // ↕
-        public static char dungeonWall = ((char)35); // #
-        public static char spikeTrap = ((char)23); // ↨
-        public static char player = ((char)2);  // ☻
-        public static char stairsDown = ((char)30); // ▲
-        public static char startPos = ((char)31); // ▼
-        public static char finalLoot = ((char)165); 
-        public static char coin = ((char)164); 
-        public static char healthPickup = ((char)3); // ♥
-        public static char armorPickup = ((char)21); // §
+        public char dungeonFloor = ((char)18); // ↕
+        public char dungeonWall = ((char)35); // #
+        public char spikeTrap = ((char)23); // ↨
+        public char player = ((char)2);  // ☻
+        public char stairsDown = ((char)30); // ▲
+        public char startPos = ((char)31); // ▼
+        public char finalLoot = ((char)165); 
+        public char coin = ((char)164); 
+        public char healthPickup = ((char)3); // ♥
+        public char armorPickup = ((char)21); // §
         static char enemy1 = ((char)4);
         static char enemy2 = ((char)6);
         static char enemy3 = ((char)5);
@@ -157,7 +157,7 @@ namespace TextRPG_OOP_
             Console.SetCursorPosition(enemy.position.x,enemy.position.y);
             DrawEnemy(enemy.enemyNumber);
         }
-        static void DrawEnemy(int enemyNumber)
+        public void DrawEnemy(int enemyNumber)
         {
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.ForegroundColor = ConsoleColor.DarkGreen;
@@ -184,7 +184,7 @@ namespace TextRPG_OOP_
             SetColorDefault();
         }
         //Code for tiles color and ascii
-        static void DrawFloor()
+        public void DrawFloor()
         {
             // used to draw a floor tile
             Console.ForegroundColor = ConsoleColor.Gray;
@@ -192,7 +192,7 @@ namespace TextRPG_OOP_
             Console.Write(dungeonFloor);
             SetColorDefault();
         }
-        static void DrawWall()
+        public void DrawWall()
         {
             // used to draw a wall tile
             Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -200,7 +200,7 @@ namespace TextRPG_OOP_
             Console.Write(dungeonWall);
             SetColorDefault();
         }
-        static void DrawSpikes()
+        public void DrawSpikes()
         {
             // used to draw a spikes tile
             Console.ForegroundColor = ConsoleColor.DarkRed;
@@ -208,48 +208,48 @@ namespace TextRPG_OOP_
             Console.Write(spikeTrap);
             SetColorDefault();
         }
-        static void DrawFinalLoot()
+        public void DrawFinalLoot()
         {
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.Write(finalLoot);
             SetColorDefault();
         }
-        public static void DrawCoin()
+        public void DrawCoin()
         {
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.Write(coin);
             SetColorDefault();
         }
-        static void SetColorDefault()
+        public void SetColorDefault()
         {
             // sets console color back to default. 
             Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Black;
         }
-        static void DrawArmor()
+        public void DrawArmor()
         {
             Console.ForegroundColor = ConsoleColor.DarkBlue;
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.Write(armorPickup);
             SetColorDefault();
         }
-        static void DrawStairsDown()
+        public void DrawStairsDown()
         {
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.Write(stairsDown);
             SetColorDefault();
         }
-        static void DrawHealthPickup()
+        public void DrawHealthPickup()
         {
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.Write(healthPickup);
             SetColorDefault();
         }
-        static void DrawPlayer()
+        public void DrawPlayer()
         {
             // used to draw the player
             Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -258,7 +258,7 @@ namespace TextRPG_OOP_
             SetColorDefault();
         }
         //Determines what tile is what during print.
-        public static void DrawTile(Char tile)
+        public void DrawTile(Char tile)
         {
             // draws the correct tile based on the floorMap
             if(tile == '-')
