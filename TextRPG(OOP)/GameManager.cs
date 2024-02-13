@@ -14,7 +14,7 @@ namespace TextRPG_OOP_
         private Enemy slimeEnemy;
         private Enemy livingArmor;
         private Enemy cowardKobald;
-        private Map gameMap;
+        public Map gameMap;
         private void StartUp()
         {
             Debug.WriteLine("Setting Up characters");
@@ -92,34 +92,6 @@ namespace TextRPG_OOP_
                 Environment.Exit(0);
             }
         }
-        private void Intro() //move to Dungeon Explorer
-        {
-            Debug.WriteLine("Into!");
-            Console.WriteLine("Welcome to Dungeon Explorer!"); // placeholderTitle
-            Console.WriteLine();
-            Console.Write("Find your way to the challace. ");
-            gameMap.DrawFinalLoot();
-            Console.WriteLine();
-            Console.Write("Collect coins ");
-            gameMap.DrawCoin(); 
-            Console.Write(" to increase your attack power.");
-            Console.WriteLine();
-            Console.Write("Collect hearts to heal.");
-            gameMap.DrawHealthPickup();
-            Console.WriteLine();
-            Console.Write("Collect peices of armor "); 
-            gameMap.DrawArmor();
-            Console.Write(" to up your defence.");
-            Console.WriteLine();
-            Console.Write("Avoid or fight the monsters!");
-            gameMap.DrawEnemy(1);
-            gameMap.DrawEnemy(2);
-            gameMap.DrawEnemy(3);
-            Console.WriteLine();
-            Console.WriteLine("Press any key to get started!");
-            Console.ReadKey(true);
-            Console.Clear();
-        }
         private void DungeonGameLoop()
         {
             Debug.WriteLine("Running GameLoop");
@@ -166,7 +138,6 @@ namespace TextRPG_OOP_
         {
             Debug.WriteLine("Starting Game");
             StartUp();
-            Intro();
             SetUpGame();
             DungeonGameLoop();
         }
