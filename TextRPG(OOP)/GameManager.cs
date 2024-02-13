@@ -38,7 +38,7 @@ namespace TextRPG_OOP_
             livingArmor.name = "Living Armor";
             cowardKobald.name = "Jim the coward";
         }  
-        private void SetUpMap()
+        private void SetUpGame()
         {
             Debug.WriteLine("Setting up starting map");
             //Intial map draw / setup
@@ -92,7 +92,7 @@ namespace TextRPG_OOP_
                 Environment.Exit(0);
             }
         }
-        private void Intro()
+        private void Intro() //move to Dungeon Explorer
         {
             Debug.WriteLine("Into!");
             Console.WriteLine("Welcome to Dungeon Explorer!"); // placeholderTitle
@@ -167,10 +167,10 @@ namespace TextRPG_OOP_
             Debug.WriteLine("Starting Game");
             StartUp();
             Intro();
-            SetUpMap();
+            SetUpGame();
             DungeonGameLoop();
         }
-        void DrawHUD()
+        void DrawHUD() //Add to a UIManager Class
         {
             Debug.WriteLine("Drawing HUD");
             string enemyHUDString = "{0} has Hp: {1} Armor: {2}     ";
