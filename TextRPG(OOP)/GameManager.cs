@@ -136,6 +136,7 @@ namespace TextRPG_OOP_
         }
         public void PlayGame()
         {
+            Intro();
             Debug.WriteLine("Starting Game");
             StartUp();
             SetUpGame();
@@ -163,6 +164,27 @@ namespace TextRPG_OOP_
             {
                 mainPlayer.gameIsOver = true;
             }
+        }
+        void Intro()
+        {
+            Debug.WriteLine("Into!");
+            Console.WriteLine("Welcome to Dungeon Explorer!"); // placeholderTitle
+            Console.WriteLine();
+            Console.Write("Find your way to the challace. ");
+            Console.WriteLine();
+            Console.Write("Collect coins ");
+            Console.Write("to increase your attack power.");
+            Console.WriteLine();
+            Console.Write("Collect hearts to heal.");
+            Console.WriteLine();
+            Console.Write("Collect peices of armor "); 
+            Console.Write("to up your defence.");
+            Console.WriteLine();
+            Console.Write("Avoid or fight the monsters!");
+            Console.WriteLine();
+            Console.WriteLine("Press any key to get started!");
+            Console.ReadKey(true);
+            Console.Clear();
         }
     }
 }
