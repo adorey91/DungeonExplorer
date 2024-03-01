@@ -72,23 +72,23 @@ namespace TextRPG_OOP_
             if(mainPlayer.gameIsOver && mainPlayer.gameWon == true)
             {
                 Debug.WriteLine("Player won");
-                Thread.Sleep(3000);
+                Thread.Sleep(2000);
                 Console.Clear();
                 Console.WriteLine("You Won!");
                 Console.WriteLine();
                 Console.WriteLine(string.Format(FormatString,mainPlayer.playerCoins,mainPlayer.healthSystem.armor,mainPlayer.healthSystem.health));
                 Console.WriteLine();
                 Console.WriteLine("CONGRADULATIONS!");
-                Thread.Sleep(5000);
+                Thread.Sleep(3000);
                 Environment.Exit(0);
             }
             if(mainPlayer.gameIsOver && mainPlayer.gameWon != true)
             {
                 Debug.WriteLine("Player lost");
-                Thread.Sleep(3000); 
+                Thread.Sleep(2000); 
                 Console.Clear();
                 Console.WriteLine("You have lost. Reload the game to try again!");
-                Thread.Sleep(5000);
+                Thread.Sleep(3000);
                 Environment.Exit(0);
             }
         }
