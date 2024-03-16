@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
+using System.Diagnostics;
 
 namespace TextRPG_OOP_
 {
@@ -38,23 +39,23 @@ namespace TextRPG_OOP_
         public int playerY;
         public int playerMaxX;
         public int playerMaxY;
-        public int enemy1X;
-        public int enemy1Y;
-        public int enemy2X;
-        public int enemy2Y;
-        public int enemy3X;
-        public int enemy3Y;
         public List<Character> characters;
+        public int enemyCount;
         public int index;
-        public Map() //Constructor
+        public EnemyManager enemyManager;
+        public Player mainPlayer;
+        public ItemManager itemManager;
+        public Map(ItemManager IM) //Constructor
         {
             Initialization();
+            itemManager = IM;
             //Console.Write("Initialized Map");
         }
         public void Initialization()
         {
             //Console.Write("Initializing Map");
             //Console.ReadKey();
+            enemyCount = 0;
             levelNumber = 1;
             path = path1;
             characters = new List<Character>();
@@ -64,7 +65,14 @@ namespace TextRPG_OOP_
             mapY = activeMap.GetLength(0);
             MakeDungeonMap();
         }
-        
+        public void Start(Player player, EnemyManager em)
+        {
+            enemyManager = em;
+            mainPlayer = player;
+            AddToCharacterList(mainPlayer);
+            SetPlayerSpawn(mainPlayer);
+            GetPlayerMaxPosition(mainPlayer);
+        }
         public void MakeDungeonMap()
         {
             for (int i = 0; i < floorMap.Length; i++)
@@ -74,6 +82,17 @@ namespace TextRPG_OOP_
                     activeMap[i, j] = floorMap[i][j];
                 }
             } 
+        }
+        public void Update()
+        {
+            
+        }
+        public void Draw()
+        {
+            DrawMap();
+            DrawHUD();
+            DrawEnemyLegend();
+            DrawPlayerToMap(characters[0].position.x, characters[0].position.y);
         }
         public void DrawMap()
         {
@@ -90,24 +109,37 @@ namespace TextRPG_OOP_
                         playerY = y-1;
                         levelChanged = true;
                         activeMap[y,x] = '#';
+                        mainPlayer.SetPlayerPosition(playerX,playerY);
                     }
                     if(tile == '!' && levelChanged == false || tile == '?' && levelChanged == false
                     || tile == '&' && levelChanged == false || tile == '^' && levelChanged == false)
                     {
                         if(tile == '!')
                         {
-                            enemy1X = x;
-                            enemy1Y = y;
+                            enemyManager.AddEnemiesToList("Slime");
+                            enemyManager.enemiesList[enemyCount].position.x = x;
+                            enemyManager.enemiesList[enemyCount].position.y = y;
+                            AddToCharacterList(enemyManager.enemiesList[enemyCount]);
+                            activeMap[y, x] = '-';
+                            enemyCount += 1;
                         }
                         if(tile == '?')
                         {
-                            enemy2X = x;
-                            enemy2Y = y;
+                            enemyManager.AddEnemiesToList("Living Armor");
+                            enemyManager.enemiesList[enemyCount].position.x = x;
+                            enemyManager.enemiesList[enemyCount].position.y = y;
+                            AddToCharacterList(enemyManager.enemiesList[enemyCount]);
+                            activeMap[y, x] = '-';
+                            enemyCount += 1;
                         }
                         if(tile == '&')
                         {
-                            enemy3X = x;
-                            enemy3Y = y; 
+                            enemyManager.AddEnemiesToList("Kobald");
+                            enemyManager.enemiesList[enemyCount].position.x = x;
+                            enemyManager.enemiesList[enemyCount].position.y = y;
+                            AddToCharacterList(enemyManager.enemiesList[enemyCount]);
+                            activeMap[y, x] = '-';
+                            enemyCount += 1;
                         }
                     }
                     //Console.Write("test");
@@ -133,53 +165,30 @@ namespace TextRPG_OOP_
             playerMaxX = player.position.maxX;
             playerMaxY = player.position.maxY;
         }
-        public void SetEnemySpawns(Character enemy, int enemyNumber) /*Enemy enemy2,Enemy enemy3*/
+        public void DrawEnemiesToMap(List<Enemy> eList)
         {
-            if(enemyNumber == 1)
+            for(int i = 0; i < eList.Count(); i++)
             {
-                enemy.position.x = enemy1X;
-                enemy.position.y = enemy1Y;
-            }
-            if(enemyNumber == 2)
-            {
-                enemy.position.x = enemy2X;
-                enemy.position.y = enemy2Y;
-            }
-            if(enemyNumber == 3)
-            {
-                enemy.position.x = enemy3X;
-                enemy.position.y = enemy3Y;
+                Console.SetCursorPosition(eList[i].position.x,eList[i].position.y);
+                DrawEnemy(eList[i].enemyType);
             }
         }
-        public void DrawEnemyToMap(Enemy enemy)
-        {
-
-            Console.SetCursorPosition(enemy.position.x,enemy.position.y);
-            DrawEnemy(enemy.enemyNumber);
-        }
-        public void DrawEnemy(int enemyNumber)
+        public void DrawEnemy(string enemyType)
         {
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.ForegroundColor = ConsoleColor.DarkGreen;
-            if(enemyNumber > 4 || enemyNumber < 1)
+
+            if(enemyType == "Slime")
             {
-                enemyNumber = 1;
+               Console.Write(enemy1);
             }
-            if(enemyNumber == 1)
+            if(enemyType == "Living Armor")
             {
-                Console.Write(enemy1);
+               Console.Write(enemy2);
             }
-            if(enemyNumber == 2)
+            if(enemyType == "Kobald")
             {
-                Console.Write(enemy2);
-            }
-            if(enemyNumber == 3)
-            {
-                Console.Write(enemy3);
-            }
-            if(enemyNumber == 4)
-            {
-                Console.Write(enemy4);
+               Console.Write(enemy3);
             }
             SetColorDefault();
         }
@@ -408,19 +417,35 @@ namespace TextRPG_OOP_
                 }
                 if(i > 0)
                 {
-                    SetEnemySpawns(characters[i], i);
+
                 }
             }
         }
         public void DrawEnemyLegend()
         {
             Console.WriteLine();
-            DrawEnemy(1);
+            DrawEnemy("Slime");
             Console.WriteLine(" = Slime");
-            DrawEnemy(2);
+            DrawEnemy("Living Armor");
             Console.WriteLine(" = Living Armor");
-            DrawEnemy(3);
+            DrawEnemy("Kobald");
             Console.WriteLine(" = Kobald");
         }
+        void DrawHUD() //Add to a UIManager Class
+        {
+            Debug.WriteLine("Drawing HUD");
+            string enemyHUDString = "{0} has Hp: {1} Armor: {2}     ";
+            string FormatString = "HP: {0}  Damage: {1}  Coins: {2}  Armor: {3}    ";
+            Console.WriteLine(string.Format(FormatString, mainPlayer.healthSystem.health, mainPlayer.playerDamage, mainPlayer.playerCoins, mainPlayer.healthSystem.armor));
+            if(mainPlayer.enemyHitName == "")
+            {
+                Console.WriteLine();
+            }
+            else
+            {
+                Console.WriteLine(string.Format(enemyHUDString,mainPlayer.enemyHitName,mainPlayer.enemyHitHealth,mainPlayer.enemyHitArmor));
+            }
+        }
+        
     }
 }

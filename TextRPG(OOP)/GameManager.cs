@@ -11,59 +11,35 @@ namespace TextRPG_OOP_
     internal class GameManager
     {
         private Player mainPlayer;
-        private Enemy slimeEnemy;
-        private Enemy livingArmor;
-        private Enemy cowardKobald;
+        private EnemyManager enemyManager;
         public Map gameMap;
+        public ItemManager itemManager;
         private void StartUp()
         {
-            Debug.WriteLine("Setting Up characters");
             Console.CursorVisible = false;
-            gameMap = new Map();
-            mainPlayer = new Player();
-            slimeEnemy = new Enemy();
-            livingArmor = new Enemy();
-            cowardKobald = new Enemy();
+            Debug.WriteLine("Setting Up characters");
+            itemManager = new ItemManager();
+            gameMap = new Map(itemManager);
+            enemyManager = new EnemyManager(gameMap);
+            mainPlayer = new Player(gameMap);
             gameMap.AddToCharacterList(mainPlayer);
-            gameMap.AddToCharacterList(slimeEnemy);
-            gameMap.AddToCharacterList(livingArmor);
-            gameMap.AddToCharacterList(cowardKobald);
-            slimeEnemy.enemyNumber = 1;
-            slimeEnemy.enemyType = 1;
-            livingArmor.enemyNumber = 2;
-            livingArmor.enemyType = 3;
-            cowardKobald.enemyNumber = 3;
-            cowardKobald.enemyType = 2;
-            slimeEnemy.name = "Slime";
-            livingArmor.name = "Living Armor";
-            cowardKobald.name = "Jim the coward";
         }  
         private void SetUpGame()
         {
             Debug.WriteLine("Setting up starting map");
+            gameMap.Start(mainPlayer, enemyManager);
+            gameMap.Draw();
+            enemyManager.Draw();
+            mainPlayer.Start();
             //Intial map draw / setup
-            gameMap.DrawMap();
-            DrawHUD();
-            gameMap.DrawEnemyLegend();
-            gameMap.GetPlayerMaxPosition(mainPlayer);
-            gameMap.SetPlayerSpawn(mainPlayer);
-            mainPlayer.SetMaxPlayerPosition(gameMap);
-            slimeEnemy.SetEnemyMaxPosition(gameMap);
-            livingArmor.SetEnemyMaxPosition(gameMap);
-            cowardKobald.SetEnemyMaxPosition(gameMap);
-            gameMap.SetEnemySpawns(livingArmor, livingArmor.enemyNumber);
-            gameMap.SetEnemySpawns(slimeEnemy, slimeEnemy.enemyNumber);
-            gameMap.SetEnemySpawns(cowardKobald, cowardKobald.enemyNumber);
-            gameMap.DrawEnemyToMap(slimeEnemy);
-            slimeEnemy.SetLevelNumber(gameMap.levelNumber);
-            slimeEnemy.SetEnemyStats();
-            gameMap.DrawEnemyToMap(livingArmor);
-            livingArmor.SetLevelNumber(gameMap.levelNumber);
-            livingArmor.SetEnemyStats();
-            gameMap.DrawEnemyToMap(cowardKobald);
-            cowardKobald.SetLevelNumber(gameMap.levelNumber);
-            cowardKobald.SetEnemyStats();
-            gameMap.DrawPlayerToMap(mainPlayer.position.x, mainPlayer.position.y);
+            //gameMap.DrawMap();
+            //DrawHUD();
+            //gameMap.DrawEnemyLegend();
+            //gameMap.GetPlayerMaxPosition(mainPlayer);
+            //gameMap.SetPlayerSpawn(mainPlayer);
+            //mainPlayer.SetMaxPlayerPosition(gameMap);
+            //gameMap.DrawPlayerToMap(mainPlayer.position.x, mainPlayer.position.y);
+            //gameMap.DrawEnemiesToMap();
         }
         private void EndGame()
         {
@@ -98,39 +74,16 @@ namespace TextRPG_OOP_
             while(mainPlayer.gameIsOver != true && mainPlayer.gameWon != true)
             {
                 Console.CursorVisible = false;
-                if(!slimeEnemy.healthSystem.IsAlive)
-                {
-                    slimeEnemy.SetEnemyStats();
-                }
-                if(!livingArmor.healthSystem.IsAlive)
-                {
-                    livingArmor.SetEnemyStats();
-                }
-                if(!cowardKobald.healthSystem.IsAlive)
-                {
-                    cowardKobald.SetEnemyStats();
-                }
                 CheckPlayerCondition();
-                mainPlayer.GetPlayerInput(gameMap);
-                slimeEnemy.MoveEnemy(gameMap);
-                livingArmor.MoveEnemy(gameMap);
-                cowardKobald.MoveEnemy(gameMap);
-                gameMap.DrawMap();
-                DrawHUD();
-                gameMap.DrawEnemyLegend();
-                gameMap.DrawPlayerToMap(mainPlayer.position.x, mainPlayer.position.y);
-                if(slimeEnemy.healthSystem.IsAlive)
-                {
-                    gameMap.DrawEnemyToMap(slimeEnemy);
-                }
-                if(livingArmor.healthSystem.IsAlive)
-                {
-                    gameMap.DrawEnemyToMap(livingArmor);
-                }
-                if(cowardKobald.healthSystem.IsAlive)
-                {
-                    gameMap.DrawEnemyToMap(cowardKobald);
-                }
+                mainPlayer.Update();
+                enemyManager.Update();
+                gameMap.Draw();
+                enemyManager.Draw();
+                //gameMap.DrawMap();
+                //DrawHUD();
+                //gameMap.DrawEnemyLegend();
+                //gameMap.DrawPlayerToMap(mainPlayer.position.x, mainPlayer.position.y);
+                //gameMap.DrawEnemiesToMap();
             }
             EndGame();
         }
@@ -142,21 +95,7 @@ namespace TextRPG_OOP_
             SetUpGame();
             DungeonGameLoop();
         }
-        void DrawHUD() //Add to a UIManager Class
-        {
-            Debug.WriteLine("Drawing HUD");
-            string enemyHUDString = "{0} has Hp: {1} Armor: {2}     ";
-            string FormatString = "HP: {0}  Damage: {1}  Coins: {2}  Armor: {3}    ";
-            Console.WriteLine(string.Format(FormatString, mainPlayer.healthSystem.health, mainPlayer.playerDamage, mainPlayer.playerCoins, mainPlayer.healthSystem.armor));
-            if(mainPlayer.enemyHitName == "")
-            {
-                Console.WriteLine();
-            }
-            else
-            {
-                Console.WriteLine(string.Format(enemyHUDString,mainPlayer.enemyHitName,mainPlayer.enemyHitHealth,mainPlayer.enemyHitArmor));
-            }
-        }
+        
         private void CheckPlayerCondition()
         {
             Debug.WriteLine("Checking player");

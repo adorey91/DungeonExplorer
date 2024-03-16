@@ -19,7 +19,8 @@ namespace TextRPG_OOP_
         public string enemyHitName;
         public int enemyHitHealth;
         public int enemyHitArmor;
-        public Player()
+        public Map gameMap;
+        public Player(Map map)
         {
             healthSystem.IsAlive = true;
             gameIsOver = false;
@@ -30,7 +31,16 @@ namespace TextRPG_OOP_
             healthSystem.SetHealth(PlayerMaxHP);
             name = "Koal"; // Testing for passing string.
             enemyHitName = "";
+            gameMap = map;
             //Console.Write("Initialized" + playerName);
+        }
+        public void Start()
+        {
+            SetMaxPlayerPosition(gameMap);
+        }
+        public void Update()
+        {
+            GetPlayerInput(gameMap);
         }
         public void SetMaxPlayerPosition(Map map)
         {

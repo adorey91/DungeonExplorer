@@ -16,7 +16,7 @@ namespace TextRPG_OOP_
         public int enemyNumber;
         public int enemyMaxX;
         public int enemyMaxY;
-        public int enemyType;
+        public string enemyType;
         public int levelNumber;
         public Enemy()
         {
@@ -24,7 +24,9 @@ namespace TextRPG_OOP_
             expDrop = 5;
             enemyDamage = 1;
             healthSystem.SetHealth(enemyMaxHP);
-            enemyType = 1;
+            enemyType = "Slime";
+            name = enemyType;
+            SetEnemyStats();
             //Console.Write("Initialized enemy");
         }
         public void SetEnemyMaxPosition(Map map)
@@ -38,17 +40,17 @@ namespace TextRPG_OOP_
         }
         public void SetEnemyStats()
         {
-            if(enemyType == 1)
+            if(enemyType == "Slime")
             {
                 healthSystem.health = 3 + levelNumber;
                 healthSystem.armor = levelNumber - 1;
             }
-            if(enemyType == 2)
+            if(enemyType == "Kobald")
             {
                 healthSystem.health = 0 + levelNumber;
                 healthSystem.armor = 0;
             }
-            if(enemyType == 3)
+            if(enemyType == "Living Armor")
             {
                 healthSystem.health = 5 + levelNumber;
                 healthSystem.armor = levelNumber;
@@ -64,63 +66,63 @@ namespace TextRPG_OOP_
                 position.x = 0;
                 position.y = 0;
             }
-            if(enemyType == 1) // this type moves at random
+            if(enemyType == "Slime") // this type moves at random
             {
                 Random moveRoll = new Random();
                 int moveResult = moveRoll.Next(1,5);
                 if(moveResult == 1)
-            {
-                enemyMoveY = position.y - 1;
-                if(enemyMoveY <= 0)
                 {
-                    enemyMoveY = 0;
-                }
-                if(gameMap.CretureInTarget(enemyMoveY, position.x) && gameMap.index != enemyNumber) // != enemyNumber is needed to prevent enemies from self harming
-                {
+                    enemyMoveY = position.y - 1;
+                    if(enemyMoveY <= 0)
+                    {
+                        enemyMoveY = 0;
+                    }
+                    if(gameMap.CretureInTarget(enemyMoveY, position.x) && gameMap.index != enemyNumber) // != enemyNumber is needed to prevent enemies from self harming
+                    {
                     gameMap.characters[gameMap.index].healthSystem.TakeDamage(enemyDamage);
                     return;
-                }
-                if(gameMap.CheckTile(enemyMoveY, position.x) == false)
-                {
-                    Debug.WriteLine("HitWall");
-                    enemyMoveY = position.y;
-                    position.y = enemyMoveY;
-                    return;
-                }
-                else
-                {
-                    //Debug.WriteLine("Moved up");
-                    position.y = enemyMoveY;
-                    if(position.y <= 0)
+                    }
+                    if(gameMap.CheckTile(enemyMoveY, position.x) == false)
                     {
-                        position.y = 0;
+                        Debug.WriteLine("HitWall");
+                        enemyMoveY = position.y;
+                        position.y = enemyMoveY;
+                        return;
+                    }
+                    else
+                    {
+                        //Debug.WriteLine("Moved up");
+                        position.y = enemyMoveY;
+                        if(position.y <= 0)
+                        {
+                            position.y = 0;
+                        }
                     }
                 }
-            }
-            // move down
-            if(moveResult == 2)
-            {
-                enemyMoveY = position.y + 1;
-                if(enemyMoveY >= enemyMaxY)
+                // move down
+                if(moveResult == 2)
                 {
-                    enemyMoveY = enemyMaxY;
-                }
-                if(gameMap.CretureInTarget(enemyMoveY, position.x) && gameMap.index != enemyNumber)
-                {
-                    gameMap.characters[gameMap.index].healthSystem.TakeDamage(enemyDamage);
-                    return;
-                }
-                if(gameMap.CheckTile(enemyMoveY, position.x) == false)
-                {
-                    Debug.WriteLine("HitWall");
-                    enemyMoveY = position.y;
-                    position.y = enemyMoveY;
-                    return;
-                }
-                else
-                {
-                    Debug.WriteLine("Moved down");
-                    position.y = enemyMoveY;
+                    enemyMoveY = position.y + 1;
+                    if(enemyMoveY >= enemyMaxY)
+                    {
+                        enemyMoveY = enemyMaxY;
+                    }
+                    if(gameMap.CretureInTarget(enemyMoveY, position.x) && gameMap.index != enemyNumber)
+                    {
+                        gameMap.characters[gameMap.index].healthSystem.TakeDamage(enemyDamage);
+                        return;
+                    }
+                    if(gameMap.CheckTile(enemyMoveY, position.x) == false)
+                    {
+                        Debug.WriteLine("HitWall");
+                        enemyMoveY = position.y;
+                        position.y = enemyMoveY;
+                        return;
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Moved down");
+                        position.y = enemyMoveY;
                     if(position.y >= enemyMaxY)
                     {
                         position.y = enemyMaxY;
@@ -188,7 +190,7 @@ namespace TextRPG_OOP_
                 }
             }
             }
-            if(enemyType == 2) // this type will flee from player
+            if(enemyType == "Kobald") // this type will flee from player
             {
                 int rangeMaxX = 7;
             int rangeMaxY = 5;
@@ -320,7 +322,7 @@ namespace TextRPG_OOP_
                 {return;}
             }
             }
-            if(enemyType == 3) // this type will chase player
+            if(enemyType == "LivingArmor") // this type will chase player
             {
                 int rangeMaxX = 7;
                 int rangeMaxY = 5;
