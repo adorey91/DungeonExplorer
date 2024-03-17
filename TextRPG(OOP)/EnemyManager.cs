@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace TextRPG_OOP_
 {
@@ -11,29 +13,93 @@ namespace TextRPG_OOP_
     {
         public List<Enemy> enemiesList; 
         public Map gameMap;
+        public bool isFirstKobald;
         public EnemyManager(Map map)
         {
+            isFirstKobald = true;
             gameMap = map;
             enemiesList = new List<Enemy>();
         }
-        public void AddEnemiesToList(string type)
+        public void AddEnemiesToList(string type, int levelNumber)
         {
-            Enemy enemy = new Enemy();
-            enemy.enemyType = type;
-            enemy.name = type;
-            enemy.SetEnemyMaxPosition(gameMap);
-            enemiesList.Add(enemy);
+            if(type == "Plasmoid")
+            {
+                Plasmoid plasmoid = new Plasmoid(RandomConsoleColor());
+                plasmoid.enemyType = type;
+                plasmoid.name = type + enemiesList.Count();
+                plasmoid.levelNumber = levelNumber;
+                plasmoid.SetEnemyMaxPosition(gameMap);
+                enemiesList.Add(plasmoid);
+            }
+            if(type == "Construct")
+            {
+                Construct construct = new Construct(RandomConsoleColor());
+                construct.enemyType = type;
+                construct.name = type + enemiesList.Count();
+                construct.levelNumber = levelNumber;
+                construct.SetEnemyMaxPosition(gameMap);
+                enemiesList.Add(construct);
+            }
+            if(type == "GoblinFolk")
+            {
+                GoblinFolk goblinFolk = new GoblinFolk(RandomConsoleColor());
+                goblinFolk.enemyType = type;
+                if(isFirstKobald)
+                {
+                    goblinFolk.name = "Jim the Coward";
+                    isFirstKobald = false;
+                }
+                else
+                {
+                    goblinFolk.name = "Goblin" + enemiesList.Count();
+                }
+                goblinFolk.levelNumber = levelNumber;
+                goblinFolk.SetEnemyMaxPosition(gameMap);
+                enemiesList.Add(goblinFolk);
+            }
         }
         public void Update()
         {
             for(int i = 0; i < enemiesList.Count(); i++)
             {
+                Debug.WriteLine("Moving " + enemiesList[i].name);
                 enemiesList[i].MoveEnemy(gameMap);
             }
         }
         public void Draw()
         {
             gameMap.DrawEnemiesToMap(enemiesList);
+        }
+        public ConsoleColor RandomConsoleColor()
+        {
+            Random colorRoll = new Random();
+            int rollResult = colorRoll.Next(1,7);
+            ConsoleColor RandomColor = new ConsoleColor();
+            if(rollResult == 1)
+            {
+                RandomColor = ConsoleColor.DarkBlue;
+            }
+            if(rollResult == 2)
+            {
+                RandomColor = ConsoleColor.DarkGreen;
+            }
+            if(rollResult == 3)
+            {
+                RandomColor = ConsoleColor.DarkMagenta;
+            }
+            if(rollResult == 4)
+            {
+                RandomColor = ConsoleColor.DarkRed;
+            }
+            if(rollResult == 5)
+            {
+                RandomColor = ConsoleColor.DarkYellow;
+            }
+            if(rollResult == 6)
+            {
+                RandomColor = ConsoleColor.Green;
+            }
+            return RandomColor;
         }
     }
 }

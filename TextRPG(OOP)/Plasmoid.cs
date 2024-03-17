@@ -6,7 +6,18 @@ using System.Threading.Tasks;
 
 namespace TextRPG_OOP_
 {
-    internal class Plasmoid
+    internal class Plasmoid : Enemy
     {
+        public Plasmoid(ConsoleColor color)
+        {
+            SetEnemyStats();
+            avatar = ((char)6);
+            avatarColor = color;
+        }
+        public void SetEnemyStats()
+        {
+            healthSystem.health = 3 + levelNumber;
+            healthSystem.armor = levelNumber - 1;
+        }
     }
 }

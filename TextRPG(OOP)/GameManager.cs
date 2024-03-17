@@ -21,25 +21,19 @@ namespace TextRPG_OOP_
             itemManager = new ItemManager();
             gameMap = new Map(itemManager);
             enemyManager = new EnemyManager(gameMap);
-            mainPlayer = new Player(gameMap);
+            mainPlayer = new Player(gameMap,itemManager);
             gameMap.AddToCharacterList(mainPlayer);
         }  
         private void SetUpGame()
         {
             Debug.WriteLine("Setting up starting map");
+            itemManager.Start(gameMap);
             gameMap.Start(mainPlayer, enemyManager);
+            mainPlayer.Start();
             gameMap.Draw();
             enemyManager.Draw();
-            mainPlayer.Start();
-            //Intial map draw / setup
-            //gameMap.DrawMap();
-            //DrawHUD();
-            //gameMap.DrawEnemyLegend();
-            //gameMap.GetPlayerMaxPosition(mainPlayer);
-            //gameMap.SetPlayerSpawn(mainPlayer);
-            //mainPlayer.SetMaxPlayerPosition(gameMap);
-            //gameMap.DrawPlayerToMap(mainPlayer.position.x, mainPlayer.position.y);
-            //gameMap.DrawEnemiesToMap();
+            itemManager.Draw();
+            mainPlayer.Draw();
         }
         private void EndGame()
         {
@@ -77,13 +71,11 @@ namespace TextRPG_OOP_
                 CheckPlayerCondition();
                 mainPlayer.Update();
                 enemyManager.Update();
+                itemManager.Update(mainPlayer);
                 gameMap.Draw();
                 enemyManager.Draw();
-                //gameMap.DrawMap();
-                //DrawHUD();
-                //gameMap.DrawEnemyLegend();
-                //gameMap.DrawPlayerToMap(mainPlayer.position.x, mainPlayer.position.y);
-                //gameMap.DrawEnemiesToMap();
+                itemManager.Draw();
+                mainPlayer.Draw();
             }
             EndGame();
         }

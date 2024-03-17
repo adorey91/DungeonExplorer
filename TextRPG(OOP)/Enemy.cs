@@ -18,6 +18,8 @@ namespace TextRPG_OOP_
         public int enemyMaxY;
         public string enemyType;
         public int levelNumber;
+        public Char avatar;
+        public ConsoleColor avatarColor;
         public Enemy()
         {
             enemyMaxHP = 2;
@@ -26,7 +28,7 @@ namespace TextRPG_OOP_
             healthSystem.SetHealth(enemyMaxHP);
             enemyType = "Slime";
             name = enemyType;
-            SetEnemyStats();
+            avatar = ((char)127);
             //Console.Write("Initialized enemy");
         }
         public void SetEnemyMaxPosition(Map map)
@@ -38,24 +40,7 @@ namespace TextRPG_OOP_
             enemyMaxX = mapX - 1;
             enemyMaxY = mapY - 1;
         }
-        public void SetEnemyStats()
-        {
-            if(enemyType == "Slime")
-            {
-                healthSystem.health = 3 + levelNumber;
-                healthSystem.armor = levelNumber - 1;
-            }
-            if(enemyType == "Kobald")
-            {
-                healthSystem.health = 0 + levelNumber;
-                healthSystem.armor = 0;
-            }
-            if(enemyType == "Living Armor")
-            {
-                healthSystem.health = 5 + levelNumber;
-                healthSystem.armor = levelNumber;
-            }
-        }
+        
         public void MoveEnemy(Map gameMap)
         {
             int enemyMoveX;
@@ -66,10 +51,11 @@ namespace TextRPG_OOP_
                 position.x = 0;
                 position.y = 0;
             }
-            if(enemyType == "Slime") // this type moves at random
+            if(enemyType == "Plasmoid") // this type moves at random
             {
                 Random moveRoll = new Random();
                 int moveResult = moveRoll.Next(1,5);
+                Debug.WriteLine("roll result = " + moveResult);
                 if(moveResult == 1)
                 {
                     enemyMoveY = position.y - 1;
@@ -190,7 +176,7 @@ namespace TextRPG_OOP_
                 }
             }
             }
-            if(enemyType == "Kobald") // this type will flee from player
+            if(enemyType == "GoblinFolk") // this type will flee from player
             {
                 int rangeMaxX = 7;
             int rangeMaxY = 5;
@@ -322,7 +308,7 @@ namespace TextRPG_OOP_
                 {return;}
             }
             }
-            if(enemyType == "LivingArmor") // this type will chase player
+            if(enemyType == "Construct") // this type will chase player
             {
                 int rangeMaxX = 7;
                 int rangeMaxY = 5;

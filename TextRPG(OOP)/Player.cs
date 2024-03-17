@@ -20,8 +20,11 @@ namespace TextRPG_OOP_
         public int enemyHitHealth;
         public int enemyHitArmor;
         public Map gameMap;
-        public Player(Map map)
+        public char avatar;
+        public ItemManager itemManager;
+        public Player(Map map, ItemManager IM)
         {
+            avatar = ((char)2);
             healthSystem.IsAlive = true;
             gameIsOver = false;
             gameWon = false;
@@ -32,6 +35,7 @@ namespace TextRPG_OOP_
             name = "Koal"; // Testing for passing string.
             enemyHitName = "";
             gameMap = map;
+            itemManager = IM;
             //Console.Write("Initialized" + playerName);
         }
         public void Start()
@@ -211,26 +215,11 @@ namespace TextRPG_OOP_
                 {
                     collisionMap.levelNumber += 1;
                     collisionMap.ChangeLevels();
-                }
-                if(collisionMap.activeMap[position.y,position.x] == '@')
-                {
-                    playerCoins += 1;
-                    UpPlayerStats();
-                    collisionMap.activeMap[position.y,position.x] = '-';
-                }
-                if(collisionMap.activeMap[position.y,position.x] == '"' && healthSystem.health < PlayerMaxHP)
-                {
-                    healthSystem.Heal(collisionMap.levelNumber, PlayerMaxHP);
-                    collisionMap.activeMap[position.y,position.x] = '-';
+                    SetPlayerPosition(collisionMap.playerX,collisionMap.playerY);
                 }
                 if(collisionMap.activeMap[position.y,position.x] == '*')
                 {
                     healthSystem.health -= 1;
-                }
-                if(collisionMap.activeMap[position.y,position.x] == '+')
-                {
-                    healthSystem.armor += 1;
-                    collisionMap.activeMap[position.y,position.x] = '-';
                 }
                 if(playerInput.Key == ConsoleKey.Escape)
                 {
@@ -260,6 +249,15 @@ namespace TextRPG_OOP_
                 playerDamage = 5;
                 //healthSystem.armor = 3;
             }
+        }
+        public void Draw()
+        {
+            // used to draw the player
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.SetCursorPosition(position.x,position.y);
+            Console.Write(avatar);
+            gameMap.SetColorDefault();
         }
     }
 }

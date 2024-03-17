@@ -6,7 +6,18 @@ using System.Threading.Tasks;
 
 namespace TextRPG_OOP_
 {
-    internal class GoblinFolk
+    internal class GoblinFolk : Enemy
     {
+        public GoblinFolk(ConsoleColor color)
+        {
+            SetEnemyStats();
+            avatar = ((char)5);
+            avatarColor = color;
+        }
+        public void SetEnemyStats()
+        {
+            healthSystem.health = 0 + levelNumber;
+            healthSystem.armor = 0;
+        }
     }
 }
