@@ -26,18 +26,20 @@ namespace TextRPG_OOP_
             {
                 Plasmoid plasmoid = new Plasmoid(RandomConsoleColor());
                 plasmoid.enemyType = type;
-                plasmoid.name = type + enemiesList.Count();
-                plasmoid.levelNumber = levelNumber;
+                plasmoid.name = "Slime " + EnemyTypeCount(type);
+                plasmoid.SetLevelNumber(levelNumber);
                 plasmoid.SetEnemyMaxPosition(gameMap);
+                plasmoid.SetEnemyStats();
                 enemiesList.Add(plasmoid);
             }
             if(type == "Construct")
             {
                 Construct construct = new Construct(RandomConsoleColor());
                 construct.enemyType = type;
-                construct.name = type + enemiesList.Count();
-                construct.levelNumber = levelNumber;
+                construct.name = "Living Armor " + EnemyTypeCount(type);
+                construct.SetLevelNumber(levelNumber);
                 construct.SetEnemyMaxPosition(gameMap);
+                construct.SetEnemyStats();
                 enemiesList.Add(construct);
             }
             if(type == "GoblinFolk")
@@ -51,10 +53,11 @@ namespace TextRPG_OOP_
                 }
                 else
                 {
-                    goblinFolk.name = "Goblin" + enemiesList.Count();
+                    goblinFolk.name = "Goblin " + EnemyTypeCount(type);
                 }
-                goblinFolk.levelNumber = levelNumber;
+                goblinFolk.SetLevelNumber(levelNumber);
                 goblinFolk.SetEnemyMaxPosition(gameMap);
+                goblinFolk.SetEnemyStats();
                 enemiesList.Add(goblinFolk);
             }
         }
@@ -100,6 +103,22 @@ namespace TextRPG_OOP_
                 RandomColor = ConsoleColor.Green;
             }
             return RandomColor;
+        }
+        int EnemyTypeCount(string type)
+        {
+            int enemyCount = 0;
+            for(int i = 0; i < enemiesList.Count(); i++)
+            {
+                if(enemiesList[i].enemyType == type)
+                {
+                    enemyCount += 1;
+                }
+            }
+            if(type == "GoblinFolk")
+            {
+                enemyCount -= 1;
+            }
+            return enemyCount;
         }
     }
 }

@@ -10,7 +10,6 @@ namespace TextRPG_OOP_
     {
         public GoblinFolk(ConsoleColor color)
         {
-            SetEnemyStats();
             avatar = ((char)5);
             avatarColor = color;
         }
@@ -18,6 +17,7 @@ namespace TextRPG_OOP_
         {
             healthSystem.health = 0 + levelNumber;
             healthSystem.armor = 0;
+            enemyDamage = 1;
         }
     }
 }

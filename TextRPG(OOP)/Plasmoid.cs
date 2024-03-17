@@ -10,7 +10,6 @@ namespace TextRPG_OOP_
     {
         public Plasmoid(ConsoleColor color)
         {
-            SetEnemyStats();
             avatar = ((char)6);
             avatarColor = color;
         }
@@ -18,6 +17,7 @@ namespace TextRPG_OOP_
         {
             healthSystem.health = 3 + levelNumber;
             healthSystem.armor = levelNumber - 1;
+            enemyDamage = levelNumber;
         }
     }
 }

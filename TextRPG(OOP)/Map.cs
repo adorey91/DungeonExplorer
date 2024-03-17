@@ -41,6 +41,7 @@ namespace TextRPG_OOP_
         public int enemyCount;
         public int itemCount;
         public int index;
+        public int itemIndex;
         public EnemyManager enemyManager;
         public Player mainPlayer;
         public ItemManager itemManager;
@@ -63,6 +64,8 @@ namespace TextRPG_OOP_
             mapX = activeMap.GetLength(1);
             mapY = activeMap.GetLength(0);
             MakeDungeonMap();
+            index = 0;
+            itemIndex = 0;
         }
         public void Start(Player player, EnemyManager em)
         {
@@ -84,7 +87,8 @@ namespace TextRPG_OOP_
         }
         public void Update()
         {
-            
+            index = 0;
+            itemIndex = 0;
         }
         public void Draw()
         {
@@ -140,19 +144,19 @@ namespace TextRPG_OOP_
                             enemyCount += 1;
                         }
                     }
-                    if(tile == '@')
+                    if(tile == '@' && levelChanged == false)
                     {
                         itemManager.AddItemToList("Coin",x,y);
                         itemManager.items[itemCount].index = itemCount;
                         itemCount += 1;
                     }
-                    if(tile == '"')
+                    if(tile == '"' && levelChanged == false)
                     {
                         itemManager.AddItemToList("Health Pickup",x,y);
                         itemManager.items[itemCount].index = itemCount;
                         itemCount += 1;
                     }
-                    if(tile == '+')
+                    if(tile == '+' && levelChanged == false)
                     {
                         itemManager.AddItemToList("Armor Pickup",x,y);
                         itemManager.items[itemCount].index = itemCount;
@@ -179,8 +183,11 @@ namespace TextRPG_OOP_
         {
             for(int i = 0; i < eList.Count(); i++)
             {
-                Console.SetCursorPosition(eList[i].position.x,eList[i].position.y);
-                DrawEnemy(eList[i]);
+                if(eList[i].healthSystem.IsAlive == true)
+                {
+                    Console.SetCursorPosition(eList[i].position.x,eList[i].position.y);
+                    DrawEnemy(eList[i]);
+                }
             }
         }
         public void DrawEnemy(Enemy enemy)
@@ -341,6 +348,8 @@ namespace TextRPG_OOP_
             }
             else
             {
+                Console.BackgroundColor = ConsoleColor.DarkGray;
+                Console.ForegroundColor = ConsoleColor.Black;
                 Console.Write(tile);
             }
         }
@@ -394,17 +403,30 @@ namespace TextRPG_OOP_
             }
             return IsTarget;
         }
+        public bool IsPlayerInTarget(int y, int x)
+        {
+            bool IsTarget;
+            if(mainPlayer.position.y == y && mainPlayer.position.x == x)
+            {
+                IsTarget = true;
+            }
+            else
+            {
+                IsTarget = false;
+            }
+            return IsTarget;
+        }
         public bool ItemInTarget(int y, int x)
         {
             bool IsTarget = false;
-            for(index = 0; index < itemManager.items.Count(); index++)
+            for(itemIndex = 0; itemIndex < itemManager.items.Count(); itemIndex++)
             {
-                if(x == itemManager.items[index].position.x && y == itemManager.items[index].position.y)
+                if(x == itemManager.items[itemIndex].position.x && y == itemManager.items[itemIndex].position.y)
                 {
                     IsTarget = true;
                     return IsTarget;
                 }
-                if(index > itemManager.items.Count() || index < 0)
+                if(itemIndex > itemManager.items.Count() || itemIndex < 0)
                 {
                     index = 0;
                 }
@@ -433,6 +455,7 @@ namespace TextRPG_OOP_
             enemyManager.enemiesList.Clear();
             characters.Clear();
             enemyCount = 0;
+            characters.Add(mainPlayer);
         }
         public void ResetItems()
         {
@@ -441,16 +464,19 @@ namespace TextRPG_OOP_
         }
         public void DrawEnemyLegend()
         {
-            Console.WriteLine();
-            Console.Write(enemy1);
-            Console.WriteLine(" = Slime");
+            Console.SetCursorPosition(mapX + 1, 3);
             Console.Write(enemy2);
-            Console.WriteLine(" = Construct");
+            Console.Write(" = Slime");
+            Console.SetCursorPosition(mapX + 1, 4);
+            Console.Write(enemy1);
+            Console.Write(" = Construct");
+            Console.SetCursorPosition(mapX + 1, 5);
             Console.Write(enemy3);
-            Console.WriteLine(" = Goblin Folk");
+            Console.Write(" = Goblin Folk");
         }
         void DrawHUD() //Add to a UIManager Class
         {
+            Console.SetCursorPosition(0,mapY + 1);
             Debug.WriteLine("Drawing HUD");
             string enemyHUDString = "{0} has Hp: {1} Armor: {2}     ";
             string FormatString = "HP: {0}  Damage: {1}  Coins: {2}  Armor: {3}    ";
@@ -464,6 +490,5 @@ namespace TextRPG_OOP_
                 Console.WriteLine(string.Format(enemyHUDString,mainPlayer.enemyHitName,mainPlayer.enemyHitHealth,mainPlayer.enemyHitArmor));
             }
         }
-        
     }
 }

@@ -10,7 +10,6 @@ namespace TextRPG_OOP_
     {
         public Construct(ConsoleColor color)
         {
-            SetEnemyStats();
             avatar = ((char)4);
             avatarColor = color;
         }
@@ -18,6 +17,7 @@ namespace TextRPG_OOP_
         {
             healthSystem.health = 5 + levelNumber;
             healthSystem.armor = levelNumber;
+            enemyDamage = 2 + levelNumber;
         }
     }
 }

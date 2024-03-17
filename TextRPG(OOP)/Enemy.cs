@@ -11,7 +11,6 @@ namespace TextRPG_OOP_
     {
         //public HealthSystem EnemyHealth; old
         public int enemyDamage;
-        public int expDrop;
         public int enemyMaxHP;
         public int enemyNumber;
         public int enemyMaxX;
@@ -23,7 +22,6 @@ namespace TextRPG_OOP_
         public Enemy()
         {
             enemyMaxHP = 2;
-            expDrop = 5;
             enemyDamage = 1;
             healthSystem.SetHealth(enemyMaxHP);
             enemyType = "Slime";
@@ -65,8 +63,16 @@ namespace TextRPG_OOP_
                     }
                     if(gameMap.CretureInTarget(enemyMoveY, position.x) && gameMap.index != enemyNumber) // != enemyNumber is needed to prevent enemies from self harming
                     {
-                    gameMap.characters[gameMap.index].healthSystem.TakeDamage(enemyDamage);
-                    return;
+                        gameMap.characters[gameMap.index].healthSystem.TakeDamage(enemyDamage);
+                        Debug.WriteLine("hit " + gameMap.characters[gameMap.index].name);
+                        enemyMoveY = position.y;
+                        position.y = enemyMoveY;
+                        return;
+                    }
+                    if(gameMap.IsPlayerInTarget(enemyMoveY, position.x))
+                    {
+                        gameMap.characters[0].healthSystem.TakeDamage(enemyDamage);
+                        return;
                     }
                     if(gameMap.CheckTile(enemyMoveY, position.x) == false)
                     {
@@ -96,6 +102,14 @@ namespace TextRPG_OOP_
                     if(gameMap.CretureInTarget(enemyMoveY, position.x) && gameMap.index != enemyNumber)
                     {
                         gameMap.characters[gameMap.index].healthSystem.TakeDamage(enemyDamage);
+                        Debug.WriteLine("hit " + gameMap.characters[gameMap.index].name);
+                        enemyMoveY = position.y;
+                        position.y = enemyMoveY;
+                        return;
+                    }
+                    if(gameMap.IsPlayerInTarget(enemyMoveY, position.x))
+                    {
+                        gameMap.characters[0].healthSystem.TakeDamage(enemyDamage);
                         return;
                     }
                     if(gameMap.CheckTile(enemyMoveY, position.x) == false)
@@ -127,9 +141,17 @@ namespace TextRPG_OOP_
                 {
                     enemyMoveX = 0;
                 }
-                if(gameMap.CretureInTarget(position.y, enemyMoveX)&& gameMap.index != enemyNumber)
+                if(gameMap.CretureInTarget(position.y, enemyMoveX)&& gameMap.index-1 != enemyNumber)
                 {
                     gameMap.characters[gameMap.index].healthSystem.TakeDamage(enemyDamage);
+                    Debug.WriteLine("hit " + gameMap.characters[gameMap.index].name);
+                    enemyMoveX = position.x;
+                    position.x = enemyMoveX;
+                    return;
+                }
+                if(gameMap.IsPlayerInTarget(position.y, enemyMoveX))
+                {
+                    gameMap.characters[0].healthSystem.TakeDamage(enemyDamage);
                     return;
                 }
                 if(gameMap.CheckTile(position.y, enemyMoveX) == false)
@@ -156,6 +178,14 @@ namespace TextRPG_OOP_
                 if(gameMap.CretureInTarget(position.y, enemyMoveX)&& gameMap.index != enemyNumber)
                 {
                     gameMap.characters[gameMap.index].healthSystem.TakeDamage(enemyDamage);
+                    Debug.WriteLine("hit " + gameMap.characters[gameMap.index].name);
+                    enemyMoveX = position.x;
+                    position.x = enemyMoveX;
+                    return;
+                }
+                if(gameMap.IsPlayerInTarget(position.y, enemyMoveX))
+                {
+                    gameMap.characters[0].healthSystem.TakeDamage(enemyDamage);
                     return;
                 }
                 if(gameMap.CheckTile(position.y, enemyMoveX) == false)
@@ -191,6 +221,8 @@ namespace TextRPG_OOP_
                     if(gameMap.CretureInTarget(position.y, enemyMoveX)&& gameMap.index != enemyNumber)
                     {
                         gameMap.characters[gameMap.index].healthSystem.TakeDamage(enemyDamage);
+                        enemyMoveX = position.x;
+                        position.x = enemyMoveX;
                         return;
                     }
                     if(gameMap.CheckTile(position.y, enemyMoveX) == false)
@@ -224,6 +256,8 @@ namespace TextRPG_OOP_
                     if(gameMap.CretureInTarget(position.y, enemyMoveX)&& gameMap.index != enemyNumber)
                     {
                         gameMap.characters[gameMap.index].healthSystem.TakeDamage(enemyDamage);
+                        enemyMoveX = position.x;
+                        position.x = enemyMoveX;
                         return;
                     }
                     if(gameMap.CheckTile(position.y, enemyMoveX) == false)
@@ -256,6 +290,8 @@ namespace TextRPG_OOP_
                     if(gameMap.CretureInTarget(enemyMoveY, position.x) && gameMap.index != enemyNumber) // != enemyNumber is needed to prevent enemies from self harming
                     {
                         gameMap.characters[gameMap.index].healthSystem.TakeDamage(enemyDamage);
+                        enemyMoveY = position.y;
+                        position.y = enemyMoveY;
                         return;
                     }
                     if(gameMap.CheckTile(enemyMoveY, position.x) == false)
@@ -285,6 +321,8 @@ namespace TextRPG_OOP_
                     if(gameMap.CretureInTarget(enemyMoveY, position.x) && gameMap.index != enemyNumber) // != enemyNumber is needed to prevent enemies from self harming
                     {
                         gameMap.characters[gameMap.index].healthSystem.TakeDamage(enemyDamage);
+                        enemyMoveY = position.y;
+                        position.y = enemyMoveY;
                         return;
                     }
                     if(gameMap.CheckTile(enemyMoveY, position.x) == false)
@@ -311,7 +349,7 @@ namespace TextRPG_OOP_
             if(enemyType == "Construct") // this type will chase player
             {
                 int rangeMaxX = 7;
-                int rangeMaxY = 5;
+                int rangeMaxY = 7;
                 int rangeX = position.x - gameMap.characters[0].position.x; //characters[0] is always the player!
                 int rangeY = position.y - gameMap.characters[0].position.y;
                 if((rangeX < rangeMaxX && rangeX > -rangeMaxX)&&(rangeY < rangeMaxY && rangeY > -rangeMaxY))
@@ -322,7 +360,14 @@ namespace TextRPG_OOP_
                         Debug.WriteLine("Moved ");
                         if(gameMap.CretureInTarget(position.y, enemyMoveX)&& gameMap.index != enemyNumber)
                         {
-                            gameMap.characters[gameMap.index].healthSystem.TakeDamage(enemyDamage);
+                            //gameMap.characters[gameMap.index].healthSystem.TakeDamage(enemyDamage);
+                            enemyMoveX = position.x;
+                            position.x = enemyMoveX;
+                            return;
+                        }
+                        if(gameMap.IsPlayerInTarget(position.y, enemyMoveX))
+                        {
+                            gameMap.characters[0].healthSystem.TakeDamage(enemyDamage);
                             return;
                         }
                         if(gameMap.CheckTile(position.y, enemyMoveX) == false)
@@ -355,7 +400,14 @@ namespace TextRPG_OOP_
                         }
                         if(gameMap.CretureInTarget(position.y, enemyMoveX)&& gameMap.index != enemyNumber)
                         {
-                            gameMap.characters[gameMap.index].healthSystem.TakeDamage(enemyDamage);
+                            //gameMap.characters[gameMap.index].healthSystem.TakeDamage(enemyDamage);
+                            enemyMoveX = position.x;
+                            position.x = enemyMoveX;
+                            return;
+                        }
+                        if(gameMap.IsPlayerInTarget(position.y, enemyMoveX))
+                        {
+                            gameMap.characters[0].healthSystem.TakeDamage(enemyDamage);
                             return;
                         }
                         if(gameMap.CheckTile(position.y, enemyMoveX) == false)
@@ -376,7 +428,7 @@ namespace TextRPG_OOP_
                         }
                     }
                 }
-                if((rangeX < rangeMaxX && rangeX > -rangeMaxX)&&(rangeY < rangeMaxY && rangeY > -rangeMaxY))
+                if((rangeY < rangeMaxY && rangeY > -rangeMaxY)&&(rangeX < rangeMaxX && rangeX > -rangeMaxX))
                 {
                     if(rangeY < rangeMaxY && rangeY > 0)
                     {
@@ -387,7 +439,14 @@ namespace TextRPG_OOP_
                         }
                         if(gameMap.CretureInTarget(enemyMoveY, position.x) && gameMap.index != enemyNumber) // != enemyNumber is needed to prevent enemies from self harming
                         {
-                            gameMap.characters[gameMap.index].healthSystem.TakeDamage(enemyDamage);
+                            //gameMap.characters[gameMap.index].healthSystem.TakeDamage(enemyDamage);
+                            enemyMoveY = position.y;
+                            position.y = enemyMoveY;
+                            return;
+                        }
+                        if(gameMap.IsPlayerInTarget(enemyMoveY, position.x))
+                        {
+                            gameMap.characters[0].healthSystem.TakeDamage(enemyDamage);
                             return;
                         }
                         if(gameMap.CheckTile(enemyMoveY, position.x) == false)
@@ -416,7 +475,14 @@ namespace TextRPG_OOP_
                         }
                         if(gameMap.CretureInTarget(enemyMoveY, position.x) && gameMap.index != enemyNumber) // != enemyNumber is needed to prevent enemies from self harming
                         {
-                            gameMap.characters[gameMap.index].healthSystem.TakeDamage(enemyDamage);
+                            //gameMap.characters[gameMap.index].healthSystem.TakeDamage(enemyDamage);
+                            enemyMoveY = position.y;
+                            position.y = enemyMoveY;
+                            return;
+                        }
+                        if(gameMap.IsPlayerInTarget(enemyMoveY, position.x))
+                        {
+                            gameMap.characters[0].healthSystem.TakeDamage(enemyDamage);
                             return;
                         }
                         if(gameMap.CheckTile(enemyMoveY, position.x) == false)

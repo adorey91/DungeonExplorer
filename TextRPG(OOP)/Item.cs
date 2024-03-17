@@ -29,7 +29,7 @@ namespace TextRPG_OOP_
             if(itemType == "Coin")
             {
                 item = ((char)164);
-                color = ConsoleColor.Yellow;
+                color = ConsoleColor.DarkYellow;
                 gainAmount = 1;
             }
             if(itemType == "Armor Pickup")

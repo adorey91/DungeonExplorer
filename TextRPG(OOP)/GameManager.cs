@@ -22,7 +22,6 @@ namespace TextRPG_OOP_
             gameMap = new Map(itemManager);
             enemyManager = new EnemyManager(gameMap);
             mainPlayer = new Player(gameMap,itemManager);
-            gameMap.AddToCharacterList(mainPlayer);
         }  
         private void SetUpGame()
         {
@@ -31,9 +30,9 @@ namespace TextRPG_OOP_
             gameMap.Start(mainPlayer, enemyManager);
             mainPlayer.Start();
             gameMap.Draw();
-            enemyManager.Draw();
             itemManager.Draw();
             mainPlayer.Draw();
+            enemyManager.Draw();
         }
         private void EndGame()
         {
@@ -57,9 +56,9 @@ namespace TextRPG_OOP_
                 Debug.WriteLine("Player lost");
                 Thread.Sleep(2000); 
                 Console.Clear();
-                Console.WriteLine("You have lost. Reload the game to try again!");
+                Console.WriteLine("You have lost. Restarting game!");
                 Thread.Sleep(3000);
-                Environment.Exit(0);
+                PlayGame();
             }
         }
         private void DungeonGameLoop()
@@ -69,21 +68,22 @@ namespace TextRPG_OOP_
             {
                 Console.CursorVisible = false;
                 CheckPlayerCondition();
+                gameMap.Update();
                 mainPlayer.Update();
-                enemyManager.Update();
-                itemManager.Update(mainPlayer);
                 gameMap.Draw();
-                enemyManager.Draw();
-                itemManager.Draw();
                 mainPlayer.Draw();
+                itemManager.Update(mainPlayer);
+                itemManager.Draw();
+                enemyManager.Update();
+                enemyManager.Draw();
             }
             EndGame();
         }
         public void PlayGame()
         {
-            Intro();
             Debug.WriteLine("Starting Game");
             StartUp();
+            Intro();
             SetUpGame();
             DungeonGameLoop();
         }
@@ -101,15 +101,19 @@ namespace TextRPG_OOP_
             Debug.WriteLine("Into!");
             Console.WriteLine("Welcome to Dungeon Explorer!"); // placeholderTitle
             Console.WriteLine();
-            Console.Write("Find your way to the challace. ");
+            Console.Write("Escape the dungeon and climb to the 2nd floor to find the chalace. ");
+            gameMap.DrawFinalLoot();
             Console.WriteLine();
             Console.Write("Collect coins ");
-            Console.Write("to increase your attack power.");
+            gameMap.DrawCoin();
+            Console.Write(" to increase your attack power.");
             Console.WriteLine();
             Console.Write("Collect hearts to heal.");
+            gameMap.DrawHealthPickup();
             Console.WriteLine();
             Console.Write("Collect peices of armor "); 
-            Console.Write("to up your defence.");
+            gameMap.DrawArmor();
+            Console.Write(" to up your defence.");
             Console.WriteLine();
             Console.Write("Avoid or fight the monsters!");
             Console.WriteLine();
