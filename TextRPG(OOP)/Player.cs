@@ -67,9 +67,9 @@ namespace TextRPG_OOP_
             int moveY;
             bool playerMoved;
             playerMoved = false;
-            if(Console.KeyAvailable == false) 
-            {
-                Thread.Sleep(50); 
+            while (Console.KeyAvailable) 
+            { 
+                Console.ReadKey(true); 
             }
             playerInput = Console.ReadKey(true);
             //Console.WriteLine(playerInput.Key); //debug to see what key is pressed
