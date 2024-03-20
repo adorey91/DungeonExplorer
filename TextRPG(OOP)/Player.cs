@@ -19,18 +19,20 @@ namespace TextRPG_OOP_
         public string enemyHitName;
         public int enemyHitHealth;
         public int enemyHitArmor;
+        public int StartingDamage;
         public Map gameMap;
         public char avatar;
         public ItemManager itemManager;
-        public Player(Map map, ItemManager IM)
+        public Player(Map map, ItemManager IM, Settings settings)
         {
             avatar = ((char)2);
             healthSystem.IsAlive = true;
             gameIsOver = false;
             gameWon = false;
-            playerCoins = 0;
-            playerDamage = 1;
-            PlayerMaxHP = 10;
+            playerCoins = settings.playerStartingCoins;
+            StartingDamage = settings.PlayerBaseDamager;
+            playerDamage = StartingDamage;
+            PlayerMaxHP = settings.playerMaxHP;
             healthSystem.SetHealth(PlayerMaxHP);
             name = "Koal"; // Testing for passing string.
             enemyHitName = "";
@@ -340,31 +342,31 @@ namespace TextRPG_OOP_
         {
             if(playerCoins < 3)
             {
-                playerDamage = 1;
+                playerDamage = StartingDamage;
                 //healthSystem.armor = 0;
             }
             if(playerCoins >= 3 && playerCoins < 6)
             {
-                playerDamage = 2;
+                playerDamage = StartingDamage+2;
                 //healthSystem.armor = 1;
             }
             if(playerCoins >= 6 && playerCoins < 9)
             {
-                playerDamage = 3;
+                playerDamage = StartingDamage+3;
                 //healthSystem.armor = 2;
             }
             if(playerCoins >= 9 && playerCoins < 15)
             {
-                playerDamage = 5;
+                playerDamage = StartingDamage+5;
                 //healthSystem.armor = 3;
             }
             if(playerCoins >= 15 && playerCoins < 25)
             {
-                playerDamage = 7;
+                playerDamage = StartingDamage+7;
             }
             if(playerCoins >= 25)
             {
-                playerDamage = 15;
+                playerDamage = StartingDamage+15;
             }
         }
         public void Draw()

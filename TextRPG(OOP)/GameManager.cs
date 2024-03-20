@@ -14,14 +14,16 @@ namespace TextRPG_OOP_
         private EnemyManager enemyManager;
         public Map gameMap;
         public ItemManager itemManager;
+        public Settings settings;
         private void StartUp()
         {
             Console.CursorVisible = false;
             Debug.WriteLine("Setting Up characters");
+            settings = new Settings();
             itemManager = new ItemManager();
             gameMap = new Map(itemManager);
-            enemyManager = new EnemyManager(gameMap);
-            mainPlayer = new Player(gameMap,itemManager);
+            enemyManager = new EnemyManager(gameMap, settings);
+            mainPlayer = new Player(gameMap,itemManager, settings);
         }  
         private void SetUpGame()
         {

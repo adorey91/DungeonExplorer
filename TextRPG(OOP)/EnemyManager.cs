@@ -14,17 +14,19 @@ namespace TextRPG_OOP_
         public List<Enemy> enemiesList; 
         public Map gameMap;
         public bool isFirstKobald;
-        public EnemyManager(Map map)
+        public Settings enemySettings;
+        public EnemyManager(Map map, Settings settings)
         {
             isFirstKobald = true;
             gameMap = map;
             enemiesList = new List<Enemy>();
+            enemySettings = settings;
         }
         public void AddEnemiesToList(string type, int levelNumber)
         {
             if(type == "Plasmoid")
             {
-                Plasmoid plasmoid = new Plasmoid(RandomConsoleColor());
+                Plasmoid plasmoid = new Plasmoid(RandomConsoleColor(),enemySettings);
                 plasmoid.enemyType = type;
                 plasmoid.name = "Slime " + EnemyTypeCount(type);
                 plasmoid.SetLevelNumber(levelNumber);
@@ -34,7 +36,7 @@ namespace TextRPG_OOP_
             }
             if(type == "Construct")
             {
-                Construct construct = new Construct(RandomConsoleColor());
+                Construct construct = new Construct(RandomConsoleColor(),enemySettings);
                 construct.enemyType = type;
                 construct.name = "Living Armor " + EnemyTypeCount(type);
                 construct.SetLevelNumber(levelNumber);
@@ -44,7 +46,7 @@ namespace TextRPG_OOP_
             }
             if(type == "GoblinFolk")
             {
-                GoblinFolk goblinFolk = new GoblinFolk(RandomConsoleColor());
+                GoblinFolk goblinFolk = new GoblinFolk(RandomConsoleColor(),enemySettings);
                 goblinFolk.enemyType = type;
                 if(isFirstKobald)
                 {

@@ -8,16 +8,20 @@ namespace TextRPG_OOP_
 {
     internal class GoblinFolk : Enemy
     {
-        public GoblinFolk(ConsoleColor color)
+        public int BaseHP;
+        public int BaseDamage;
+        public GoblinFolk(ConsoleColor color, Settings settings)
         {
             avatar = ((char)5);
             avatarColor = color;
+            BaseHP = settings.GoblinFolkBaseHP;
+            BaseDamage = settings.GoblinFolkBaseDamage;
         }
         public void SetEnemyStats()
         {
-            healthSystem.health = 0 + levelNumber;
+            healthSystem.health = BaseHP + levelNumber;
             healthSystem.armor = 0;
-            enemyDamage = 1;
+            enemyDamage = BaseDamage;
         }
     }
 }

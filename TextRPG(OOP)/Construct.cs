@@ -8,16 +8,20 @@ namespace TextRPG_OOP_
 {
     internal class Construct : Enemy
     {
-        public Construct(ConsoleColor color)
+        public int BaseHP;
+        public int BaseDamage;
+        public Construct(ConsoleColor color, Settings settings)
         {
             avatar = ((char)4);
             avatarColor = color;
+            BaseHP = settings.ConstructBaseHP;
+            BaseDamage = settings.ConstructBaseDamage;
         }
         public void SetEnemyStats()
         {
-            healthSystem.health = 5 + levelNumber;
+            healthSystem.health = BaseHP + levelNumber;
             healthSystem.armor = levelNumber;
-            enemyDamage = 2 + levelNumber;
+            enemyDamage = BaseDamage + levelNumber;
         }
     }
 }

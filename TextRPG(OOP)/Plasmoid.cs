@@ -8,10 +8,14 @@ namespace TextRPG_OOP_
 {
     internal class Plasmoid : Enemy
     {
-        public Plasmoid(ConsoleColor color)
+        public int BaseHP;
+        public int BaseDamage;
+        public Plasmoid(ConsoleColor color, Settings settings)
         {
             avatar = ((char)6);
             avatarColor = color;
+            BaseHP = settings.PlasmoidBaseHP;
+            BaseDamage = settings.PlasmoidBaseDamage;
         }
         public void SetEnemyStats()
         {

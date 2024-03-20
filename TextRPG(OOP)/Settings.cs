@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TextRPG_OOP_
+{
+    internal class Settings
+    {
+        public int PlasmoidBaseHP = 3;
+        public int PlasmoidBaseDamage = 0;
+        public int ConstructBaseHP = 3;
+        public int ConstructBaseDamage = 0;
+        public int GoblinFolkBaseHP = 3;
+        public int GoblinFolkBaseDamage = 0;
+        public int playerMaxHP = 10;
+        public int playerStartingCoins = 0;
+        public int PlayerBaseDamager = 1;
+    }
+}
