@@ -19,6 +19,7 @@ namespace TextRPG_OOP_
         public int levelNumber;
         public Char avatar;
         public ConsoleColor avatarColor;
+        public Random moveRoll;
         public Enemy()
         {
             enemyMaxHP = 2;
@@ -27,6 +28,7 @@ namespace TextRPG_OOP_
             enemyType = "Slime";
             name = enemyType;
             avatar = ((char)127);
+            moveRoll = new Random();
             //Console.Write("Initialized enemy");
         }
         public void SetEnemyMaxPosition(Map map)
@@ -51,7 +53,6 @@ namespace TextRPG_OOP_
             }
             if(enemyType == "Plasmoid") // this type moves at random
             {
-                Random moveRoll = new Random();
                 int moveResult = moveRoll.Next(1,5);
                 Debug.WriteLine("roll result = " + moveResult);
                 if(moveResult == 1)
