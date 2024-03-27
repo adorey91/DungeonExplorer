@@ -13,7 +13,7 @@ namespace TextRPG_OOP_
     internal class DungeonExplorer
     {
         static GameManager gameManager = new GameManager();
-        static void Main(string[] args)
+        static void Main()
         {
             gameManager.PlayGame();
         }
