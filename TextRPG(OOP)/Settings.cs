@@ -8,6 +8,7 @@ namespace TextRPG_OOP_
 {
     internal class Settings
     {
+        //Base values for all stats. 
         public int PlasmoidBaseHP = 3;
         public int PlasmoidBaseDamage = 0;
         public int ConstructBaseHP = 3;

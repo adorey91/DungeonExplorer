@@ -8,6 +8,7 @@ namespace TextRPG_OOP_
 {
     internal class Plasmoid : Enemy
     {
+        //All info needed for plasmoid enemies. 
         public int BaseHP;
         public int BaseDamage;
         public Plasmoid(ConsoleColor color, Settings settings)

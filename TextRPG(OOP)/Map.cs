@@ -48,13 +48,13 @@ namespace TextRPG_OOP_
         public Map(ItemManager IM) //Constructor
         {
             Initialization();
+            //Sets item manager from call in GameManager
             itemManager = IM;
             //Console.Write("Initialized Map");
         }
         public void Initialization()
         {
-            //Console.Write("Initializing Map");
-            //Console.ReadKey();
+            //starts map building process.
             enemyCount = 0;
             levelNumber = 1;
             path = path1;
@@ -69,6 +69,7 @@ namespace TextRPG_OOP_
         }
         public void Start(Player player, EnemyManager em)
         {
+            //Sets player and Enemy manager from call in gameManager.
             enemyManager = em;
             mainPlayer = player;
             AddToCharacterList(mainPlayer);
@@ -77,6 +78,7 @@ namespace TextRPG_OOP_
         }
         public void MakeDungeonMap()
         {
+            //Creates map based on active floor.
             for (int i = 0; i < floorMap.Length; i++)
             {
                 for (int j = 0; j < floorMap[i].Length; j++)
@@ -87,11 +89,13 @@ namespace TextRPG_OOP_
         }
         public void Update()
         {
+            //Updares values needed for map.
             index = 0;
             itemIndex = 0;
         }
         public void Draw()
         {
+            //Call function to draw map/Hud/Legend
             DrawMap();
             DrawHUD();
             DrawEnemyLegend();
@@ -181,6 +185,7 @@ namespace TextRPG_OOP_
         }
         public void DrawEnemiesToMap(List<Enemy> eList)
         {
+            //Draws enemys to map based on enemy position.
             for(int i = 0; i < eList.Count(); i++)
             {
                 if(eList[i].healthSystem.IsAlive == true)
@@ -192,22 +197,10 @@ namespace TextRPG_OOP_
         }
         public void DrawEnemy(Enemy enemy)
         {
+            //Makes sure enemy matches avatar and color. 
             Console.BackgroundColor = ConsoleColor.Gray;
-            if(enemy.enemyType == "Plasmoid")
-            {
-                Console.ForegroundColor = enemy.avatarColor;
-                Console.Write(enemy.avatar);
-            }
-            if(enemy.enemyType == "Construct")
-            {
-                Console.ForegroundColor = enemy.avatarColor;
-                Console.Write(enemy.avatar);
-            }
-            if(enemy.enemyType == "GoblinFolk")
-            {
-                Console.ForegroundColor = enemy.avatarColor;
-                Console.Write(enemy.avatar);
-            }
+            Console.ForegroundColor = enemy.avatarColor;
+            Console.Write(enemy.avatar);
             SetColorDefault();
         }
         //Code for tiles color and ascii
@@ -257,6 +250,7 @@ namespace TextRPG_OOP_
         }
         public void DrawArmor()
         {
+            //Draws armor tile to map
             Console.ForegroundColor = ConsoleColor.DarkBlue;
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.Write(armorPickup);
@@ -264,6 +258,7 @@ namespace TextRPG_OOP_
         }
         public void DrawStairsDown()
         {
+            //Draws stairs to next level
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.Write(stairsDown);
@@ -271,6 +266,7 @@ namespace TextRPG_OOP_
         }
         public void DrawHealthPickup()
         {
+            //Draws health pickup
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.Write(healthPickup);
@@ -388,6 +384,7 @@ namespace TextRPG_OOP_
         }
         public bool CretureInTarget(int y, int x)
         {
+            //Used to check if a creture is in target location. 
             bool IsTarget = false;
             for(index = 0; index < characters.Count(); index++)
             {
@@ -405,6 +402,7 @@ namespace TextRPG_OOP_
         }
         public bool IsPlayerInTarget(int y, int x)
         {
+            //Checks if player is in target loctaion
             bool IsTarget;
             if(mainPlayer.position.y == y && mainPlayer.position.x == x)
             {
@@ -418,6 +416,7 @@ namespace TextRPG_OOP_
         }
         public bool ItemInTarget(int y, int x)
         {
+            //Checks for Item in target location
             bool IsTarget = false;
             for(itemIndex = 0; itemIndex < itemManager.items.Count(); itemIndex++)
             {
@@ -435,10 +434,12 @@ namespace TextRPG_OOP_
         }
         public void AddToCharacterList(Character character)
         {
+            //Adds to list for character used for the floor. 
             characters.Add(character);
         }
         public bool CheckTile(int y, int x)
         {
+            //Makes sure base tile is walkable. 
             bool CanMove = false;
             if(activeMap[y,x] == dungeonWall)
             {
@@ -452,6 +453,7 @@ namespace TextRPG_OOP_
         }
         public void RestCharacters()
         {
+            //Resets map for moving floors.
             enemyManager.enemiesList.Clear();
             characters.Clear();
             enemyCount = 0;
@@ -459,11 +461,13 @@ namespace TextRPG_OOP_
         }
         public void ResetItems()
         {
+            //resets items for moving floors.
             itemManager.items.Clear();
             itemCount = 0;
         }
         public void DrawEnemyLegend()
         {
+            //Draws legend for enemies.
             Console.SetCursorPosition(mapX + 1, 3);
             Console.Write(enemy2);
             Console.Write(" = Slime");
@@ -476,6 +480,7 @@ namespace TextRPG_OOP_
         }
         void DrawHUD() //Add to a UIManager Class
         {
+            //Draws HUD.
             Console.SetCursorPosition(0,mapY + 1);
             Debug.WriteLine("Drawing HUD");
             string enemyHUDString = "{0} has Hp: {1} Armor: {2}     ";

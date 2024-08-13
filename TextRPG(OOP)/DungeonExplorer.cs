@@ -15,6 +15,7 @@ namespace TextRPG_OOP_
         static GameManager gameManager = new GameManager();
         static void Main()
         {
+            //Plays game...
             gameManager.PlayGame();
         }
     }

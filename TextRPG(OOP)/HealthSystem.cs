@@ -26,7 +26,7 @@ namespace TextRPG_OOP_
                 health = maxHeath;
             }
         }
-        public void TakeDamage(int Damage)
+        public void TakeDamage(int Damage) //Damage taking system.
         {
             if(Damage - armor <= 0)
             {
@@ -42,15 +42,15 @@ namespace TextRPG_OOP_
                 }
             }
         }
-        public void SetHealth(int maxHP)
+        public void SetHealth(int maxHP) //Sets HP for start of game.
         {
             health = maxHP;
         }
-        public int GetHealth()
+        public int GetHealth() //returns current HP.
         {
             return health;
         }
-        public void IncreseArmor(int armorUp)
+        public void IncreseArmor(int armorUp) //Increses Armor
         {
             armor += armorUp;
         }
