@@ -10,9 +10,13 @@ using System.Runtime.InteropServices;
 
 namespace TextRPG_OOP_
 {
+    /// <summary>
+    /// Program equivilent, runs the game. 
+    /// </summary>
     internal class DungeonExplorer
     {
         static GameManager gameManager = new GameManager();
+
         static void Main()
         {
             //Plays game...

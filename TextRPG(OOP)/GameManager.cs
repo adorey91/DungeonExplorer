@@ -5,123 +5,139 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Diagnostics;
+using TextRPG_OOP_.TextRPG_OOP_;
 
 namespace TextRPG_OOP_
 {
     internal class GameManager
     {
-        private Player mainPlayer;
-        private EnemyManager enemyManager;
+        public Player player;
+        public EnemyManager enemyManager;
         public Map gameMap;
         public ItemManager itemManager;
-        public Settings settings;
+        public UIManager uiManager;
+        public QuestManager questManager;
+
+
         private void StartUp()
         {
             Console.CursorVisible = false;
             Debug.WriteLine("Setting Up characters");
-            settings = new Settings();
-            itemManager = new ItemManager();
-            gameMap = new Map(itemManager);
-            enemyManager = new EnemyManager(gameMap, settings);
-            mainPlayer = new Player(gameMap,itemManager, settings);
-        }  
-        private void SetUpGame()
-        {
-            Debug.WriteLine("Setting up starting map");
-            itemManager.Start(gameMap);
-            gameMap.Start(mainPlayer, enemyManager);
-            mainPlayer.Start();
-            gameMap.Draw();
-            itemManager.Draw();
-            mainPlayer.Draw();
-            enemyManager.Draw();
+
+            Initialize();
+
         }
+
         private void EndGame()
         {
             string FormatString = "You had {0} coins, {1} armor, and {2} HP remaining!";
             Debug.WriteLine("EndingGame");
-            if(mainPlayer.gameIsOver && mainPlayer.gameWon == true)
+            if (player.GameIsOver && player.GameWon == true)
             {
                 Debug.WriteLine("Player won");
                 Thread.Sleep(2000);
                 Console.Clear();
                 Console.WriteLine("You Won!");
                 Console.WriteLine();
-                Console.WriteLine(string.Format(FormatString,mainPlayer.playerCoins,mainPlayer.healthSystem.armor,mainPlayer.healthSystem.health));
+                Console.WriteLine(string.Format(FormatString, player.PlayerCoins, player.healthSystem.armor, player.healthSystem.health));
                 Console.WriteLine();
                 Console.WriteLine("CONGRADULATIONS!");
                 Thread.Sleep(3000);
                 Environment.Exit(0);
             }
-            if(mainPlayer.gameIsOver && mainPlayer.gameWon != true)
+            if (player.GameIsOver && player.GameWon != true)
             {
                 Debug.WriteLine("Player lost");
-                Thread.Sleep(2000); 
+                Thread.Sleep(2000);
                 Console.Clear();
                 Console.WriteLine("You have lost. Restarting game!");
                 Thread.Sleep(3000);
                 PlayGame();
             }
         }
+
         private void DungeonGameLoop()
         {
             Debug.WriteLine("Running GameLoop");
-            while(mainPlayer.gameIsOver != true && mainPlayer.gameWon != true)
+            gameMap.Draw();
+            itemManager.Draw();
+            enemyManager.Draw();
+            player.Draw();
+            uiManager.Draw();
+
+            // Verify that enemies exist
+            Debug.WriteLine($"Total Enemies Spawned: {enemyManager.enemies.Count}");
+
+            while (!player.GameIsOver && !player.GameWon)
             {
                 Console.CursorVisible = false;
                 CheckPlayerCondition();
-                gameMap.Update();
-                mainPlayer.Update();
-                gameMap.Draw();
-                mainPlayer.Draw();
-                itemManager.Update(mainPlayer);
-                itemManager.Draw();
-                enemyManager.Update();
-                enemyManager.Draw();
+
+                Update();
+                Draw();
             }
+
             EndGame();
         }
+        private void Initialize()
+        {
+            gameMap = new Map();  // Game map must be initialized first since all managers rely on it
+
+            // Initialize managers
+            uiManager = new UIManager();
+            itemManager = new ItemManager();
+            enemyManager = new EnemyManager();
+            questManager = new QuestManager(this);
+
+            // Initialize player after UIManager and other managers are set up
+            player = new Player(this);
+
+            // Initialize components that require references to each other
+            player.Initialize();          // Player needs to be initialized first to get the starting position
+            uiManager.Initialize(this);   // UI Manager requires reference to GameManager and Player
+            itemManager.Initialize(this); // Initialize ItemManager with GameManager
+            enemyManager.Initialize(this); // Initialize EnemyManager with GameManager
+
+            // Add enemies and items after everything has been initialized
+            enemyManager.AddEnemies();
+            itemManager.AddItems();
+        }
+
+
+        private void Update()
+        {
+            player.Update();
+            enemyManager.Update();
+            itemManager.Update();
+        }
+
+        private void Draw()
+        {
+            gameMap.Draw();
+            enemyManager.Draw();
+            itemManager.Draw();
+            uiManager.Draw();
+            player.Draw();
+        }
+
         public void PlayGame()
         {
             Debug.WriteLine("Starting Game");
             StartUp();
-            Intro();
-            SetUpGame();
+            uiManager.WriteIntro();
+            gameMap.Draw();
             DungeonGameLoop();
         }
-        
+
         private void CheckPlayerCondition()
         {
-            Debug.WriteLine("Checking player");
-            if(mainPlayer.healthSystem.IsAlive == false)
-            {
-                mainPlayer.gameIsOver = true;
-            }
+            //Debug.WriteLine("Checking player");
+            //if(player.healthSystem.IsAlive == false)
+            //{
+            //    player.GameIsOver = true;
+            //}
         }
-        void Intro()
-        {
-            Debug.WriteLine("Into!");
-            Console.WriteLine("Welcome to Dungeon Explorer!"); // placeholderTitle
-            Console.WriteLine();
-            Console.Write("Escape the dungeon and climb to the 2nd floor to find the chalace. ");
-            gameMap.DrawFinalLoot();
-            Console.WriteLine();
-            Console.Write("Collect coins ");
-            gameMap.DrawCoin();
-            Console.Write(" to increase your attack power.");
-            Console.WriteLine();
-            Console.Write("Collect hearts to heal.");
-            gameMap.DrawHealthPickup();
-            Console.WriteLine();
-            Console.Write("Collect peices of armor "); 
-            gameMap.DrawArmor();
-            Console.Write(" to up your defence.");
-            Console.WriteLine();
-            Console.Write("Avoid or fight the monsters!");
-            Console.WriteLine();
-            Console.WriteLine("Press any key to get started!");
-            Console.ReadKey(true);
-            Console.Clear();
-        }
+
+
     }
 }
