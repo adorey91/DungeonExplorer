@@ -11,6 +11,14 @@ namespace TextRPG_OOP_
     /// </summary>
     internal static class Settings
     {
+        // Settings for map char
+        public const char storeChar = 'S';
+        public const char dungeonWall = '#';
+        public const char dungeonFloor = '-';
+        public const char stairs = '~';
+        public const char newStairsChar = (char)30;
+        public const char startingPosition = '=';
+
         // Settings for quest
         public static string questEnemyType = "Plasmoid";
         public static int questTargetCoin = 20;
@@ -20,13 +28,13 @@ namespace TextRPG_OOP_
         //Base values for enemy stats. 
         public static int PlasmoidBaseHP = 3;
         public static int PlasmoidBaseDamage = 0;
-        public static char PlasmoidChar = (char)4;
+        public const char PlasmoidChar = (char)4;
         public static int ConstructBaseHP = 3;
         public static int ConstructBaseDamage = 0;
-        public static char ConstructChar = (char)5;
+        public const char ConstructChar = (char)5;
         public static int GoblinFolkBaseHP = 3;
         public static int GoblinFolkBaseDamage = 0;
-        public static char GoblinFolkChar = (char)6;
+        public const char GoblinFolkChar = (char)6;
 
         // base value for player stats
         public static int playerMaxHP = 10;

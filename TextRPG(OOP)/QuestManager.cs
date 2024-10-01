@@ -10,15 +10,18 @@ namespace TextRPG_OOP_
     {
         private List<Quest> quests;
         public GameManager gameManager;
+        public string questCollectCoins = $"Collect {Settings.questTargetCoin} coins";
+        public string questKillEnemyType = $"Kill {Settings.questTargetEnemy1} {Settings.questEnemyType}";
+        public string questKillEnemies = $"Kill {Settings.questTargetEnemy2} enemies";
         
         public QuestManager(GameManager gameManager)
         {
             this.gameManager = gameManager;
             quests = new List<Quest>
         {
-            new Quest($"Collect {Settings.questTargetCoin} coins", Settings.questTargetCoin, gameManager), // Collect coins quest
-            new Quest($"Kill {Settings.questTargetEnemy1} {Settings.questEnemyType}", Settings.questTargetEnemy1, gameManager),    // Kill specific enemy quest
-            new Quest($"Kill {Settings.questTargetEnemy2} enemies", Settings.questTargetEnemy2, gameManager)   // Kill more enemies quest
+            new Quest(questCollectCoins, Settings.questTargetCoin, gameManager), // Collect coins quest
+            new Quest(questKillEnemyType, Settings.questTargetEnemy1, gameManager),    // Kill specific enemy quest
+            new Quest(questKillEnemies, Settings.questTargetEnemy2, gameManager)   // Kill more enemies quest
         };
         }
 
@@ -37,9 +40,9 @@ namespace TextRPG_OOP_
             foreach (var quest in quests)
             {
                 // Clear the line by moving the cursor and overwriting with spaces
-                Console.SetCursorPosition(0, Console.CursorTop);
-                Console.Write(new string(' ', Console.WindowWidth));
-                Console.SetCursorPosition(0, Console.CursorTop - 1);
+               // Console.SetCursorPosition(0, Console.CursorTop);
+               // Console.Write(new string(' ', Console.WindowWidth));
+                //Console.SetCursorPosition(0, Console.CursorTop - 1);
 
                 // Check if the quest is completed and apply strikethrough
                 if (quest.IsCompleted)

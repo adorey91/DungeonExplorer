@@ -63,10 +63,7 @@ internal class EnemyManager
             Enemy enemy = null;
 
             if (type == "Plasmoid")
-            {
                 enemy = new Plasmoid(RandomConsoleColor(), random, gameManager);
-                Debug.WriteLine(enemy.avatarColor.ToString());
-            }
             else if (type == "GoblinFolk")
                 enemy = new GoblinFolk(RandomConsoleColor(), random, gameManager);
             else if (type == "Construct")
@@ -95,8 +92,8 @@ internal class EnemyManager
             else
             {
                 if(enemy.enemyType == Settings.questEnemyType)
-                    questManager.UpdateQuestProgress($"Kill {Settings.questTargetEnemy1} {Settings.questEnemyType}", 1);
-                questManager.UpdateQuestProgress($"Kill {Settings.questTargetEnemy2} enemies", 1); // Update all enemies kill quest
+                    questManager.UpdateQuestProgress(questManager.questKillEnemyType, 1); // update enemy type kill quest
+                questManager.UpdateQuestProgress(questManager.questKillEnemies, 1); // Update all enemies kill quest
                 uiManager.AddEventLogMessage($"You killed {enemy.enemyType}");
                 enemiesToRemove.Add(enemy); // Add to removal list instead of directly removing
             }
@@ -137,7 +134,7 @@ internal class EnemyManager
             case 2: selectedColor = ConsoleColor.DarkGreen; break;
             case 3: selectedColor = ConsoleColor.DarkMagenta; break;
             case 4: selectedColor = ConsoleColor.DarkRed; break;
-            case 5: selectedColor = ConsoleColor.DarkYellow; break;
+            case 5: selectedColor = ConsoleColor.Blue; break;
             case 6: selectedColor = ConsoleColor.Green; break;
             default: selectedColor = ConsoleColor.White; break;
         }

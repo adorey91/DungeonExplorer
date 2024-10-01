@@ -22,7 +22,7 @@ namespace TextRPG_OOP_
         private void StartUp()
         {
             Console.CursorVisible = false;
-            Debug.WriteLine("Setting Up characters");
+            //Debug.WriteLine("Setting Up characters");
 
             Initialize();
 
@@ -31,7 +31,7 @@ namespace TextRPG_OOP_
         private void EndGame()
         {
             string FormatString = "You had {0} coins, {1} armor, and {2} HP remaining!";
-            Debug.WriteLine("EndingGame");
+            //Debug.WriteLine("EndingGame");
             if (player.GameIsOver && player.GameWon == true)
             {
                 Debug.WriteLine("Player won");
@@ -58,7 +58,6 @@ namespace TextRPG_OOP_
 
         private void DungeonGameLoop()
         {
-            Debug.WriteLine("Running GameLoop");
             gameMap.Draw();
             itemManager.Draw();
             enemyManager.Draw();
@@ -107,13 +106,14 @@ namespace TextRPG_OOP_
         private void Update()
         {
             player.Update();
+            gameMap.Update();
             enemyManager.Update();
             itemManager.Update();
         }
 
         private void Draw()
         {
-            gameMap.Draw();
+            //gameMap.Draw();
             enemyManager.Draw();
             itemManager.Draw();
             uiManager.Draw();
@@ -122,7 +122,7 @@ namespace TextRPG_OOP_
 
         public void PlayGame()
         {
-            Debug.WriteLine("Starting Game");
+            //Debug.WriteLine("Starting Game");
             StartUp();
             uiManager.WriteIntro();
             gameMap.Draw();

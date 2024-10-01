@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TextRPG_OOP_.TextRPG_OOP_;
 
 namespace TextRPG_OOP_
@@ -17,6 +14,18 @@ namespace TextRPG_OOP_
 
         private const int MaxEventLogMessages = 2;
         public List<string> eventMessages = new List<string>();
+        public char[] legendsChar = new char[] {
+    Settings.PlasmoidChar,
+    Settings.ConstructChar,
+    Settings.GoblinFolkChar,
+    Settings.spikeChar,
+    Settings.healthChar,
+    Settings.coinChar,
+    Settings.armorChar,
+    Settings.finalLootChar
+
+};
+
 
         public void Initialize(GameManager gameManager)
         {
@@ -43,20 +52,20 @@ namespace TextRPG_OOP_
             Console.WriteLine(new string('-', mapWidth));
             questManager.PrintQuestStatus();
 
-
             MapLegend(mapWidth);
         }
 
-
+        /// <summary>
+        /// Intro
+        /// </summary>
         public void WriteIntro()
         {
-            Debug.WriteLine("Into!");
+            //Debug.WriteLine("Intro!");
             Console.WriteLine("Welcome to Dungeon Explorer!"); // placeholderTitle
             Console.WriteLine();
 
             Console.Write("Escape the dungeon and climb to the 2nd floor to find the chalace. ");
-            Console.ForegroundColor = Settings.finalLootColor; // change the color for final loot
-            Console.Write(Settings.finalLootChar); // Write the health character
+            //DisplayChar(Settings.finalLootChar, "Final Loot");
             Console.ResetColor();
             Console.WriteLine();
 
@@ -88,14 +97,15 @@ namespace TextRPG_OOP_
             Console.Clear();
         }
 
-
+        /// <summary>
+        /// Prints the event log
+        /// </summary>
         private void EventLog()
         {
             Console.WriteLine("Event Log:");
 
             // Determine the number of blank lines needed based on the count of event messages
             int blankLinesToPrint = Math.Max(2 - eventMessages.Count, 0); // Maximum of 2 - current count, ensuring it's not negative
-
             // Print the required number of blank lines
             for (int i = 0; i < blankLinesToPrint; i++)
             {
@@ -108,27 +118,31 @@ namespace TextRPG_OOP_
                 // Clear the line by moving the cursor and overwriting with spaces
                 Console.SetCursorPosition(0, Console.CursorTop); // Move to the start of the current line
                 Console.Write(new string(' ', Console.WindowWidth)); // Clear the line with spaces
-                Console.SetCursorPosition(0, Console.CursorTop - 1); // Move back to the start of the line
+                Console.SetCursorPosition(0, Console.CursorTop); // Move back to the start of the line
                 Console.WriteLine(message); // Write the event message
             }
         }
 
-
+        /// <summary>
+        /// Shows current player stats
+        /// </summary>
         private void PlayerStats()
         {
             Console.Write($"Player Stats: Health: {player.healthSystem.health} - Armor: {player.healthSystem.armor} - Damage: {player.damage} - Coins: {player.PlayerCoins}      ");
             Console.WriteLine();
         }
 
+        /// <summary>
+        /// Adds event to event log
+        /// </summary>
+        /// <param name="message"></param>
         public void AddEventLogMessage(string message)
         {
             eventMessages.Add(message);
 
             // If there are more than MaxEventLogMessages, remove the oldest
             if (eventMessages.Count > MaxEventLogMessages)
-            {
                 eventMessages.RemoveAt(0); // Remove the oldest message
-            }
         }
 
         private void MapLegend(int mapWidth)
@@ -137,65 +151,64 @@ namespace TextRPG_OOP_
             int legendColumn = mapWidth + 2;
 
             // Print the legend header
-            Console.SetCursorPosition(legendColumn, 3); // Set cursor to row 3 for the header
+            Console.SetCursorPosition(legendColumn, 2); // Set cursor to row 3 for the header
             Console.WriteLine("Legend:"); // Print the header
 
-            // Define the legends to display
-            var legends = new (char symbol, string name)[]
-            {
-        (Settings.PlasmoidChar, "Plasmoid"),
-        (Settings.ConstructChar, "Construct"),
-        (Settings.GoblinFolkChar, "Goblin Folk"),
-        (Settings.spikeChar, "Spike"),
-        (Settings.healthChar, "Health"),
-        (Settings.coinChar, "Coins"),
-        (Settings.armorChar, "Armor"),
-        (Settings.finalLootChar, "Final Loot"),
-            };
-
             // Print the legend at a fixed starting position for the rows
-            int startingRow = 5; // Choose the row to start printing the legend items
-            for (int i = 0; i < legends.Length; i++)
+            int startingRow = 3; // Choose the row to start printing the legend items
+            for (int i = 0; i < legendsChar.Length; i++)
             {
                 Console.SetCursorPosition(legendColumn, startingRow + i); // Move cursor to the appropriate row
-                DisplayChar(legends[i].symbol, legends[i].name); // Print the character and its name
+                DisplayChar(legendsChar[i]); // Print the character
+                Console.Write($" - {Name(legendsChar[i])}");
+                Console.WriteLine();
             }
         }
 
 
-
-        private void DisplayChar(char symbol, string name)
+        /// <summary>
+        /// Displays char, decides color based on symbol
+        /// </summary>
+        /// <param name="symbol"></param>
+        /// <param name="name"></param>
+        private void DisplayChar(char symbol)
         {
-            Color(symbol);
+            Console.ForegroundColor = Color(symbol);
             Console.Write(symbol);
             Console.ResetColor();
-            Console.Write($" - {name}");
         }
 
-        private void Color(char avatar)
+        private ConsoleColor Color(char avatar)
         {
             switch (avatar)
             {
-                case Settings.healthChar: // Health symbol
-                    Console.ForegroundColor = Settings.healthColor;
-                    break;
-
-                case Settings.coinChar:
-                    Console.ForegroundColor = Settings.coinColor; // Example color
-                    break;
-
-                case Settings.armorChar:
-                    Console.ForegroundColor = Settings.armorColor; // Example color
-                    break;
-
-                case Settings.finalLootChar:
-                    Console.ForegroundColor = Settings.finalLootColor; // Example color
-                    break;
-                case Settings.spikeChar:
-                    Console.ForegroundColor = Settings.spikeColor; // Example color
-                    break;
+                case Settings.PlasmoidChar:
+                case Settings.ConstructChar:
+                case Settings.GoblinFolkChar:
+                    return Console.ForegroundColor;
+                case Settings.healthChar: return Settings.healthColor;
+                case Settings.coinChar: return Settings.coinColor;
+                case Settings.armorChar: return Settings.armorColor;
+                case Settings.finalLootChar: return Settings.finalLootColor;
+                case Settings.spikeChar: return Settings.spikeColor;
+                default: return ConsoleColor.Black;
             }
         }
 
+        private string Name(char avatar)
+        {
+            switch (avatar)
+            {
+                case Settings.PlasmoidChar: return "Plasmoid";
+                case Settings.ConstructChar: return "Construct";
+                case Settings.GoblinFolkChar: return "Goblin Folk";
+                case Settings.spikeChar: return "Spike";
+                case Settings.healthChar: return "Health";
+                case Settings.coinChar: return "Coins";
+                case Settings.armorChar: return "Armor";
+                case Settings.finalLootChar: return "Final Loot";
+                default: return "Character name not available";
+            }
+        }
     }
 }

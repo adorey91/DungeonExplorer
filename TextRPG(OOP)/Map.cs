@@ -17,12 +17,13 @@ namespace TextRPG_OOP_
         public char[,] activeMap;
         public static string[] floorMap;
         public static string path;
-        public static string path1 = @"Floor1Map.txt";
-        public static string path2 = @"Floor2Map.txt";
-        public static string path3 = @"Floor3Map.txt";
-        public int levelNumber = 1;
-        public char dungeonWall = ((char)35); // Wall '#'
-        public char dungeonFloor = '-'; // Floor '-'
+        private string[] mapTextFiles = new string[] { "Maps\\\\Floor1Map.txt", "Maps\\\\Floor2Map.txt", "Maps\\\\Floor3Map.txt", "Maps\\StoreMap.txt" };
+        public int levelNumber = 0;
+        private int previousLevel;
+        private int storeLevel = 3;
+
+        public bool levelChange = false;
+        public bool goToStore = false;
 
         public bool foundstart;
 
@@ -37,36 +38,21 @@ namespace TextRPG_OOP_
             LoadMap();
         }
 
-        public void LoadMap()
+        public void Update()
         {
-            floorMap = File.ReadAllLines(path);
-            activeMap = new char[floorMap.Length, floorMap[0].Length];
-
-            for (int i = 1; i < floorMap.Length; i++) // Initialize from the second row
+            if (levelChange)
             {
-                if (floorMap[i].Length != floorMap[0].Length)
-                {
-                    throw new Exception($"Inconsistent row length at row {i + 1}. Expected length: {floorMap[0].Length}, Actual length: {floorMap[i].Length}");
-                }
+                ChangeLevel();
+                Draw();
             }
-
-            for (int i = 0; i < activeMap.GetLength(0); i++)
+            else if(goToStore)
             {
-                for (int j = 0; j < activeMap.GetLength(1); j++)
-                {
-                    activeMap[i, j] = floorMap[i][j];
-                }
+                GoToStore();
+                Draw();
             }
-        }
+            else
+                Draw();
 
-        public bool IsWithinBounds(int x, int y)
-        {
-            return x >= 0 && x < activeMap.GetLength(1) && y >= 0 && y < activeMap.GetLength(0);
-        }
-
-        public bool IsWalkable(int x, int y)
-        {
-            return activeMap[y, x] != dungeonWall;
         }
 
         public void Draw()
@@ -103,21 +89,46 @@ namespace TextRPG_OOP_
             }
         }
 
+        public void LoadMap()
+        {
+            floorMap = File.ReadAllLines(path);
+            activeMap = new char[floorMap.Length, floorMap[0].Length];
+
+            for (int i = 0; i < floorMap.Length; i++) 
+            {
+                if (floorMap[i].Length != floorMap[0].Length)
+                {
+                    throw new Exception($"Inconsistent row length at row {i + 1}. Expected length: {floorMap[0].Length}, Actual length: {floorMap[i].Length}");
+                }
+            }
+
+            for (int i = 0; i < activeMap.GetLength(0); i++)
+            {
+                for (int j = 0; j < activeMap.GetLength(1); j++)
+                {
+                    activeMap[i, j] = floorMap[i][j];
+                }
+            }
+        }
+
+        /// <summary>
+        /// Draws individual tile based on the character.
+        /// </summary>
+        /// <param name="tile"></param>
         private void DrawTile(char tile)
         {
             switch (tile)
             {
-                case '#': DrawTile(ConsoleColor.DarkGray, ConsoleColor.DarkGray, tile); break;
-                case '-': DrawTile(ConsoleColor.Gray, ConsoleColor.Gray, tile); break;
-                case '=':
-                    foundstart = true;
-                    DrawTile(ConsoleColor.Red, ConsoleColor.Gray, tile);
-                    break;
-                default: DrawTile(ConsoleColor.Gray, ConsoleColor.Gray, tile); break;
+                case Settings.dungeonWall: DrawColorTile(ConsoleColor.DarkGray, ConsoleColor.DarkGray, tile); break;
+                case Settings.dungeonFloor: DrawColorTile(ConsoleColor.Gray, ConsoleColor.Gray, tile); break;
+                case Settings.startingPosition: foundstart = true; DrawColorTile(ConsoleColor.Gray, ConsoleColor.Gray, tile); break;
+                case Settings.stairs: DrawColorTile(ConsoleColor.DarkGray, ConsoleColor.Gray, Settings.newStairsChar); break;
+                case Settings.storeChar: DrawColorTile(ConsoleColor.Red, ConsoleColor.DarkGray, tile); break;
+                default: DrawColorTile(ConsoleColor.Gray, ConsoleColor.Gray, tile); break;
             }
         }
 
-        private void DrawTile(ConsoleColor frontColor, ConsoleColor backColor, char tile)
+        private void DrawColorTile(ConsoleColor frontColor, ConsoleColor backColor, char tile)
         {
             Console.ForegroundColor = frontColor;
             Console.BackgroundColor = backColor;
@@ -140,7 +151,58 @@ namespace TextRPG_OOP_
             throw new Exception("Start position not found on the map.");
         }
 
-        public List<Position> FindPositionsByChar(char c)
+        /// <summary>
+        /// Sets the map path based on the level number
+        /// </summary>
+        /// <param name="level"></param>
+        private void SetMapPath(int level)
+        {
+            path = mapTextFiles[level];
+        }
+
+        public void ChangeLevel()
+        {
+            levelNumber++;
+            SetMapPath(levelNumber);
+            LoadMap();
+            levelChange = false;
+        }
+
+        public void GoToStore()
+        {
+            previousLevel = levelNumber;
+            SetMapPath(storeLevel);
+            LoadMap();
+            goToStore = false;
+        }
+
+        #region ChecksForMap
+        public bool IsWithinBounds(int x, int y)
+        {
+            return x >= 0 && x < activeMap.GetLength(1) && y >= 0 && y < activeMap.GetLength(0);
+        }
+
+        public bool IsWalkable(int x, int y)
+        {
+            return activeMap[y, x] != Settings.dungeonWall && activeMap[y,x] != Settings.startingPosition;
+        }
+
+        public bool IsStairs(int x, int y)
+        {
+            return activeMap[y, x] == Settings.stairs;
+        }
+
+        public bool IsStore(int x, int y)
+        {
+            return activeMap[y, x] == Settings.storeChar;
+        }
+
+        /// <summary>
+        /// Finds starting positions for items, enemies & map
+        /// </summary>
+        /// <param name="character"></param>
+        /// <returns></returns>
+        public List<Position> FindPositionsByChar(char character)
         {
             List<Position> positions = new List<Position>();
 
@@ -148,7 +210,7 @@ namespace TextRPG_OOP_
             {
                 for (int col = 0; col < activeMap.GetLength(1); col++)
                 {
-                    if (activeMap[row, col] == c)
+                    if (activeMap[row, col] == character)
                     {
                         positions.Add(new Position(row, col)); // Add each found position to the list
                     }
@@ -158,22 +220,6 @@ namespace TextRPG_OOP_
             // Do not throw an exception if no positions are found, just return an empty list
             return positions;
         }
-
-
-
-        private void SetMapPath(int levelNumber)
-        {
-            if (levelNumber == 1)
-                path = path1;
-            else if (levelNumber == 2)
-                path = path2;
-            else if (levelNumber == 3)
-                path = path3;
-            else
-            {
-                Console.WriteLine("Invalid level number. Loading level 1.");
-                path = path1;
-            }
-        }
+        #endregion
     }
 }

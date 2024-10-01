@@ -139,18 +139,26 @@ namespace TextRPG_OOP_
                 }
                 else
                 {
+                    if (map.IsStairs(newY, newX))
+                    {
+                        map.levelChange = true;
+                    }
+                    else if(map.IsStore(newY, newX))
+                    {
+                        map.goToStore = true;
+                    }
                     // Proceed with movement if there's no enemy and the tile is walkable
-                    if (map.IsWithinBounds(newY, newX) && map.IsWalkable(newY, newX))
+                    else if (map.IsWithinBounds(newY, newX) && map.IsWalkable(newY, newX))
                     {
                         // Update player position
                         position.x = newX;
                         position.y = newY;
-                        Debug.WriteLine($"Moved to: x={position.x}, y={position.y}");
+                        //Debug.WriteLine($"Moved to: x={position.x}, y={position.y}");
                     }
-                    else
-                    {
-                        Debug.WriteLine("No movement");
-                    }
+                    //else
+                    //{
+                    //    Debug.WriteLine("No movement");
+                    //}
                 }
             }
 
@@ -166,7 +174,6 @@ namespace TextRPG_OOP_
                 Console.BackgroundColor = ConsoleColor.Gray;
                 Console.Write(avatar);
                 Console.ResetColor();
-
             }
 
             private void ApplyEffect(Item item)
@@ -175,7 +182,7 @@ namespace TextRPG_OOP_
                 {
                     case "Coin":
                         PlayerCoins += item.gainAmount;
-                        questManager.UpdateQuestProgress("Collect 10 coins", item.gainAmount);
+                        questManager.UpdateQuestProgress(questManager.questCollectCoins, item.gainAmount);
                         item.isCollected = true;
                         break;
                     case "Health":

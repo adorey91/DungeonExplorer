@@ -19,6 +19,9 @@ namespace TextRPG_OOP_
 
         static void Main()
         {
+            Console.WindowHeight = 40;
+            Console.WindowWidth = 90;
+
             //Plays game...
             gameManager.PlayGame();
         }
