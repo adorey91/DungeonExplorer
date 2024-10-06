@@ -68,6 +68,8 @@ namespace TextRPG_OOP_
             {
                 GetPlayerInput();
                 HandleMovement(dirX, dirY);
+                if (map.levelChange || map.goToStore)
+                    map.FindPlayerStartPosition();
             }
 
             /// <summary>
@@ -129,12 +131,21 @@ namespace TextRPG_OOP_
                 }
                 else if (item != null)
                 {
-                    ApplyEffect(item);
-                    if(item.itemType == "Spike")
+                    if (!map.inStore)
                     {
-                        uiManager.AddEventLogMessage($"{name} hurt by {item.itemType}, lost {item.gainAmount} health");
-                        position.x = newX;
-                        position.y = newY;
+                        ApplyEffect(item);
+                        if (item.itemType == "Spike")
+                        {
+                            position.x = newX;
+                            position.y = newY;
+                        }
+                    }
+                    else
+                    {
+                        if (PlayerCoins >= item.cost)
+                        {
+                            ApplyEffect(item);
+                        }
                     }
                 }
                 else
@@ -143,7 +154,7 @@ namespace TextRPG_OOP_
                     {
                         map.levelChange = true;
                     }
-                    else if(map.IsStore(newY, newX))
+                    else if (map.IsStore(newY, newX))
                     {
                         map.goToStore = true;
                     }
@@ -183,21 +194,34 @@ namespace TextRPG_OOP_
                     case "Coin":
                         PlayerCoins += item.gainAmount;
                         questManager.UpdateQuestProgress(questManager.questCollectCoins, item.gainAmount);
+                        uiManager.AddEventLogMessage($"Player collected coin");
                         item.isCollected = true;
                         break;
                     case "Health":
+                        int previousHealth = healthSystem.health;
                         if (healthSystem.health != healthSystem.maxHealth)
                         {
                             healthSystem.Heal(item.gainAmount);
+                            int healedAmount = healthSystem.health - previousHealth;
+                            uiManager.AddEventLogMessage($"Player healed {healedAmount}");
                             item.isCollected = true;
                         }
+                        else
+                            uiManager.AddEventLogMessage($"Cannot heal anymore");
                         break;
                     case "Armor":
                         healthSystem.IncreaseArmor(item.gainAmount);
+                        uiManager.AddEventLogMessage($"Player gained {item.gainAmount} armor");
+                        item.isCollected = true;
+                        break;
+                    case "Sword":
+                        damage += item.gainAmount;
+                        uiManager.AddEventLogMessage($"Player gained {item.gainAmount} damage");
                         item.isCollected = true;
                         break;
                     case "Spike":
                         healthSystem.TakeDamage(item.gainAmount);
+                        uiManager.AddEventLogMessage($"{name} hurt by {item.itemType}, lost {item.gainAmount} health");
                         break;
                     default:
                         Debug.WriteLine("Unknown item type.");

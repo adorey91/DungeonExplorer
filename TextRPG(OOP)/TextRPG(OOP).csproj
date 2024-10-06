@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Item\Chalice.cs" />
     <Compile Include="Item\Armor.cs" />
     <Compile Include="Character.cs" />
     <Compile Include="Item\Coin.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Item\Spike.cs" />
     <Compile Include="Store.cs" />
+    <Compile Include="Item\Sword.cs" />
     <Compile Include="UIManager.cs" />
   </ItemGroup>
   <ItemGroup>

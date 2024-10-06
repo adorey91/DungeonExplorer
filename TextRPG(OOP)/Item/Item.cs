@@ -18,6 +18,7 @@ namespace TextRPG_OOP_
         public Position position;
         public Char avatar;
         public string itemType;
+        public int cost;
 
         public ConsoleColor color;
         public int index;

@@ -14,6 +14,7 @@ namespace TextRPG_OOP_
             avatar = Settings.healthChar;
             color = Settings.healthColor;
             itemType = "Health";
+            cost = Settings.healthCost;
         }
     }
 }

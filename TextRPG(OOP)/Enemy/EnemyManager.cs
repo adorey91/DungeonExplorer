@@ -81,44 +81,56 @@ internal class EnemyManager
 
     public void Update()
     {
-        List<Enemy> enemiesToRemove = new List<Enemy>(); // List to track enemies to be removed
-
-        foreach (var enemy in enemies)
+        if (gameMap.levelChange)
         {
-            if (enemy.healthSystem.IsAlive)
-            {
-                enemy.Update(gameMap); // Update if alive
-            }
-            else
-            {
-                if(enemy.enemyType == Settings.questEnemyType)
-                    questManager.UpdateQuestProgress(questManager.questKillEnemyType, 1); // update enemy type kill quest
-                questManager.UpdateQuestProgress(questManager.questKillEnemies, 1); // Update all enemies kill quest
-                uiManager.AddEventLogMessage($"You killed {enemy.enemyType}");
-                enemiesToRemove.Add(enemy); // Add to removal list instead of directly removing
-            }
+            enemies.Clear();
+
+            AddEnemies();
         }
-
-        // Now remove all enemies that need to be removed after the loop
-        foreach (var enemy in enemiesToRemove)
+        else if (!gameMap.inStore)
         {
-            enemies.Remove(enemy);
+            List<Enemy> enemiesToRemove = new List<Enemy>(); // List to track enemies to be removed
+
+            foreach (var enemy in enemies)
+            {
+                if (enemy.healthSystem.IsAlive)
+                {
+                    enemy.Update(gameMap); // Update if alive
+                }
+                else
+                {
+                    if (enemy.enemyType == Settings.questEnemyType)
+                        questManager.UpdateQuestProgress(questManager.questKillEnemyType, 1); // update enemy type kill quest
+                    questManager.UpdateQuestProgress(questManager.questKillEnemies, 1); // Update all enemies kill quest
+                    uiManager.AddEventLogMessage($"You killed {enemy.enemyType}");
+                    enemiesToRemove.Add(enemy); // Add to removal list instead of directly removing
+                }
+            }
+
+            // Now remove all enemies that need to be removed after the loop
+            foreach (var enemy in enemiesToRemove)
+            {
+                enemies.Remove(enemy);
+            }
         }
     }
 
 
     public void Draw()
     {
-        foreach (var enemy in enemies)
+        if (!gameMap.inStore)
         {
-            if (enemy.healthSystem.IsAlive)
+            foreach (var enemy in enemies)
             {
-                Console.SetCursorPosition(enemy.position.y, enemy.position.x);
-                Console.ForegroundColor = enemy.avatarColor;  // Set enemy's avatar color
-                Console.BackgroundColor = ConsoleColor.Gray; 
+                if (enemy.healthSystem.IsAlive)
+                {
+                    Console.SetCursorPosition(enemy.position.y, enemy.position.x);
+                    Console.ForegroundColor = enemy.avatarColor;  // Set enemy's avatar color
+                    Console.BackgroundColor = ConsoleColor.Gray;
 
-                Console.Write(enemy.avatar);  // Draw the enemy avatar
-                Console.ResetColor();  // Reset colors after drawing
+                    Console.Write(enemy.avatar);  // Draw the enemy avatar
+                    Console.ResetColor();  // Reset colors after drawing
+                }
             }
         }
     }

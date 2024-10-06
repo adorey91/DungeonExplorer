@@ -14,6 +14,7 @@ namespace TextRPG_OOP_
             avatar = Settings.armorChar;
             color = Settings.armorColor;
             itemType = "Armor";
+            cost = Settings.armorCost;
         }
     }
 }

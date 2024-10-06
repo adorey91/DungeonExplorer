@@ -24,6 +24,7 @@ namespace TextRPG_OOP_
 
         public bool levelChange = false;
         public bool goToStore = false;
+        public bool inStore = false;
 
         public bool foundstart;
 
@@ -43,16 +44,11 @@ namespace TextRPG_OOP_
             if (levelChange)
             {
                 ChangeLevel();
-                Draw();
             }
-            else if(goToStore)
+            else if (goToStore)
             {
                 GoToStore();
-                Draw();
             }
-            else
-                Draw();
-
         }
 
         public void Draw()
@@ -66,7 +62,7 @@ namespace TextRPG_OOP_
             {
                 for (int j = 0; j < activeMap.GetLength(1); j++)
                 {
-                    if (j < activeMap.GetLength(1)) 
+                    if (j < activeMap.GetLength(1))
                     {
                         if (activeMap[i, j] == '\0') // Default value check
                             continue;
@@ -94,7 +90,7 @@ namespace TextRPG_OOP_
             floorMap = File.ReadAllLines(path);
             activeMap = new char[floorMap.Length, floorMap[0].Length];
 
-            for (int i = 0; i < floorMap.Length; i++) 
+            for (int i = 0; i < floorMap.Length; i++)
             {
                 if (floorMap[i].Length != floorMap[0].Length)
                 {
@@ -157,15 +153,19 @@ namespace TextRPG_OOP_
         /// <param name="level"></param>
         private void SetMapPath(int level)
         {
+            inStore = false;
             path = mapTextFiles[level];
         }
 
         public void ChangeLevel()
         {
-            levelNumber++;
+            if (inStore)
+                levelNumber = previousLevel;
+            else
+                levelNumber++;
+
             SetMapPath(levelNumber);
             LoadMap();
-            levelChange = false;
         }
 
         public void GoToStore()
@@ -173,7 +173,7 @@ namespace TextRPG_OOP_
             previousLevel = levelNumber;
             SetMapPath(storeLevel);
             LoadMap();
-            goToStore = false;
+            inStore = true;
         }
 
         #region ChecksForMap
@@ -184,7 +184,8 @@ namespace TextRPG_OOP_
 
         public bool IsWalkable(int x, int y)
         {
-            return activeMap[y, x] != Settings.dungeonWall && activeMap[y,x] != Settings.startingPosition;
+
+            return activeMap[y, x] != Settings.dungeonWall;
         }
 
         public bool IsStairs(int x, int y)
@@ -211,12 +212,9 @@ namespace TextRPG_OOP_
                 for (int col = 0; col < activeMap.GetLength(1); col++)
                 {
                     if (activeMap[row, col] == character)
-                    {
                         positions.Add(new Position(row, col)); // Add each found position to the list
-                    }
                 }
             }
-
             // Do not throw an exception if no positions are found, just return an empty list
             return positions;
         }

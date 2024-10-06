@@ -14,10 +14,11 @@ namespace TextRPG_OOP_
     internal class ItemManager
     {
         public List<Item> items;
+        public List<Item> storeItems;
         public Map gameMap;
         public GameManager GameManager;
-        public UIManager uiManager;
         public Player player;
+        private Store store;
 
         public ItemManager()
         {
@@ -28,80 +29,127 @@ namespace TextRPG_OOP_
         {
             this.GameManager = gameManager;
             this.gameMap = gameManager.gameMap;
-            this.uiManager = gameManager.uiManager;
             this.player = gameManager.player;
+            this.store = gameManager.store;
         }
 
         public void AddItems()
         {
-            AddItemToList("Armor", gameMap.levelNumber);
-            AddItemToList("Health", gameMap.levelNumber);
-            AddItemToList("Coin", gameMap.levelNumber);
-            AddItemToList("Spike", gameMap.levelNumber);
+            AddItemToList("Armor", gameMap.levelNumber, items);
+            AddItemToList("Health", gameMap.levelNumber, items);
+            AddItemToList("Coin", gameMap.levelNumber, items);
+            AddItemToList("Spike", gameMap.levelNumber, items);
+            AddItemToList("Chalice", gameMap.levelNumber, items);
+            AddItemToList("Sword", gameMap.levelNumber, items);
         }
 
-        private void AddItemToList(string type, int levelNumber)
+        private void AddItemToList(string type, int levelNumber, List<Item> itemList)
         {
             List<Position> itemPositions = new List<Position>();
             if (type == "Armor")
                 itemPositions = gameMap.FindPositionsByChar('+'); //  Find all '+' positions for armor
-            else if(type == "Health")
+            else if (type == "Health")
                 itemPositions = gameMap.FindPositionsByChar('"'); // Find all '"' positions for health
-            else if(type == "Coin")
+            else if (type == "Coin")
                 itemPositions = gameMap.FindPositionsByChar('@'); // Find all '' positions for coins
             else if (type == "Spike")
                 itemPositions = gameMap.FindPositionsByChar('*'); // Find all '' positions for coins
+            else if (type == "Sword")
+                itemPositions = gameMap.FindPositionsByChar('t');
+            else if (type == "Chalice")
+                itemPositions = gameMap.FindPositionsByChar('$');
 
             if (itemPositions.Count == 0)
                 return;
 
-            foreach(var pos  in itemPositions)
+            foreach (var pos in itemPositions)
             {
                 Item item = null;
-                if (type == "Armor") item = new Armor();
-                else if (type == "Health") item = new Health();
-                else if (type == "Coin") item = new Coin();
-                else if (type == "Spike") item = new Spike();
 
-                if(item != null)
+                switch (type)
+                {
+                    case "Armor": new Armor(); break;
+                    case "Health": new Health(); break;
+                    case "Coin": new Coin(); break;
+                    case "Spike": new Spike(); break;
+                    case "Sword": new Sword(); break;
+                    case "Chalice": new Chalice(); break;
+                }
+
+                if (item != null)
                 {
                     item.position = pos;
-                    items.Add(item);
+                    itemList.Add(item);
                 }
             }
         }
 
         public void Update()
         {
-            List<Item> itemsToRemove = new List<Item>();
-            foreach (var item in items)
+            if (gameMap.levelChange)
             {
-                if (item.isCollected)
-                {
-                    if (item.itemType != "Spike")
-                        uiManager.AddEventLogMessage($"{item.itemType} has been collected");
+                items.Clear();
 
-                    itemsToRemove.Add(item);
+                AddItems();
+            }
+            else if (gameMap.inStore)
+            {
+                AddItemToList("Armor", gameMap.levelNumber, store.itemsToBuy);
+                AddItemToList("Health", gameMap.levelNumber, store.itemsToBuy);
+                AddItemToList("Sword", gameMap.levelNumber, store.itemsToBuy);
+
+                foreach (var item in store.itemsToBuy)
+                {
+                    if (store.CanPlayerBuyItem())
+                    {
+
+                    }
                 }
             }
-
-            foreach (var item in itemsToRemove)
+            else
             {
-                items.Remove(item);
+                List<Item> itemsToRemove = new List<Item>();
+                foreach (var item in items)
+                {
+                    if (item.isCollected)
+                    {
+                        itemsToRemove.Add(item);
+                    }
+                }
+
+                foreach (var item in itemsToRemove)
+                {
+                    items.Remove(item);
+                }
+
             }
         }
 
         public void Draw()
         {
-            foreach (var item in items)
+            if (gameMap.inStore)
             {
-                if(!item.isCollected)
+                foreach (var item in store.itemsToBuy)
                 {
                     Console.SetCursorPosition(item.position.y, item.position.x);
                     Console.ForegroundColor = item.color;
                     Console.BackgroundColor = ConsoleColor.Gray;
                     Console.Write(item.avatar);
                     Console.ResetColor();
+                }
+            }
+           else
+            {
+                foreach (var item in items)
+                {
+                    if (!item.isCollected)
+                    {
+                        Console.SetCursorPosition(item.position.y, item.position.x);
+                        Console.ForegroundColor = item.color;
+                        Console.BackgroundColor = ConsoleColor.Gray;
+                        Console.Write(item.avatar);
+                        Console.ResetColor();
+                    }
                 }
             }
         }
