@@ -63,6 +63,9 @@ namespace TextRPG_OOP_
                 // Check if the position is occupied by another enemy or an item
                 else if (!IsPositionOccupied(targetY, targetX, this))
                 {
+                    prevX = position.x;
+                    prevY = position.y;
+
                     // If the position is free, update the enemy's position
                     position.x = targetX;
                     position.y = targetY;

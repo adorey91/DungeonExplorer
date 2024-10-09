@@ -21,18 +21,21 @@ namespace TextRPG_OOP_
         /// </summary>
         internal class Player : Character
         {
-            int dirX;
-            int dirY;
+            private int dirX;
+            private int dirY;
+            private int prevX;
+            private int prevY;
             public int PlayerCoins;
             public ConsoleKeyInfo PlayerInput;
             public bool GameIsOver = false;
             public bool GameWon = false;
-            public Map map;
-            public EnemyManager enemyManager; // Reference to EnemyManager
-            public ItemManager itemManager; // references to itemManager
-            public UIManager uiManager;
-            public GameManager GameManager;
-            public QuestManager questManager;
+            private Map map;
+            private EnemyManager enemyManager; // Reference to EnemyManager
+            private ItemManager itemManager; // references to itemManager
+            private UIManager uiManager;
+            private GameManager GameManager;
+            private QuestManager questManager;
+            internal bool boughtItem;
 
             public Player(GameManager gameManager)
             {
@@ -41,11 +44,12 @@ namespace TextRPG_OOP_
                 avatar = (char)2; // Sets player to smiley face
                 GameIsOver = false;
                 GameWon = false;
-                damage = Settings.PlayerBaseDamage; // sets damage with the player base from settings
 
+                damage = Settings.PlayerBaseDamage; // sets damage with the player base from settings
                 healthSystem = new HealthSystem();  // creates new health system for player
                 healthSystem.SetHealth(Settings.playerMaxHP); // sets max hp
                 name = Settings.playerName; // player name
+
                 this.map = gameManager.gameMap; // Hands map to player
                 this.uiManager = gameManager.uiManager;
                 this.enemyManager = gameManager.enemyManager; // Hands EnemyManager to player
@@ -117,6 +121,8 @@ namespace TextRPG_OOP_
                 int newX = position.x + moveX;
                 int newY = position.y + moveY;
 
+        
+
                 // Check if the player is attempting to move into an enemy
                 Enemy enemy = enemyManager.GetEnemyAtPosition(newX, newY);
                 Item item = itemManager.GetItemAtPosition(newX, newY);
@@ -144,7 +150,9 @@ namespace TextRPG_OOP_
                     {
                         if (PlayerCoins >= item.cost)
                         {
+                            boughtItem = true;
                             ApplyEffect(item);
+                            PlayerCoins -= item.cost;
                         }
                     }
                 }
@@ -161,6 +169,9 @@ namespace TextRPG_OOP_
                     // Proceed with movement if there's no enemy and the tile is walkable
                     else if (map.IsWithinBounds(newY, newX) && map.IsWalkable(newY, newX))
                     {
+                        prevX = position.x;
+                        prevY = position.y;
+
                         // Update player position
                         position.x = newX;
                         position.y = newY;
@@ -179,6 +190,9 @@ namespace TextRPG_OOP_
             /// </summary>
             public void Draw()
             {
+                // Clear the old position
+                ClearPosition(prevX, prevY);
+
                 // Draw the player in the new position
                 Console.SetCursorPosition(position.y, position.x);
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -187,46 +201,28 @@ namespace TextRPG_OOP_
                 Console.ResetColor();
             }
 
+            // Helper method to clear a specific position
+            private void ClearPosition(int x, int y)
+            {
+                if (x != -1 && y != -1) // Check if coordinates are valid
+                {
+                    Console.SetCursorPosition(y, x); // Set cursor to old position
+                    Console.ForegroundColor = ConsoleColor.Gray; // Assuming this is the color of the floor
+                    Console.BackgroundColor = ConsoleColor.Gray; // Assuming this is the color of the floor
+                    Console.Write(" "); // Clear the old position
+                    Console.ResetColor();
+                }
+            }
+
+
             private void ApplyEffect(Item item)
             {
-                switch (item.itemType)
-                {
-                    case "Coin":
-                        PlayerCoins += item.gainAmount;
-                        questManager.UpdateQuestProgress(questManager.questCollectCoins, item.gainAmount);
-                        uiManager.AddEventLogMessage($"Player collected coin");
-                        item.isCollected = true;
-                        break;
-                    case "Health":
-                        int previousHealth = healthSystem.health;
-                        if (healthSystem.health != healthSystem.maxHealth)
-                        {
-                            healthSystem.Heal(item.gainAmount);
-                            int healedAmount = healthSystem.health - previousHealth;
-                            uiManager.AddEventLogMessage($"Player healed {healedAmount}");
-                            item.isCollected = true;
-                        }
-                        else
-                            uiManager.AddEventLogMessage($"Cannot heal anymore");
-                        break;
-                    case "Armor":
-                        healthSystem.IncreaseArmor(item.gainAmount);
-                        uiManager.AddEventLogMessage($"Player gained {item.gainAmount} armor");
-                        item.isCollected = true;
-                        break;
-                    case "Sword":
-                        damage += item.gainAmount;
-                        uiManager.AddEventLogMessage($"Player gained {item.gainAmount} damage");
-                        item.isCollected = true;
-                        break;
-                    case "Spike":
-                        healthSystem.TakeDamage(item.gainAmount);
-                        uiManager.AddEventLogMessage($"{name} hurt by {item.itemType}, lost {item.gainAmount} health");
-                        break;
-                    default:
-                        Debug.WriteLine("Unknown item type.");
-                        break;
-                }
+                // You can check for the bought item state outside the individual item logic if needed.
+                if (boughtItem)
+                    uiManager.AddEventLogMessage($"Player spent {item.cost} coins for {item.itemType}");
+
+                item.Apply(this, uiManager, questManager);
+                boughtItem = false;
             }
         }
     }

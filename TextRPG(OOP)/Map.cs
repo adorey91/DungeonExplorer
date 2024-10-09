@@ -20,7 +20,7 @@ namespace TextRPG_OOP_
         private string[] mapTextFiles = new string[] { "Maps\\\\Floor1Map.txt", "Maps\\\\Floor2Map.txt", "Maps\\\\Floor3Map.txt", "Maps\\StoreMap.txt" };
         public int levelNumber = 0;
         private int previousLevel;
-        private int storeLevel = 3;
+        public int storeLevel = 3;
 
         public bool levelChange = false;
         public bool goToStore = false;
@@ -172,6 +172,7 @@ namespace TextRPG_OOP_
         {
             previousLevel = levelNumber;
             SetMapPath(storeLevel);
+            levelNumber = storeLevel;
             LoadMap();
             inStore = true;
         }

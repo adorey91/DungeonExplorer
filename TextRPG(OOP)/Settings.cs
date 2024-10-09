@@ -19,7 +19,7 @@ namespace TextRPG_OOP_
         public const char newStairsChar = (char)30;
         public const char startingPosition = '=';
 
-        // Settings for quest
+        // Settings for quests
         public static string questEnemyType = "Plasmoid";
         public static int questTargetCoin = 20;
         public static int questTargetEnemy1 = 7;
@@ -48,20 +48,29 @@ namespace TextRPG_OOP_
         public static int armorGain = 1;
         public static int spikeDamage = 3;
         public static int swordGain = 4;
+
+        // Color For Items
         public static ConsoleColor healthColor = ConsoleColor.Red;
         public static ConsoleColor coinColor = ConsoleColor.DarkYellow;
         public static ConsoleColor armorColor = ConsoleColor.DarkBlue;
         public static ConsoleColor finalLootColor = ConsoleColor.Yellow;
         public static ConsoleColor swordColor = ConsoleColor.DarkGreen;
         public static ConsoleColor spikeColor = ConsoleColor.Red;
+
+        // Characters for Items
         public const char healthChar = (char)3;
         public const char coinChar = (char)164;
         public const char armorChar = (char)21;
         public const char finalLootChar = (char)165;
         public const char spikeChar = (char)23;
         public const char swordChar = '+';
-        public static int healthCost = 7;
-        public static int armorCost = 8;
-        public static int swordCost = 10;
+
+        // Item Cost
+        //public static int healthCost = 7;
+        //public static int armorCost = 8;
+        //public static int swordCost = 10;
+        public static int healthCost = 1;
+        public static int armorCost = 1;
+        public static int swordCost = 1;
     }
 }

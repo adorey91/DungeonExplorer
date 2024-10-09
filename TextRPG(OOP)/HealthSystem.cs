@@ -41,7 +41,7 @@ namespace TextRPG_OOP_
         {
             if(Damage - armor <= 0)
             {
-                Debug.WriteLine("Armor is too hard to damage");
+                Debug.WriteLine(this + "Armor is too hard to damage");
             }
             else
             {

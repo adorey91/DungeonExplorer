@@ -32,6 +32,9 @@ namespace TextRPG_OOP_
             int rangeX = position.x - player.position.x;
             int rangeY = position.y - player.position.y;
 
+            prevX = position.x;
+            prevY = position.y;
+
             // Check if the player is within the chase range
             if (Math.Abs(rangeX) < ChaseRange && Math.Abs(rangeY) < ChaseRange)
             {
@@ -58,14 +61,14 @@ namespace TextRPG_OOP_
             // Check if the target position is within the bounds of the map
             if (!gameMap.IsWithinBounds(targetY, targetX))
             {
-                Debug.WriteLine($"Construct attempted to move out of bounds: ({targetY}, {targetX})");
+                //Debug.WriteLine($"Construct attempted to move out of bounds: ({targetY}, {targetX})");
                 return;
             }
 
             // Check if the target position is occupied by the player
             if (IsTileOccupiedByPlayer(targetY, targetX))
             {
-                Debug.WriteLine($"Construct attacked player at: ({targetY}, {targetX})");
+                //Debug.WriteLine($"Construct attacked player at: ({targetY}, {targetX})");
                 player.healthSystem.TakeDamage(damage);
                 uiManager.AddEventLogMessage($"{player.name} attacked by {enemyType}");
                 return; // Do not move into the player's position
@@ -74,7 +77,7 @@ namespace TextRPG_OOP_
             // Check if the target position is occupied by another enemy
             if (IsPositionOccupied(targetY, targetX, this))
             {
-                Debug.WriteLine($"Construct found an enemy at ({targetX}, {targetY}) and will do nothing.");
+                //Debug.WriteLine($"Construct found an enemy at ({targetX}, {targetY}) and will do nothing.");
                 return; // Do nothing if there's another enemy
             }
 
@@ -83,11 +86,11 @@ namespace TextRPG_OOP_
             {
                 position.x = targetX;
                 position.y = targetY;
-                Debug.WriteLine($"Construct moved to ({position.x}, {position.y})");
+                //Debug.WriteLine($"Construct moved to ({position.x}, {position.y})");
             }
             else
             {
-                Debug.WriteLine($"Construct attempted to move to an unwalkable tile: ({targetY}, {targetX})");
+                //Debug.WriteLine($"Construct attempted to move to an unwalkable tile: ({targetY}, {targetX})");
             }
         }
     }

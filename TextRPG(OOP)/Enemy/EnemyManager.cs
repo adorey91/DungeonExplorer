@@ -7,6 +7,7 @@ using TextRPG_OOP_.TextRPG_OOP_;
 internal class EnemyManager
 {
     public List<Enemy> enemies;
+    Dictionary<int, List<Enemy>> levelEnemies;
     public Map gameMap;
     private Random random;  // Shared Random instance
     public Player player;
@@ -17,6 +18,7 @@ internal class EnemyManager
 
     public EnemyManager()
     {
+        levelEnemies = new Dictionary<int, List<Enemy>>();
         enemies = new List<Enemy>();
         random = new Random();  // Instantiate Random once
     }
@@ -33,9 +35,13 @@ internal class EnemyManager
 
     public void AddEnemies()
     {
-        AddEnemiesToList("Plasmoid", gameMap.levelNumber, player);
-        AddEnemiesToList("GoblinFolk", gameMap.levelNumber, player);
-        AddEnemiesToList("Construct", gameMap.levelNumber, player);
+        if(!levelEnemies.ContainsKey(gameMap.levelNumber))
+        {
+            levelEnemies[gameMap.levelNumber] = new List<Enemy>();
+            AddEnemiesToList("Plasmoid", gameMap.levelNumber, player);
+            AddEnemiesToList("GoblinFolk", gameMap.levelNumber, player);
+            AddEnemiesToList("Construct", gameMap.levelNumber, player);
+        }
     }
 
     private void AddEnemiesToList(string type, int levelNumber, Player player)
@@ -43,13 +49,13 @@ internal class EnemyManager
         List<Position> enemyPositions = new List<Position>();
 
         // Find positions for each type of enemy
-        if (type == "Plasmoid")
-            enemyPositions = gameMap.FindPositionsByChar('!');  // Find all '!' positions for Plasmoid
-        else if (type == "GoblinFolk")
-            enemyPositions = gameMap.FindPositionsByChar('&');  // Find all '&' positions for GoblinFolk
-        else if (type == "Construct")
-            enemyPositions = gameMap.FindPositionsByChar('?');  // Find all '?' positions for Construct
-
+        switch(type)
+        {
+            case "Plasmoid": enemyPositions = gameMap.FindPositionsByChar('!'); break;  // Find all '!' positions for Plasmoid 
+            case "GoblinFolk": enemyPositions = gameMap.FindPositionsByChar('&'); break; // Find all '&' positions for GoblinFolk
+            case "Construct": enemyPositions = gameMap.FindPositionsByChar('?'); break; // Find all '?' positions for Construct
+        }
+        
         // If no positions are found, skip spawning that enemy type
         if (enemyPositions.Count == 0)
         {
@@ -61,19 +67,17 @@ internal class EnemyManager
         foreach (var pos in enemyPositions)
         {
             Enemy enemy = null;
-
-            if (type == "Plasmoid")
-                enemy = new Plasmoid(RandomConsoleColor(), random, gameManager);
-            else if (type == "GoblinFolk")
-                enemy = new GoblinFolk(RandomConsoleColor(), random, gameManager);
-            else if (type == "Construct")
-                enemy = new Construct(RandomConsoleColor(), random, gameManager);
+            switch (type)
+            {
+                case "Plasmoid": enemy = new Plasmoid(RandomConsoleColor(), random, gameManager); break;  // Find all '!' positions for Plasmoid 
+                case "GoblinFolk": enemy = new GoblinFolk(RandomConsoleColor(), random, gameManager); break; // Find all '&' positions for GoblinFolk
+                case "Construct": enemy = new Construct(RandomConsoleColor(), random, gameManager); break;
+            }
 
             if (enemy != null)
             {
                 enemy.position = pos;  // Set enemy's starting position from map
-                enemies.Add(enemy);  // Add to enemy list
-                                     //Debug.WriteLine($"{type} enemy added at ({pos.x}, {pos.y}) with name {enemy.name}");
+                levelEnemies[levelNumber].Add(enemy);  // Add to enemy list
             }
         }
     }
@@ -83,15 +87,13 @@ internal class EnemyManager
     {
         if (gameMap.levelChange)
         {
-            enemies.Clear();
-
             AddEnemies();
         }
         else if (!gameMap.inStore)
         {
             List<Enemy> enemiesToRemove = new List<Enemy>(); // List to track enemies to be removed
 
-            foreach (var enemy in enemies)
+            foreach (var enemy in levelEnemies[gameMap.levelNumber])
             {
                 if (enemy.healthSystem.IsAlive)
                 {
@@ -120,10 +122,16 @@ internal class EnemyManager
     {
         if (!gameMap.inStore)
         {
-            foreach (var enemy in enemies)
+            foreach (var enemy in levelEnemies[gameMap.levelNumber])
             {
                 if (enemy.healthSystem.IsAlive)
                 {
+                    // Clear the old position
+                    if (enemy.prevX != enemy.position.x || enemy.prevY != enemy.position.y)
+                    {
+                        ClearPrevious(enemy.prevX, enemy.prevY);
+                    }
+
                     Console.SetCursorPosition(enemy.position.y, enemy.position.x);
                     Console.ForegroundColor = enemy.avatarColor;  // Set enemy's avatar color
                     Console.BackgroundColor = ConsoleColor.Gray;
@@ -133,6 +141,15 @@ internal class EnemyManager
                 }
             }
         }
+    }
+
+    private void ClearPrevious(int prevX, int prevY)
+    {
+        Console.SetCursorPosition(prevY, prevX); // Correct order: Set cursor to old position
+        Console.ForegroundColor = ConsoleColor.Gray; // Assuming this is the color of the floor
+        Console.BackgroundColor = ConsoleColor.Gray; // Assuming this is the color of the floor
+        Console.Write("-"); // Clear the old position
+        Console.ResetColor();
     }
 
     public ConsoleColor RandomConsoleColor()
@@ -157,11 +174,16 @@ internal class EnemyManager
     // Method to get the enemy at a specific position
     public Enemy GetEnemyAtPosition(int x, int y)
     {
-        foreach (var enemy in enemies)
+        if (levelEnemies.ContainsKey(gameMap.levelNumber))
         {
-            if ((enemy.position.x == x && enemy.position.y == y) && enemy.healthSystem.IsAlive)
+            // Get the list of items for the current level
+            var itemsAtCurrentLevel = levelEnemies[gameMap.levelNumber];
+            foreach (var enemy in levelEnemies[gameMap.levelNumber])
             {
-                return enemy; // Return the enemy at the position
+                if ((enemy.position.x == x && enemy.position.y == y) && enemy.healthSystem.IsAlive)
+                {
+                    return enemy; // Return the enemy at the position
+                }
             }
         }
         return null; // No enemy at the position

@@ -29,6 +29,7 @@ namespace TextRPG_OOP_
 
         public void Initialize(GameManager gameManager)
         {
+            this.gameManager = gameManager;
             player = gameManager.player;
             gameMap = gameManager.gameMap;
             questManager = gameManager.questManager;

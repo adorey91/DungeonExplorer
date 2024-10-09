@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
 using System.Diagnostics;
 using TextRPG_OOP_.TextRPG_OOP_;
@@ -17,16 +13,13 @@ namespace TextRPG_OOP_
         public ItemManager itemManager;
         public UIManager uiManager;
         public QuestManager questManager;
-        public Store store;
 
 
         private void StartUp()
         {
             Console.CursorVisible = false;
             //Debug.WriteLine("Setting Up characters");
-
             Initialize();
-
         }
 
         private void EndGame()
@@ -88,7 +81,6 @@ namespace TextRPG_OOP_
             itemManager = new ItemManager();
             enemyManager = new EnemyManager();
             questManager = new QuestManager(this);
-            store = new Store();
 
             // Initialize player after UIManager and other managers are set up
             player = new Player(this);
@@ -116,6 +108,7 @@ namespace TextRPG_OOP_
             {
                 player.Initialize();
                 Debug.WriteLine("Player should be at position of start");
+                gameMap.Draw();
                 gameMap.levelChange = false;
                 gameMap.goToStore = false;
             }
@@ -123,7 +116,7 @@ namespace TextRPG_OOP_
 
         private void Draw()
         {
-            gameMap.Draw();
+            //gameMap.Draw();
             enemyManager.Draw();
             itemManager.Draw();
             uiManager.Draw();

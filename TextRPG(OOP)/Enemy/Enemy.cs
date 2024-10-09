@@ -8,9 +8,11 @@ namespace TextRPG_OOP_
     {
 
         public int maxHP;
-        public int enemyNumber;
         public int enemyMaxX;
         public int enemyMaxY;
+        public int prevX;
+        public int prevY;
+
         public string enemyType;
         public int levelNumber;
         public ConsoleColor avatarColor;
@@ -65,13 +67,11 @@ namespace TextRPG_OOP_
                     return true; // Position is occupied by another enemy
             }
 
-            // Check if there's an item in the position
-            foreach (var item in itemManager.items)
-            {
-                if (!item.isCollected && (item.position.x == x && item.position.y == y))
-                    return true; // Position is occupied by an item
-            }
-
+            // Check if there's an item in the position using GetItemAtPosition
+            Item itemAtPosition = itemManager.GetItemAtPosition(x, y); // Call to GetItemAtPosition
+            if (itemAtPosition != null && !itemAtPosition.isCollected)
+                return true; // Position is occupied by an item
+            
             return false; // Position is free
         }
     }
