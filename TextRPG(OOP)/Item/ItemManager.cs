@@ -82,7 +82,7 @@ namespace TextRPG_OOP_
 
         public void Update()
         {
-            if (gameMap.levelChange)
+            if (gameMap.changeLevel)
             {
                 AddItems();
             }

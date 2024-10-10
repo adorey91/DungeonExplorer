@@ -70,6 +70,7 @@ namespace TextRPG_OOP_
             if (itemAtPosition != null && !itemAtPosition.isCollected)
                 return true; // Position is occupied by an item
             
+            
             return false; // Position is free
         }
     }

@@ -17,7 +17,7 @@ namespace TextRPG_OOP_
 
         public override void Apply(Player player, UIManager uiManager, QuestManager questManager)
         {
-            player.GameWon = true;
+            isCollected = true;
         }
     }
 }

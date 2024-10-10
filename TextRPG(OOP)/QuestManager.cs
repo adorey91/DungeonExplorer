@@ -12,7 +12,8 @@ namespace TextRPG_OOP_
         public GameManager gameManager;
         public string questCollectCoins = $"Collect {Settings.questTargetCoin} coins";
         public string questKillEnemyType = $"Kill {Settings.questTargetEnemy1} {Settings.questEnemyType}";
-        public string questKillEnemies = $"Kill {Settings.questTargetEnemy2} enemies";
+        public string questKillEnemyType2 = $"Kill {Settings.questTargetEnemy2} {Settings.questEnemyType2}";
+        public string questKillEnemies = $"Kill {Settings.questTargetMulti} enemies";
         
         public QuestManager(GameManager gameManager)
         {
@@ -21,9 +22,12 @@ namespace TextRPG_OOP_
         {
             new Quest(questCollectCoins, Settings.questTargetCoin, gameManager), // Collect coins quest
             new Quest(questKillEnemyType, Settings.questTargetEnemy1, gameManager),    // Kill specific enemy quest
-            new Quest(questKillEnemies, Settings.questTargetEnemy2, gameManager)   // Kill more enemies quest
+            new Quest(questKillEnemyType2 , Settings.questTargetEnemy2, gameManager), // kill other specific enemy quest
+            new Quest(questKillEnemies, Settings.questTargetMulti, gameManager)   // Kill more enemies quest
         };
         }
+
+ 
 
         public void UpdateQuestProgress(string questDescription, int amount)
         {
@@ -31,6 +35,22 @@ namespace TextRPG_OOP_
             if (quest != null && !quest.IsCompleted) // Prevent updating if completed
             {
                 quest.UpdateProgress(amount);
+                CheckAllQuests();
+            }
+        }
+
+        private void CheckAllQuests()
+        {
+            int count = 0;
+            foreach (var quest in quests)
+            {
+                if (quest.IsCompleted)
+                    count++;
+                if (count == quests.Count)
+                {
+                    gameManager.GameOver = true;
+                    gameManager.GameWon = true;
+                }
             }
         }
 
@@ -39,12 +59,7 @@ namespace TextRPG_OOP_
             Console.WriteLine("Quest Status: ");
             foreach (var quest in quests)
             {
-                // Clear the line by moving the cursor and overwriting with spaces
-               // Console.SetCursorPosition(0, Console.CursorTop);
-               // Console.Write(new string(' ', Console.WindowWidth));
-                //Console.SetCursorPosition(0, Console.CursorTop - 1);
-
-                // Check if the quest is completed and apply strikethrough
+               // Check if the quest is completed and apply strikethrough
                 if (quest.IsCompleted)
                 {
                     Console.Write($"{quest.Description} - Completed");

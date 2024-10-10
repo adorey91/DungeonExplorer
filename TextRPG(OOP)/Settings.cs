@@ -13,6 +13,7 @@ namespace TextRPG_OOP_
     {
         // Settings for map char
         public const char storeChar = 'S';
+        public const char storeFloor = '%';
         public const char dungeonWall = '#';
         public const char dungeonFloor = '-';
         public const char stairs = '~';
@@ -21,33 +22,35 @@ namespace TextRPG_OOP_
 
         // Settings for quests
         public static string questEnemyType = "Plasmoid";
+        public static string questEnemyType2 = "Construct";
         public static int questTargetCoin = 20;
-        public static int questTargetEnemy1 = 7;
-        public static int questTargetEnemy2 = 20;
+        public static int questTargetEnemy1 = 20;
+        public static int questTargetEnemy2 = 10;
+        public static int questTargetMulti = 30;
 
         //Base values for enemy stats. 
         public static int PlasmoidBaseHP = 3;
-        public static int PlasmoidBaseDamage = 0;
+        public static int PlasmoidBaseDamage = 1;
         public const char PlasmoidChar = (char)4;
         public static int ConstructBaseHP = 3;
-        public static int ConstructBaseDamage = 0;
+        public static int ConstructBaseDamage = 2;
         public const char ConstructChar = (char)5;
         public static int GoblinFolkBaseHP = 3;
-        public static int GoblinFolkBaseDamage = 0;
+        public static int GoblinFolkBaseDamage = 4;
         public const char GoblinFolkChar = (char)6;
 
         // base value for player stats
-        public static int playerMaxHP = 10;
+        public static int playerMaxHP = 15;
         public static int playerStartingCoins = 0;
         public static int PlayerBaseDamage = 1;
-        public static string playerName = "Koal";
+        public static string playerName = "Guard";
 
         // base values for items
-        public static int healthGain = 5;
+        public static int healthGain = 3;
         public static int coinGain = 1;
         public static int armorGain = 1;
         public static int spikeDamage = 3;
-        public static int swordGain = 4;
+        public static int swordGain = 2;
 
         // Color For Items
         public static ConsoleColor healthColor = ConsoleColor.Red;

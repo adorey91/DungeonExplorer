@@ -26,7 +26,7 @@ namespace TextRPG_OOP_
             {
                 player.healthSystem.Heal(gainAmount);
                 int healedAmount = player.healthSystem.health - previousHealth;
-                uiManager.AddEventLogMessage($"Player healed {healedAmount}");
+                uiManager.AddEventLogMessage($"{player.name} healed {healedAmount}");
                 if (!player.boughtItem)
                     isCollected = true;
             }

@@ -13,6 +13,8 @@ namespace TextRPG_OOP_
         public ItemManager itemManager;
         public UIManager uiManager;
         public QuestManager questManager;
+        public bool GameOver;
+        public bool GameWon;
 
 
         private void StartUp()
@@ -26,7 +28,7 @@ namespace TextRPG_OOP_
         {
             string FormatString = "You had {0} coins, {1} armor, and {2} HP remaining!";
             //Debug.WriteLine("EndingGame");
-            if (player.GameIsOver && player.GameWon == true)
+            if (GameOver && GameWon)
             {
                 Debug.WriteLine("Player won");
                 Thread.Sleep(2000);
@@ -39,7 +41,7 @@ namespace TextRPG_OOP_
                 Thread.Sleep(3000);
                 Environment.Exit(0);
             }
-            if (player.GameIsOver && player.GameWon != true)
+            if (GameOver && !GameWon)
             {
                 Debug.WriteLine("Player lost");
                 Thread.Sleep(2000);
@@ -61,7 +63,7 @@ namespace TextRPG_OOP_
             // Verify that enemies exist
             Debug.WriteLine($"Total Enemies Spawned: {enemyManager.levelEnemies[gameMap.levelNumber].Count}");
 
-            while (!player.GameIsOver && !player.GameWon)
+            while (!GameOver && !GameWon)
             {
                 Console.CursorVisible = false;
                 CheckPlayerCondition();
@@ -104,13 +106,12 @@ namespace TextRPG_OOP_
             enemyManager.Update();
             itemManager.Update();
 
-            if(gameMap.levelChange || gameMap.goToStore)
+            if(gameMap.changeLevel)
             {
                 player.Initialize();
                 Debug.WriteLine("Player should be at position of start");
                 gameMap.Draw();
-                gameMap.levelChange = false;
-                gameMap.goToStore = false;
+                gameMap.changeLevel = false;
             }
         }
 
@@ -134,11 +135,8 @@ namespace TextRPG_OOP_
 
         private void CheckPlayerCondition()
         {
-            //Debug.WriteLine("Checking player");
-            //if(player.healthSystem.IsAlive == false)
-            //{
-            //    player.GameIsOver = true;
-            //}
+            if (player.healthSystem.IsAlive == false)
+                GameOver = true;
         }
 
 

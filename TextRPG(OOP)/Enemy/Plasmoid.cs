@@ -20,7 +20,7 @@ namespace TextRPG_OOP_
             : base(color, sharedRandom, gameManager)
         {
             enemyType = "Plasmoid";
-            damage = 1;
+            damage = Settings.PlasmoidBaseDamage;
             avatar = Settings.PlasmoidChar;
             healthSystem = new HealthSystem();
             healthSystem.SetHealth(Settings.PlasmoidBaseHP);
@@ -45,44 +45,32 @@ namespace TextRPG_OOP_
         // This method will draw the position if they can.
         private void Move(int dx, int dy, Map gameMap)
         {
-            // Calculate target position based on the move direction (dx, dy)
             int targetX = position.x + dx; // New X position
             int targetY = position.y + dy; // New Y position
 
             // Check if the target position is within the bounds of the map && the tile is walkable
             if (gameMap.IsWithinBounds(targetY, targetX) && gameMap.IsWalkable(targetY, targetX))
             {
-                // Check if the target position is occupied by the player
                 if (IsTileOccupiedByPlayer(targetY, targetX))
                 {
                     // If the tile is occupied by the player, attack the player
                     player.healthSystem.TakeDamage(damage);
-                    uiManager.AddEventLogMessage($"{player.name} attacked by {enemyType}");
-                    //Debug.WriteLine($"{enemyType} attacked player at position ({targetY}, {targetX})");
+                    if (player.healthSystem.wasHurt)
+                    {
+                        uiManager.AddEventLogMessage($"{enemyType} attacked {player.name}");
+                        player.healthSystem.wasHurt = false;
+                    }
+                    else
+                        uiManager.AddEventLogMessage($"{player.name}'s armor is too strong for {enemyType}");
                 }
                 // Check if the position is occupied by another enemy or an item
-                else if (!IsPositionOccupied(targetY, targetX, this))
+                else if (!IsPositionOccupied(targetY, targetX, this) && !gameMap.isInStore(targetY, targetX))
                 {
-                    prevX = position.x;
-                    prevY = position.y;
-
                     // If the position is free, update the enemy's position
                     position.x = targetX;
                     position.y = targetY;
-                    //Debug.WriteLine($"{enemyType} moved to ({targetY}, {targetX})");
-                }
-                else
-                {
-                    // If the position is occupied by an item or another enemy
-                    //Debug.WriteLine($"Position ({targetY}, {targetX}) is occupied by an item or another enemy.");
                 }
             }
-            //else
-            //{
-            //    Debug.WriteLine($"Plasmoid attempted to move out of bounds: ({targetY}, {targetX})");
-            //}
         }
-
-
     }
 }

@@ -21,9 +21,10 @@ namespace TextRPG_OOP_
         public override void Apply(Player player, UIManager uiManager, QuestManager questManager)
         {
             player.damage += gainAmount;
-            uiManager.AddEventLogMessage($"Player gained {gainAmount} damage");
+            uiManager.AddEventLogMessage($"{player.name} gained {gainAmount} damage");
             if(!player.boughtItem)
                 isCollected = true;
+
         }
     }
 }

@@ -27,8 +27,6 @@ namespace TextRPG_OOP_
             private int prevY;
             public int PlayerCoins;
             public ConsoleKeyInfo PlayerInput;
-            public bool GameIsOver = false;
-            public bool GameWon = false;
             private Map map;
             private EnemyManager enemyManager; // Reference to EnemyManager
             private ItemManager itemManager; // references to itemManager
@@ -42,8 +40,6 @@ namespace TextRPG_OOP_
                 this.GameManager = gameManager;
 
                 avatar = (char)2; // Sets player to smiley face
-                GameIsOver = false;
-                GameWon = false;
 
                 damage = Settings.PlayerBaseDamage; // sets damage with the player base from settings
                 healthSystem = new HealthSystem();  // creates new health system for player
@@ -72,7 +68,7 @@ namespace TextRPG_OOP_
             {
                 GetPlayerInput();
                 HandleMovement(dirX, dirY);
-                if (map.levelChange || map.goToStore)
+                if (map.changeLevel)
                     map.FindPlayerStartPosition();
             }
 
@@ -132,19 +128,23 @@ namespace TextRPG_OOP_
                     //Debug.WriteLine(enemy.name);
                     //Debug.WriteLine($"Enemy encountered at ({newX}, {newY})");
                     enemy.healthSystem.TakeDamage(damage); // Use the player's damage value
-                    uiManager.AddEventLogMessage($"{name} attacked {enemy.enemyType}");
+                    if(enemy.healthSystem.wasHurt)
+                    {
+                        uiManager.AddEventLogMessage($"{name} attacked {enemy.enemyType}");
+                        enemy.healthSystem.wasHurt = false;
+                    }
+                    else
+                        uiManager.AddEventLogMessage($"{name}'s armor is too strong for {name}");
+
                     return; // player doesn't move if there's an enemy
                 }
                 else if (item != null)
                 {
-                    if (!map.inStore)
+                    if (!map.isInStore(position.y, position.x))
                     {
                         ApplyEffect(item);
-                        if (item.itemType == "Spike")
-                        {
                             position.x = newX;
                             position.y = newY;
-                        }
                     }
                     else
                     {
@@ -152,29 +152,27 @@ namespace TextRPG_OOP_
                         {
                             if (item.itemType == "Health" && healthSystem.health == healthSystem.maxHealth)
                             {
-                                uiManager.AddEventLogMessage($"{name} spent {item.cost} coins for {item.itemType}");
+                                uiManager.AddEventLogMessage($"{name} doesn't need health");
                             }
                             else
                             {
                                 uiManager.AddEventLogMessage($"{name} spent {item.cost} coins for {item.itemType}");
+                                boughtItem = true;
                                 ApplyEffect(item);
                                 PlayerCoins -= item.cost;
                             }
                         }
                         else
-                            uiManager.AddEventLogMessage($"{name} cannot afford {item}, it cost {item.cost} coins");
+                            uiManager.AddEventLogMessage($"{name} cannot afford {item.itemType}, it cost {item.cost} coins");
                     }
                 }
                 else
                 {
                     if (map.IsStairs(newY, newX))
                     {
-                        map.levelChange = true;
+                        map.changeLevel = true;
                     }
-                    else if (map.IsStore(newY, newX))
-                    {
-                        map.goToStore = true;
-                    }
+
                     // Proceed with movement if there's no enemy and the tile is walkable
                     else if (map.IsWithinBounds(newY, newX) && map.IsWalkable(newY, newX))
                     {
@@ -184,12 +182,7 @@ namespace TextRPG_OOP_
                         // Update player position
                         position.x = newX;
                         position.y = newY;
-                        //Debug.WriteLine($"Moved to: x={position.x}, y={position.y}");
                     }
-                    //else
-                    //{
-                    //    Debug.WriteLine("No movement");
-                    //}
                 }
             }
 
@@ -211,6 +204,7 @@ namespace TextRPG_OOP_
             private void ApplyEffect(Item item)
             {
                 item.Apply(this, uiManager, questManager);
+                boughtItem = false;
             }
         }
     }

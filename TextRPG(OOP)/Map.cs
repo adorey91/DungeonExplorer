@@ -22,8 +22,7 @@ namespace TextRPG_OOP_
         private int previousLevel;
         public int storeLevel = 3;
 
-        public bool levelChange = false;
-        public bool goToStore = false;
+        public bool changeLevel = false;
         public bool inStore = false;
 
         public bool foundstart;
@@ -41,13 +40,9 @@ namespace TextRPG_OOP_
 
         public void Update()
         {
-            if (levelChange)
+            if (changeLevel)
             {
                 ChangeLevel();
-            }
-            else if (goToStore)
-            {
-                GoToStore();
             }
         }
 
@@ -117,6 +112,7 @@ namespace TextRPG_OOP_
             {
                 case Settings.dungeonWall: DrawColorTile(ConsoleColor.DarkGray, ConsoleColor.DarkGray, tile); break;
                 case Settings.dungeonFloor: DrawColorTile(ConsoleColor.Gray, ConsoleColor.Gray, tile); break;
+                case Settings.storeFloor: DrawColorTile(ConsoleColor.Gray, ConsoleColor.Gray, tile); break;
                 case Settings.startingPosition: foundstart = true; DrawColorTile(ConsoleColor.Gray, ConsoleColor.Gray, tile); break;
                 case Settings.stairs: DrawColorTile(ConsoleColor.DarkGray, ConsoleColor.Gray, Settings.newStairsChar); break;
                 case Settings.storeChar: DrawColorTile(ConsoleColor.Red, ConsoleColor.DarkGray, tile); break;
@@ -159,25 +155,12 @@ namespace TextRPG_OOP_
 
         public void ChangeLevel()
         {
-            if (inStore)
-                levelNumber = previousLevel;
-            else
-                levelNumber++;
-
+            levelNumber++;
             SetMapPath(levelNumber);
             LoadMap();
         }
 
-        public void GoToStore()
-        {
-            previousLevel = levelNumber;
-            SetMapPath(storeLevel);
-            levelNumber = storeLevel;
-            LoadMap();
-            inStore = true;
-        }
-
-        #region ChecksForMap
+       #region ChecksForMap
         public bool IsWithinBounds(int x, int y)
         {
             return x >= 0 && x < activeMap.GetLength(1) && y >= 0 && y < activeMap.GetLength(0);
@@ -185,8 +168,12 @@ namespace TextRPG_OOP_
 
         public bool IsWalkable(int x, int y)
         {
-
             return activeMap[y, x] != Settings.dungeonWall;
+        }
+
+        public bool isInStore(int x, int y)
+        {
+            return activeMap[y,x] == Settings.storeFloor;
         }
 
         public bool IsStairs(int x, int y)
@@ -194,10 +181,12 @@ namespace TextRPG_OOP_
             return activeMap[y, x] == Settings.stairs;
         }
 
-        public bool IsStore(int x, int y)
+        public char GetTile(int x, int y)
         {
-            return activeMap[y, x] == Settings.storeChar;
+                return activeMap[y, x];  // Return the tile at the specified position
         }
+
+
 
         /// <summary>
         /// Finds starting positions for items, enemies & map

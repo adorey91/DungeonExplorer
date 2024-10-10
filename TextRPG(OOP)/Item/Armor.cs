@@ -22,7 +22,7 @@ namespace TextRPG_OOP_
         public override void Apply(Player player, UIManager uiManager, QuestManager questManager)
         {
             player.healthSystem.IncreaseArmor(gainAmount);
-            uiManager.AddEventLogMessage($"Player gained {gainAmount} armor");
+            uiManager.AddEventLogMessage($"{player.name} gained {gainAmount} armor");
             if (!player.boughtItem)
                 isCollected = true;
         }

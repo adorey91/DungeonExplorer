@@ -83,7 +83,7 @@ internal class EnemyManager
 
     public void Update()
     {
-        if (gameMap.levelChange)
+        if (gameMap.changeLevel)
         {
             AddEnemies();
         }
@@ -101,6 +101,8 @@ internal class EnemyManager
                     {
                         if (enemy.enemyType == Settings.questEnemyType)
                             questManager.UpdateQuestProgress(questManager.questKillEnemyType, 1); // update enemy type kill quest
+                        if (enemy.enemyType == Settings.questEnemyType2)
+                            questManager.UpdateQuestProgress(questManager.questKillEnemyType2, 1); // update enemy type kill quest 2
                         questManager.UpdateQuestProgress(questManager.questKillEnemies, 1); // Update all enemies kill quest
                         uiManager.AddEventLogMessage($"You killed {enemy.enemyType}");
                         enemy.beenCounted = true;
@@ -119,12 +121,6 @@ internal class EnemyManager
             {
                 if (enemy.healthSystem.IsAlive)
                 {
-                    // Clear the old position
-                    if (enemy.prevX != enemy.position.x || enemy.prevY != enemy.position.y)
-                    {
-                        ClearPrevious(enemy.prevX, enemy.prevY);
-                    }
-
                     Console.SetCursorPosition(enemy.position.y, enemy.position.x);
                     Console.ForegroundColor = enemy.avatarColor;  // Set enemy's avatar color
                     Console.BackgroundColor = ConsoleColor.Gray;
@@ -136,14 +132,6 @@ internal class EnemyManager
         }
     }
 
-    private void ClearPrevious(int prevX, int prevY)
-    {
-        Console.SetCursorPosition(prevY, prevX); // Correct order: Set cursor to old position
-        Console.ForegroundColor = ConsoleColor.Gray; // Assuming this is the color of the floor
-        Console.BackgroundColor = ConsoleColor.Gray; // Assuming this is the color of the floor
-        Console.Write("-"); // Clear the old position
-        Console.ResetColor();
-    }
 
     public ConsoleColor RandomConsoleColor()
     {

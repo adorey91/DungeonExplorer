@@ -21,7 +21,7 @@ namespace TextRPG_OOP_
         {
             player.PlayerCoins += gainAmount;
             questManager.UpdateQuestProgress(questManager.questCollectCoins, gainAmount);
-            uiManager.AddEventLogMessage("Player collected coin");
+            uiManager.AddEventLogMessage($"{player.name} collected coin");
             isCollected = true;
         }
     }

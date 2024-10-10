@@ -16,7 +16,8 @@ namespace TextRPG_OOP_
         public int health;
         public int maxHealth;
         public int armor;
-        public bool IsAlive;
+        public bool IsAlive = true;
+        public bool wasHurt;
         
 
         /// <summary>
@@ -39,14 +40,19 @@ namespace TextRPG_OOP_
         /// <param name="Damage"></param>
         public void TakeDamage(int Damage) //Damage taking system.
         {
-            if(Damage - armor <= 0)
+            int effectiveDamage = Math.Max(Damage - armor, 0);
+
+            if (effectiveDamage == 0)
             {
-                Debug.WriteLine(this + "Armor is too hard to damage");
+                Debug.WriteLine("Armor is too hard to damage");
+                return;
             }
             else
             {
-                health -= Damage - armor;
-                if(health <= 0 )
+                health -= effectiveDamage;
+                wasHurt = true;
+
+                if(health <= 0)
                 {
                     health = 0;
                     IsAlive = false;

@@ -18,7 +18,7 @@ namespace TextRPG_OOP_
         public GoblinFolk(ConsoleColor color, Random sharedRandom, GameManager gameManager) : base(color, sharedRandom, gameManager)
         {
             enemyType = "GoblinFolk";
-            damage = 2;
+            damage = Settings.GoblinFolkBaseDamage;
             avatar = Settings.GoblinFolkChar;  // ASCII character for Goblin
             healthSystem = new HealthSystem();
             healthSystem.SetHealth(Settings.GoblinFolkBaseHP);
@@ -69,27 +69,21 @@ namespace TextRPG_OOP_
             {
                 // Attack player if Goblin tries to move into the player's position
                 player.healthSystem.TakeDamage(damage);
-                uiManager.AddEventLogMessage($"{player.name} attacked by {enemyType}");
+                if (player.healthSystem.wasHurt)
+                {
+                    uiManager.AddEventLogMessage($"{enemyType} attacked {player.name}");
+                    player.healthSystem.wasHurt = false;
+                }
+                else
+                    uiManager.AddEventLogMessage($"{player.name}'s armor is too strong for {enemyType}");
                 return; // Do not move into the player's position
             }
 
-            // Check if the target position is occupied by another enemy
-            if (IsPositionOccupied(targetY, targetX, this))
+            else if (!IsPositionOccupied(targetY, targetX, this) && !gameMap.isInStore(targetY, targetX))
             {
-                //Debug.WriteLine($"Goblin found another enemy at ({targetX}, {targetY}) and will do nothing.");
-                return; // Do nothing if there's another enemy
-            }
-
-            // If the target position is walkable, update the position
-            if (gameMap.IsWalkable(targetY, targetX))
-            {
+                // If the position is free, update the enemy's position
                 position.x = targetX;
                 position.y = targetY;
-                //Debug.WriteLine($"Goblin moved to ({position.x}, {position.y})");
-            }
-            else
-            {
-                //Debug.WriteLine($"Goblin attempted to move to an unwalkable tile: ({targetY}, {targetX})");
             }
         }
     }

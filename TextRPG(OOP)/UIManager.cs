@@ -66,11 +66,15 @@ namespace TextRPG_OOP_
             Console.WriteLine("Welcome to Dungeon Explorer!"); // placeholderTitle
             Console.WriteLine();
 
-            Console.Write("Escape the dungeon and climb to the 2nd floor to find the chalace. ");
-            //DisplayChar(Settings.finalLootChar, "Final Loot");
-            Console.ResetColor();
+            //Console.Write("Escape the dungeon and climb to the 2nd floor to find the chalace. ");
+            ////DisplayChar(Settings.finalLootChar, "Final Loot");
+            //Console.ResetColor();
+            //Console.WriteLine();
+
+            Console.Write("Complete the quests to escape the dungeon but beware, \nif you go to a new floor you can't turn back!");
             Console.WriteLine();
 
+            Console.WriteLine();
             Console.Write("Collect coins ");
             Console.ForegroundColor = Settings.coinColor; // change the color for coins\
             Console.Write(Settings.coinChar);
@@ -91,7 +95,9 @@ namespace TextRPG_OOP_
             Console.ResetColor();
             Console.WriteLine(" to up your defense.");
 
+            Console.WriteLine();
             Console.Write("Avoid or fight the monsters!");
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("Press any key to get started!");
@@ -108,22 +114,32 @@ namespace TextRPG_OOP_
 
             // Determine the number of blank lines needed based on the count of event messages
             int blankLinesToPrint = Math.Max(2 - eventMessages.Count, 0); // Maximum of 2 - current count, ensuring it's not negative
+
             // Print the required number of blank lines
             for (int i = 0; i < blankLinesToPrint; i++)
             {
                 Console.WriteLine(); // Print a blank line
             }
 
-            // Print existing event messages
+            int currentCursorTop = Console.CursorTop;
+
             foreach (var message in eventMessages)
             {
-                // Clear the line by moving the cursor and overwriting with spaces
-                Console.SetCursorPosition(0, Console.CursorTop); // Move to the start of the current line
-                Console.Write(new string(' ', Console.WindowWidth)); // Clear the line with spaces
-                Console.SetCursorPosition(0, Console.CursorTop); // Move back to the start of the line
-                Console.WriteLine(message); // Write the event message
+                // Move the cursor to the start of the message's line
+                Console.SetCursorPosition(0, currentCursorTop);
+                // Clear the current line by overwriting it with spaces
+                Console.Write(new string(' ', Console.WindowWidth));
+                // Move the cursor back to the start of the line to print the new message
+                Console.SetCursorPosition(0, currentCursorTop);
+
+                // Write the event message
+                Console.WriteLine(message);
+
+                // Move cursor to the next line for the next message
+                currentCursorTop++;
             }
         }
+
 
         /// <summary>
         /// Shows current player stats
