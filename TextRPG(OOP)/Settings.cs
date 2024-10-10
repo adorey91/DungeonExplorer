@@ -66,11 +66,11 @@ namespace TextRPG_OOP_
         public const char swordChar = '+';
 
         // Item Cost
-        //public static int healthCost = 7;
-        //public static int armorCost = 8;
-        //public static int swordCost = 10;
-        public static int healthCost = 1;
-        public static int armorCost = 1;
-        public static int swordCost = 1;
+        public static int healthCost = 7;
+        public static int armorCost = 8;
+        public static int swordCost = 10;
+        //public static int healthCost = 1;
+        //public static int armorCost = 1;
+        //public static int swordCost = 1;
     }
 }

@@ -121,7 +121,7 @@ namespace TextRPG_OOP_
                 int newX = position.x + moveX;
                 int newY = position.y + moveY;
 
-        
+
 
                 // Check if the player is attempting to move into an enemy
                 Enemy enemy = enemyManager.GetEnemyAtPosition(newX, newY);
@@ -150,10 +150,19 @@ namespace TextRPG_OOP_
                     {
                         if (PlayerCoins >= item.cost)
                         {
-                            boughtItem = true;
-                            ApplyEffect(item);
-                            PlayerCoins -= item.cost;
+                            if (item.itemType == "Health" && healthSystem.health == healthSystem.maxHealth)
+                            {
+                                uiManager.AddEventLogMessage($"{name} spent {item.cost} coins for {item.itemType}");
+                            }
+                            else
+                            {
+                                uiManager.AddEventLogMessage($"{name} spent {item.cost} coins for {item.itemType}");
+                                ApplyEffect(item);
+                                PlayerCoins -= item.cost;
+                            }
                         }
+                        else
+                            uiManager.AddEventLogMessage($"{name} cannot afford {item}, it cost {item.cost} coins");
                     }
                 }
                 else
@@ -190,9 +199,6 @@ namespace TextRPG_OOP_
             /// </summary>
             public void Draw()
             {
-                // Clear the old position
-                ClearPosition(prevX, prevY);
-
                 // Draw the player in the new position
                 Console.SetCursorPosition(position.y, position.x);
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -201,28 +207,10 @@ namespace TextRPG_OOP_
                 Console.ResetColor();
             }
 
-            // Helper method to clear a specific position
-            private void ClearPosition(int x, int y)
-            {
-                if (x != -1 && y != -1) // Check if coordinates are valid
-                {
-                    Console.SetCursorPosition(y, x); // Set cursor to old position
-                    Console.ForegroundColor = ConsoleColor.Gray; // Assuming this is the color of the floor
-                    Console.BackgroundColor = ConsoleColor.Gray; // Assuming this is the color of the floor
-                    Console.Write(" "); // Clear the old position
-                    Console.ResetColor();
-                }
-            }
-
 
             private void ApplyEffect(Item item)
             {
-                // You can check for the bought item state outside the individual item logic if needed.
-                if (boughtItem)
-                    uiManager.AddEventLogMessage($"Player spent {item.cost} coins for {item.itemType}");
-
                 item.Apply(this, uiManager, questManager);
-                boughtItem = false;
             }
         }
     }

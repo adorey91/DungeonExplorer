@@ -22,7 +22,8 @@ namespace TextRPG_OOP_
     Settings.healthChar,
     Settings.coinChar,
     Settings.armorChar,
-    Settings.finalLootChar
+    Settings.finalLootChar,
+            Settings.storeChar,
 
 };
 
@@ -192,6 +193,7 @@ namespace TextRPG_OOP_
                 case Settings.armorChar: return Settings.armorColor;
                 case Settings.finalLootChar: return Settings.finalLootColor;
                 case Settings.spikeChar: return Settings.spikeColor;
+                case Settings.storeChar: return ConsoleColor.Red;
                 default: return ConsoleColor.Black;
             }
         }
@@ -208,6 +210,7 @@ namespace TextRPG_OOP_
                 case Settings.coinChar: return "Coins";
                 case Settings.armorChar: return "Armor";
                 case Settings.finalLootChar: return "Final Loot";
+                case Settings.storeChar: return "Store";
                 default: return "Character name not available";
             }
         }

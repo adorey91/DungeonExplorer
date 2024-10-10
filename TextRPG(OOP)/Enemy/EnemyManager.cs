@@ -6,8 +6,7 @@ using TextRPG_OOP_.TextRPG_OOP_;
 
 internal class EnemyManager
 {
-    public List<Enemy> enemies;
-    Dictionary<int, List<Enemy>> levelEnemies;
+    public Dictionary<int, List<Enemy>> levelEnemies;
     public Map gameMap;
     private Random random;  // Shared Random instance
     public Player player;
@@ -19,7 +18,6 @@ internal class EnemyManager
     public EnemyManager()
     {
         levelEnemies = new Dictionary<int, List<Enemy>>();
-        enemies = new List<Enemy>();
         random = new Random();  // Instantiate Random once
     }
 
@@ -35,7 +33,7 @@ internal class EnemyManager
 
     public void AddEnemies()
     {
-        if(!levelEnemies.ContainsKey(gameMap.levelNumber))
+        if (!levelEnemies.ContainsKey(gameMap.levelNumber))
         {
             levelEnemies[gameMap.levelNumber] = new List<Enemy>();
             AddEnemiesToList("Plasmoid", gameMap.levelNumber, player);
@@ -49,13 +47,13 @@ internal class EnemyManager
         List<Position> enemyPositions = new List<Position>();
 
         // Find positions for each type of enemy
-        switch(type)
+        switch (type)
         {
             case "Plasmoid": enemyPositions = gameMap.FindPositionsByChar('!'); break;  // Find all '!' positions for Plasmoid 
             case "GoblinFolk": enemyPositions = gameMap.FindPositionsByChar('&'); break; // Find all '&' positions for GoblinFolk
             case "Construct": enemyPositions = gameMap.FindPositionsByChar('?'); break; // Find all '?' positions for Construct
         }
-        
+
         // If no positions are found, skip spawning that enemy type
         if (enemyPositions.Count == 0)
         {
@@ -91,8 +89,6 @@ internal class EnemyManager
         }
         else if (!gameMap.inStore)
         {
-            List<Enemy> enemiesToRemove = new List<Enemy>(); // List to track enemies to be removed
-
             foreach (var enemy in levelEnemies[gameMap.levelNumber])
             {
                 if (enemy.healthSystem.IsAlive)
@@ -101,18 +97,15 @@ internal class EnemyManager
                 }
                 else
                 {
-                    if (enemy.enemyType == Settings.questEnemyType)
-                        questManager.UpdateQuestProgress(questManager.questKillEnemyType, 1); // update enemy type kill quest
-                    questManager.UpdateQuestProgress(questManager.questKillEnemies, 1); // Update all enemies kill quest
-                    uiManager.AddEventLogMessage($"You killed {enemy.enemyType}");
-                    enemiesToRemove.Add(enemy); // Add to removal list instead of directly removing
+                    if (!enemy.beenCounted)
+                    {
+                        if (enemy.enemyType == Settings.questEnemyType)
+                            questManager.UpdateQuestProgress(questManager.questKillEnemyType, 1); // update enemy type kill quest
+                        questManager.UpdateQuestProgress(questManager.questKillEnemies, 1); // Update all enemies kill quest
+                        uiManager.AddEventLogMessage($"You killed {enemy.enemyType}");
+                        enemy.beenCounted = true;
+                    }
                 }
-            }
-
-            // Now remove all enemies that need to be removed after the loop
-            foreach (var enemy in enemiesToRemove)
-            {
-                enemies.Remove(enemy);
             }
         }
     }

@@ -13,7 +13,7 @@ namespace TextRPG_OOP_
     /// </summary>
     internal class Construct : Enemy
     {
-        public int ChaseRange = 7;
+        private int ChaseRange = 7;
 
         public Construct(ConsoleColor color, Random sharedRandom, GameManager gameManager) : base(color, sharedRandom, gameManager)
         {

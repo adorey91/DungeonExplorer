@@ -12,6 +12,7 @@ namespace TextRPG_OOP_
         public int enemyMaxY;
         public int prevX;
         public int prevY;
+        public bool beenCounted;
 
         public string enemyType;
         public int levelNumber;
@@ -60,12 +61,9 @@ namespace TextRPG_OOP_
 
         public bool IsPositionOccupied(int y, int x, Enemy currentEnemy)
         {
-            // Check if the enemy is alive and at the target position, and it's not the current enemy trying to move
-            foreach (var enemy in enemyManager.enemies)
-            {
-                if (enemy != currentEnemy && enemy.healthSystem.IsAlive && (enemy.position.x == x && enemy.position.y == y))
-                    return true; // Position is occupied by another enemy
-            }
+            Enemy enemyAtPosition = enemyManager.GetEnemyAtPosition(x, y);
+            if(enemyAtPosition != null && enemyAtPosition.healthSystem.IsAlive && enemyAtPosition != currentEnemy)
+                return true;
 
             // Check if there's an item in the position using GetItemAtPosition
             Item itemAtPosition = itemManager.GetItemAtPosition(x, y); // Call to GetItemAtPosition

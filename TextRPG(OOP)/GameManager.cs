@@ -59,7 +59,7 @@ namespace TextRPG_OOP_
             uiManager.Draw();
 
             // Verify that enemies exist
-            Debug.WriteLine($"Total Enemies Spawned: {enemyManager.enemies.Count}");
+            Debug.WriteLine($"Total Enemies Spawned: {enemyManager.levelEnemies[gameMap.levelNumber].Count}");
 
             while (!player.GameIsOver && !player.GameWon)
             {
@@ -116,7 +116,7 @@ namespace TextRPG_OOP_
 
         private void Draw()
         {
-            //gameMap.Draw();
+            gameMap.Draw();
             enemyManager.Draw();
             itemManager.Draw();
             uiManager.Draw();
