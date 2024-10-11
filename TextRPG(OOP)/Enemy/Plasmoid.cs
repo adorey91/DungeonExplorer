@@ -64,7 +64,7 @@ namespace TextRPG_OOP_
                         uiManager.AddEventLogMessage($"{player.name}'s armor is too strong for {enemyType}");
                 }
                 // Check if the position is occupied by another enemy or an item
-                else if (!IsPositionOccupied(targetY, targetX, this) && !gameMap.isInStore(targetY, targetX))
+                else if (!IsPositionOccupied(targetY, targetX, this) && !gameMap.isInStore(targetY, targetX) && gameMap.IsWalkable(targetY, targetX))
                 {
                     // If the position is free, update the enemy's position
                     position.x = targetX;

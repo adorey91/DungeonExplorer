@@ -37,7 +37,7 @@ namespace TextRPG_OOP_
                 Console.WriteLine();
                 Console.WriteLine(string.Format(FormatString, player.PlayerCoins, player.healthSystem.armor, player.healthSystem.health));
                 Console.WriteLine();
-                Console.WriteLine("CONGRADULATIONS!");
+                Console.WriteLine("CONGRATULATIONS!");
                 Thread.Sleep(3000);
                 Environment.Exit(0);
             }
@@ -138,7 +138,5 @@ namespace TextRPG_OOP_
             if (player.healthSystem.IsAlive == false)
                 GameOver = true;
         }
-
-
     }
 }

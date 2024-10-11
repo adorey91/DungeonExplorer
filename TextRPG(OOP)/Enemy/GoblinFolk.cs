@@ -79,7 +79,7 @@ namespace TextRPG_OOP_
                 return; // Do not move into the player's position
             }
 
-            else if (!IsPositionOccupied(targetY, targetX, this) && !gameMap.isInStore(targetY, targetX))
+            else if (!IsPositionOccupied(targetY, targetX, this) && !gameMap.isInStore(targetY, targetX) && gameMap.IsWalkable(targetY, targetX))
             {
                 // If the position is free, update the enemy's position
                 position.x = targetX;

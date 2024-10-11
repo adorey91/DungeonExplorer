@@ -181,12 +181,7 @@ namespace TextRPG_OOP_
             return activeMap[y, x] == Settings.stairs;
         }
 
-        public char GetTile(int x, int y)
-        {
-                return activeMap[y, x];  // Return the tile at the specified position
-        }
-
-
+        
 
         /// <summary>
         /// Finds starting positions for items, enemies & map

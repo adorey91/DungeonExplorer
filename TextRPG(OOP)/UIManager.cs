@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using TextRPG_OOP_.TextRPG_OOP_;
 
@@ -22,6 +23,7 @@ namespace TextRPG_OOP_
     Settings.healthChar,
     Settings.coinChar,
     Settings.armorChar,
+    Settings.swordChar,
     Settings.finalLootChar,
             Settings.storeChar,
 
@@ -79,7 +81,7 @@ namespace TextRPG_OOP_
             Console.ForegroundColor = Settings.coinColor; // change the color for coins\
             Console.Write(Settings.coinChar);
             Console.ResetColor();
-            Console.Write(" to buy things at the store at the end of each level.");
+            Console.Write(" to buy things at the store in each level.");
             Console.WriteLine();
 
             Console.Write("Collect hearts ");
@@ -207,6 +209,7 @@ namespace TextRPG_OOP_
                 case Settings.healthChar: return Settings.healthColor;
                 case Settings.coinChar: return Settings.coinColor;
                 case Settings.armorChar: return Settings.armorColor;
+                case Settings.swordChar: return Settings.swordColor;
                 case Settings.finalLootChar: return Settings.finalLootColor;
                 case Settings.spikeChar: return Settings.spikeColor;
                 case Settings.storeChar: return ConsoleColor.Red;
@@ -225,6 +228,7 @@ namespace TextRPG_OOP_
                 case Settings.healthChar: return "Health";
                 case Settings.coinChar: return "Coins";
                 case Settings.armorChar: return "Armor";
+                case Settings.swordChar: return "Sword";
                 case Settings.finalLootChar: return "Final Loot";
                 case Settings.storeChar: return "Store";
                 default: return "Character name not available";

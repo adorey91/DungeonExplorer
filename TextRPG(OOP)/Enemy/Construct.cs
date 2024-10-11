@@ -73,7 +73,7 @@ namespace TextRPG_OOP_
             if (IsPositionOccupied(targetY, targetX, this))
                 return; // Do nothing if there's another enemy
 
-            else if (!IsPositionOccupied(targetY, targetX, this) && !gameMap.isInStore(targetY, targetX))
+            else if (!IsPositionOccupied(targetY, targetX, this) && !gameMap.isInStore(targetY, targetX) && gameMap.IsWalkable(targetY, targetX))
             {
                 // If the position is free, update the enemy's position
                 position.x = targetX;
