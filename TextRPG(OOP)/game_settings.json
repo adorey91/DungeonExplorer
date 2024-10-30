@@ -1,11 +1,76 @@
 {
-	"MapSettings":{
-		"StoreChar": "S",
-		"StoreFloor": "%",
-		"DungeonWall": "#",
-		"DungeonFloor": "-",
-		"Stairs": "~",
-		"NewStairs": 30,
-		"StartingPosition": "="
-	}
+  "MapSettings": {
+    "StoreChar": "S",
+    "StoreFloor": "%",
+    "DungeonWall": "#",
+    "DungeonFloor": "-",
+    "Stairs": "~",
+    "NewStairsChar": 30,
+    "StartingPosition": "="
+  },
+  "QuestSettings": {
+    "QuestEnemyType": "Plasmoid",
+    "QuestEnemyType2": "Construct",
+    "QuestTargetCoin": 20,
+    "QuestTargetEnemy1": 20,
+    "QuestTargetEnemy2": 10,
+    "QuestTargetMulti": 30
+  },
+  "Enemy": {
+    "Plasmoid": {
+      "BaseHP": 3,
+      "BaseDamage": 1,
+      "Character": 4
+    },
+    "Construct": {
+      "BaseHP": 3,
+      "BaseDamage": 2,
+      "Character": 5
+    },
+    "GoblinFolk": {
+      "BaseHP": 3,
+      "BaseDamage": 4,
+      "Character": 6
+    }
+  },
+  "PlayerStats": {
+    "MaxHP": 15,
+    "StartingCoins": 0,
+    "BaseDamage": 1,
+    "Name": "Guard"
+  },
+  "Item": {
+    "Health": {
+      "Gain": 3,
+      "Color": "Red",
+      "Character": 3,
+      "Cost": 7
+    },
+    "Coin": {
+      "Gain": 1,
+      "Color": "DarkYellow",
+      "Character": 164
+    },
+    "Armor": {
+      "Gain": 1,
+      "Color": "DarkBlue",
+      "Character": 21,
+      "Cost": 8
+    },
+    "Spike": {
+      "Damage": 3,
+      "Color": "Red",
+      "Character": 23
+    },
+    "Sword": {
+      "Gain": 2,
+      "Color": "DarkGreen",
+      "Character": "+",
+      "Cost": 10
+    },
+    "Chalice": {
+      "Character": 165,
+      "Color": "Yellow"
+    }
+  }
 }

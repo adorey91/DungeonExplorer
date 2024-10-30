@@ -9,13 +9,13 @@ namespace TextRPG_OOP_
 {
     internal class Sword: Item
     {
-        public Sword()
+        public Sword(ItemAttributes attributes)
         {
-            gainAmount = Settings.swordGain;
-            avatar = Settings.swordChar;
-            color = Settings.swordColor;
+            gainAmount = attributes.ItemDamage;
+            avatar = attributes.ItemChar;
+            color = ConvertToConsoleColor(attributes.ItemColor);
             itemType = "Sword";
-            cost = Settings.swordCost;
+            cost = attributes.ItemCost;
         }
 
         public override void Apply(Player player, UIManager uiManager, QuestManager questManager)

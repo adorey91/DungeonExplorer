@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.Linq;
 using TextRPG_OOP_.TextRPG_OOP_;
 
 namespace TextRPG_OOP_
@@ -15,33 +16,27 @@ namespace TextRPG_OOP_
 
         private const int MaxEventLogMessages = 2;
         public List<string> eventMessages = new List<string>();
-        public char[] legendsChar = new char[] {
-    Settings.PlasmoidChar,
-    Settings.ConstructChar,
-    Settings.GoblinFolkChar,
-    Settings.spikeChar,
-    Settings.healthChar,
-    Settings.coinChar,
-    Settings.armorChar,
-    Settings.swordChar,
-    Settings.finalLootChar,
-            Settings.storeChar,
+        public char[] legendsChar;
+        public string[] legendsName;
 
-};
+        private ItemData itemData;
+        private EnemyData enemyData;
 
-
-        public void Initialize(GameManager gameManager)
+        public void Initialize(GameManager gameManager, EnemyData enemyData, ItemData itemData)
         {
             this.gameManager = gameManager;
             player = gameManager.player;
             gameMap = gameManager.gameMap;
             questManager = gameManager.questManager;
+
+            this.enemyData = enemyData;
+            this.itemData = itemData;
+
+            legendsChar = enemyData.Enemies.Values.Select(e => e.Character).Concat(itemData.Items.Values.Select(i => i.ItemChar)).ToArray();
+            legendsName = enemyData.Enemies.Values.Select(e => e.Type).Concat(itemData.Items.Values.Select(i => i.Type)).ToArray();
+
         }
 
-        public void Update()
-        {
-
-        }
 
         public void Draw()
         {
@@ -78,22 +73,22 @@ namespace TextRPG_OOP_
 
             Console.WriteLine();
             Console.Write("Collect coins ");
-            Console.ForegroundColor = Settings.coinColor; // change the color for coins\
-            Console.Write(Settings.coinChar);
+            Console.ForegroundColor = ConvertToConsoleColor(itemData.Items["Coin"].ItemColor); // change the color for coins
+            Console.Write(itemData.Items["Coin"].ItemChar);
             Console.ResetColor();
             Console.Write(" to buy things at the store in each level.");
             Console.WriteLine();
 
             Console.Write("Collect hearts ");
-            Console.ForegroundColor = Settings.healthColor; // change the color for health
-            Console.Write(Settings.healthChar); // Write the health character
+            Console.ForegroundColor = ConvertToConsoleColor(itemData.Items["Health"].ItemColor);
+            Console.Write(itemData.Items["Health"].ItemChar);
             Console.ResetColor();
             Console.Write(" to heal. ");
             Console.WriteLine();
 
             Console.Write("Collect pieces of armor ");
-            Console.ForegroundColor = Settings.armorColor; // Change color for armor character
-            Console.Write(Settings.armorChar); // Write the armor character
+            Console.ForegroundColor = ConvertToConsoleColor(itemData.Items["Armor"].ItemColor);
+            Console.Write(itemData.Items["Armor"].ItemChar);
             Console.ResetColor();
             Console.WriteLine(" to up your defense.");
 
@@ -180,7 +175,7 @@ namespace TextRPG_OOP_
             {
                 Console.SetCursorPosition(legendColumn, startingRow + i); // Move cursor to the appropriate row
                 DisplayChar(legendsChar[i]); // Print the character
-                Console.Write($" - {Name(legendsChar[i])}");
+                Console.Write($" - {legendsName[i]}");
                 Console.WriteLine();
             }
         }
@@ -198,41 +193,30 @@ namespace TextRPG_OOP_
             Console.ResetColor();
         }
 
-        private ConsoleColor Color(char avatar)
+        private ConsoleColor ConvertToConsoleColor(string color)
         {
-            switch (avatar)
-            {
-                case Settings.PlasmoidChar:
-                case Settings.ConstructChar:
-                case Settings.GoblinFolkChar:
-                    return Console.ForegroundColor;
-                case Settings.healthChar: return Settings.healthColor;
-                case Settings.coinChar: return Settings.coinColor;
-                case Settings.armorChar: return Settings.armorColor;
-                case Settings.swordChar: return Settings.swordColor;
-                case Settings.finalLootChar: return Settings.finalLootColor;
-                case Settings.spikeChar: return Settings.spikeColor;
-                case Settings.storeChar: return ConsoleColor.Red;
-                default: return ConsoleColor.Black;
-            }
+            return (ConsoleColor)Enum.Parse(typeof(ConsoleColor), color);
         }
 
-        private string Name(char avatar)
+        private ConsoleColor Color(char avatar)
         {
-            switch (avatar)
-            {
-                case Settings.PlasmoidChar: return "Plasmoid";
-                case Settings.ConstructChar: return "Construct";
-                case Settings.GoblinFolkChar: return "Goblin Folk";
-                case Settings.spikeChar: return "Spike";
-                case Settings.healthChar: return "Health";
-                case Settings.coinChar: return "Coins";
-                case Settings.armorChar: return "Armor";
-                case Settings.swordChar: return "Sword";
-                case Settings.finalLootChar: return "Final Loot";
-                case Settings.storeChar: return "Store";
-                default: return "Character name not available";
-            }
+            if (avatar == enemyData.Enemies["Plasmoid"].Character || avatar == enemyData.Enemies["Construct"].Character || avatar == enemyData.Enemies["GoblinFolk"].Character)
+                return Console.ForegroundColor;
+            else if (avatar == itemData.Items["Health"].ItemChar)
+                return ConvertToConsoleColor(itemData.Items["Health"].ItemColor);
+            else if (avatar == itemData.Items["Coin"].ItemChar)
+                return ConvertToConsoleColor(itemData.Items["Coin"].ItemColor);
+            else if (avatar == itemData.Items["Armor"].ItemChar)
+                return ConvertToConsoleColor(itemData.Items["Armor"].ItemColor);
+            else if (avatar == itemData.Items["Sword"].ItemChar)
+                return ConvertToConsoleColor(itemData.Items["Sword"].ItemColor);
+            else if (avatar == itemData.Items["FinalLoot"].ItemChar)
+                return ConvertToConsoleColor(itemData.Items["FinalLoot"].ItemColor);
+            else if (avatar == itemData.Items["Spike"].ItemChar)
+                return ConvertToConsoleColor(itemData.Items["Spike"].ItemColor);
+            //else if (avatar == gameData.Settings["Store"].GameChar)
+            //    return ConvertToConsoleColor(gameData.Settings["Store"].GameColor);
+            else return Console.ForegroundColor;
         }
     }
 }

@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using System.Security.Cryptography.X509Certificates;
-using System.Diagnostics;
 
 namespace TextRPG_OOP_
 {
@@ -27,9 +22,15 @@ namespace TextRPG_OOP_
 
         public bool foundstart;
 
-        public Map()
+        private GameData gameData;
+
+        public Map(GameData gamedata)
         {
             Initialize();
+            this.gameData = gamedata;
+
+
+
         }
 
         public void Initialize()
@@ -108,16 +109,17 @@ namespace TextRPG_OOP_
         /// <param name="tile"></param>
         private void DrawTile(char tile)
         {
-            switch (tile)
-            {
-                case Settings.dungeonWall: DrawColorTile(ConsoleColor.DarkGray, ConsoleColor.DarkGray, tile); break;
-                case Settings.dungeonFloor: DrawColorTile(ConsoleColor.Gray, ConsoleColor.Gray, tile); break;
-                case Settings.storeFloor: DrawColorTile(ConsoleColor.Gray, ConsoleColor.Gray, tile); break;
-                case Settings.startingPosition: foundstart = true; DrawColorTile(ConsoleColor.Gray, ConsoleColor.Gray, tile); break;
-                case Settings.stairs: DrawColorTile(ConsoleColor.DarkGray, ConsoleColor.Gray, Settings.newStairsChar); break;
-                case Settings.storeChar: DrawColorTile(ConsoleColor.Red, ConsoleColor.DarkGray, tile); break;
-                default: DrawColorTile(ConsoleColor.Gray, ConsoleColor.Gray, tile); break;
-            }
+            if (tile == gameData.gameSettings["Wall"].Character)
+                DrawColorTile(ConsoleColor.DarkGray, ConsoleColor.DarkGray, tile);
+            else if (tile == gameData.gameSettings["Floor"].Character || tile == gameData.gameSettings["StoreFloor"].Character)
+                DrawColorTile(ConsoleColor.Gray, ConsoleColor.Gray, tile);
+            else if (tile == gameData.gameSettings["Stairs"].Character)
+                DrawColorTile(ConsoleColor.DarkGray, ConsoleColor.Gray, gameData.gameSettings["Stairs"].NewCharacter);
+            else if (tile == gameData.gameSettings["Store"].Character)
+                DrawColorTile(ConsoleColor.Red, ConsoleColor.DarkGray, tile);
+            else
+                DrawColorTile(ConsoleColor.Gray, ConsoleColor.Gray, tile);
+
         }
 
         private void DrawColorTile(ConsoleColor frontColor, ConsoleColor backColor, char tile)
@@ -160,7 +162,7 @@ namespace TextRPG_OOP_
             LoadMap();
         }
 
-       #region ChecksForMap
+        #region ChecksForMap
         public bool IsWithinBounds(int x, int y)
         {
             return x >= 0 && x < activeMap.GetLength(1) && y >= 0 && y < activeMap.GetLength(0);
@@ -173,7 +175,7 @@ namespace TextRPG_OOP_
 
         public bool isInStore(int x, int y)
         {
-            return activeMap[y,x] == Settings.storeFloor;
+            return activeMap[y, x] == Settings.storeFloor;
         }
 
         public bool IsStairs(int x, int y)
@@ -181,7 +183,7 @@ namespace TextRPG_OOP_
             return activeMap[y, x] == Settings.stairs;
         }
 
-        
+
 
         /// <summary>
         /// Finds starting positions for items, enemies & map

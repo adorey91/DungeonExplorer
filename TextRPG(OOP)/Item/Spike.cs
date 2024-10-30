@@ -10,11 +10,11 @@ namespace TextRPG_OOP_
 {
     internal class Spike : Item
     {
-        public Spike()
+        public Spike(ItemAttributes attributes)
         {
-            gainAmount = Settings.spikeDamage;
-            avatar = Settings.spikeChar;
-            color = Settings.spikeColor;
+            gainAmount = attributes.ItemDamage;
+            avatar = attributes.ItemChar;
+            color = ConvertToConsoleColor(attributes.ItemColor);
             itemType = "Spike";
         }
 

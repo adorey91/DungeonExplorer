@@ -9,10 +9,10 @@ namespace TextRPG_OOP_
 {
     internal class Chalice : Item
     {
-        public Chalice()
+        public Chalice(ItemAttributes attributes)
         {
-            avatar = Settings.finalLootChar;
-            color = Settings.finalLootColor;
+            avatar = attributes.ItemChar;
+            color = ConvertToConsoleColor(attributes.ItemColor);
         }
 
         public override void Apply(Player player, UIManager uiManager, QuestManager questManager)

@@ -1,0 +1,28 @@
+{
+  "MapSettings": {
+    "StoreChar": {
+      "Character": "S",
+      "TileColor": "Red"
+    },
+    "StoreFloor": {
+      "Charcter": "%",
+      "TileColor": "Gray"
+    },
+    "DungeonWall": {
+      "Charcter": "#",
+      "TileColor": "DarkGray"
+    },
+    "DungeonFloor": {
+      "Charcter": "-",
+      "TileColor": "Gray"
+    },
+    "Stairs": {
+      "Charcter": "~",
+      "NewCharacter": 30,
+      "TileColor": "DarkGray"
+    },
+    "StartingPosition": {
+      "Character": "=",
+      "TileColor": "Gray"
+    }
+  }

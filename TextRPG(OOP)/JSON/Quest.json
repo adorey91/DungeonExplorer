@@ -1,0 +1,23 @@
+{
+  "Quest": {
+    "CoinQuest": {
+      "TargetAmount": 10,
+      "TargetItem": "Coin",
+      "Description": ""
+    },
+    "EnemyQuest1": {
+      "TargetAmount": 20,
+      "TargetEnemy": "Plasmoid",
+      "Description": ""
+    },
+    "EnemyQuest3": {
+      "TargetAmount": 10,
+      "TargetEnemy": "Construct",
+      "Description": ""
+    },
+    "EnemyMultiQuest": {
+      "TargetAmount": 30,
+      "Description": ""
+    }
+  }
+}

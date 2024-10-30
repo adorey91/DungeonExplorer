@@ -3,6 +3,8 @@ using System;
 using TextRPG_OOP_;
 using System.Diagnostics;
 using TextRPG_OOP_.TextRPG_OOP_;
+using System.IO;
+using System.Text.Json;
 
 internal class EnemyManager
 {
@@ -14,11 +16,13 @@ internal class EnemyManager
     public GameManager gameManager;
     public UIManager uiManager;
     public QuestManager questManager;
+    private EnemyData enemyData;
 
     public EnemyManager()
     {
         levelEnemies = new Dictionary<int, List<Enemy>>();
         random = new Random();  // Instantiate Random once
+        LoadEnemyData();
     }
 
     public void Initialize(GameManager gameManager)
@@ -64,18 +68,15 @@ internal class EnemyManager
         // Spawn enemies at the found positions
         foreach (var pos in enemyPositions)
         {
-            Enemy enemy = null;
-            switch (type)
+            if (enemyData.Enemies.TryGetValue(type, out EnemyAttributes attributes))
             {
-                case "Plasmoid": enemy = new Plasmoid(RandomConsoleColor(), random, gameManager); break;  // Find all '!' positions for Plasmoid 
-                case "GoblinFolk": enemy = new GoblinFolk(RandomConsoleColor(), random, gameManager); break; // Find all '&' positions for GoblinFolk
-                case "Construct": enemy = new Construct(RandomConsoleColor(), random, gameManager); break;
-            }
+                Enemy enemy = CreateEnemy(type, attributes);
 
-            if (enemy != null)
-            {
-                enemy.position = pos;  // Set enemy's starting position from map
-                levelEnemies[levelNumber].Add(enemy);  // Add to enemy list
+                if (enemy != null)
+                {
+                    enemy.position = pos;
+                    levelEnemies[levelNumber].Add(enemy);
+                }
             }
         }
     }
@@ -99,13 +100,13 @@ internal class EnemyManager
                 {
                     if (!enemy.beenCounted)
                     {
-                        if (enemy.enemyType == Settings.questEnemyType)
-                            questManager.UpdateQuestProgress(questManager.questKillEnemyType, 1); // update enemy type kill quest
-                        if (enemy.enemyType == Settings.questEnemyType2)
-                            questManager.UpdateQuestProgress(questManager.questKillEnemyType2, 1); // update enemy type kill quest 2
-                        questManager.UpdateQuestProgress(questManager.questKillEnemies, 1); // Update all enemies kill quest
-                        uiManager.AddEventLogMessage($"You killed {enemy.enemyType}");
-                        enemy.beenCounted = true;
+                        //if (enemy.enemyType == Settings.questEnemyType)
+                        //    questManager.UpdateQuestProgress(questManager.questKillEnemyType, 1); // update enemy type kill quest
+                        //if (enemy.enemyType == Settings.questEnemyType2)
+                        //    questManager.UpdateQuestProgress(questManager.questKillEnemyType2, 1); // update enemy type kill quest 2
+                        //questManager.UpdateQuestProgress(questManager.questKillEnemies, 1); // Update all enemies kill quest
+                        //uiManager.AddEventLogMessage($"You killed {enemy.enemyType}");
+                        //enemy.beenCounted = true;
                     }
                 }
             }
@@ -168,5 +169,47 @@ internal class EnemyManager
             }
         }
         return null; // No enemy at the position
+    }
+
+    private void LoadEnemyData()
+    {
+        string jsonFilePath = "JSON\\enemies.json";
+        string jsonString = File.ReadAllText(jsonFilePath);
+        enemyData = JsonSerializer.Deserialize<EnemyData>(jsonString);
+    }
+
+    private ConsoleColor ConvertToConsoleColor(string color)
+    {
+        return (ConsoleColor)Enum.Parse(typeof(ConsoleColor), color);
+    }
+
+    private Enemy CreateEnemy(string type, EnemyAttributes attributes)
+    {
+        switch (type)
+        {
+            case "GoblinFolk":
+                return new GoblinFolk(
+                    ConvertToConsoleColor(attributes.SpawnColor), // Convert color string to ConsoleColor
+                    random,
+                    gameManager,
+                    attributes // Pass the attributes to the GoblinFolk constructor
+                );
+            case "Plasmoid":
+                return new Plasmoid(
+                    ConvertToConsoleColor(attributes.SpawnColor),
+                    random,
+                    gameManager,
+                    attributes // Pass attributes to the Plasmoid constructor
+                );
+            case "Construct":
+                return new Construct(
+                    ConvertToConsoleColor(attributes.SpawnColor),
+                    random,
+                    gameManager,
+                    attributes // Pass attributes to the Construct constructor
+                );
+            default:
+                return null;  // Unknown enemy type
+        }
     }
 }

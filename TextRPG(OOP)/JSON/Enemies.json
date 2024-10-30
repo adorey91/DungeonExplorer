@@ -1,0 +1,27 @@
+{
+  "Enemies": {
+    "Plasmoid": {
+      "Type":  "Plasmoid",
+      "BaseHP": 3,
+      "BaseDamage": 1,
+      "Character": 4,
+      "SpawnColor": "DarkGreen",
+      "ChaseRange": 7
+    },
+    "Construct": {
+      "Type":  "Construct",
+      "BaseHP": 3,
+      "BaseDamage": 2,
+      "Character": 5,
+      "SpawnColor": "DarkRed"
+    },
+    "GoblinFolk": {
+      "Type":  "Goblin Folk",
+      "BaseHP": 3,
+      "BaseDamage": 4,
+      "Character": 6,
+      "SpawnColor": "DarkBlue",
+      "FleeRange": 5
+    }
+  }
+}

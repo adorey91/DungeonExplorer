@@ -1,0 +1,41 @@
+{
+  "Items": {
+    "Health": {
+      "Type": "Health",
+      "ItemGain": 3,
+      "ItemColor": "Red",
+      "ItemChar": 3,
+      "ItemCost": 7
+    },
+    "Coin": {
+      "Type" :  "Coin",
+      "ItemGain": 1,
+      "ItemColor": "DarkYellow",
+      "ItemChar": 164
+    },
+    "Armor": {
+      "Type" :  "Armor",
+      "ItemGain": 1,
+      "ItemColor": "DarkBlue",
+      "ItemChar": 21,
+      "ItemCost": 8
+    },
+    "Spike": {
+      "Type" :  "Spike",
+      "ItemDamage": 3,
+      "ItemColor": "Red",
+      "ItemChar": 23
+    },
+    "FinalLoot": {
+      "Type":  "Chalice",
+      "ItemColor": "Yellow",
+      "ItemChar": 165
+    },
+    "Sword": {
+      "ItemGain": 2,
+      "ItemColor": "DarkGreen",
+      "ItemChar": "+",
+      "ItemCost": 10
+    }
+  }
+}

@@ -16,14 +16,14 @@ namespace TextRPG_OOP_
     // this will draw the position if they can.
     internal class Plasmoid : Enemy
     {
-        public Plasmoid(ConsoleColor color, Random sharedRandom, GameManager gameManager)
+        public Plasmoid(ConsoleColor color, Random sharedRandom, GameManager gameManager, EnemyAttributes attributes)
             : base(color, sharedRandom, gameManager)
         {
             enemyType = "Plasmoid";
-            damage = Settings.PlasmoidBaseDamage;
-            avatar = Settings.PlasmoidChar;
+            damage = attributes.BaseDamage;
+            avatar = attributes.Character;
             healthSystem = new HealthSystem();
-            healthSystem.SetHealth(Settings.PlasmoidBaseHP);
+            healthSystem.SetHealth(attributes.BaseHP);
             healthSystem.IsAlive = true;
         }
 

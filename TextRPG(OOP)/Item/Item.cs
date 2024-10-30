@@ -30,5 +30,10 @@ namespace TextRPG_OOP_
         }
 
         public abstract void Apply(Player player, UIManager uiManager, QuestManager questManager);
+
+        public ConsoleColor ConvertToConsoleColor(string color)
+        {
+            return (ConsoleColor)Enum.Parse(typeof(ConsoleColor), color);
+        }
     }
 }

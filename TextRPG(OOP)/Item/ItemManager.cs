@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text.Json;
+using System.IO;
 using TextRPG_OOP_.TextRPG_OOP_;
 
 namespace TextRPG_OOP_
@@ -11,6 +13,7 @@ namespace TextRPG_OOP_
     internal class ItemManager
     {
         Dictionary<int, List<Item>> levelItems;
+        private GameItems gameItems;
         public Map gameMap;
         public GameManager GameManager;
         public Player player;
@@ -140,6 +143,11 @@ namespace TextRPG_OOP_
 
             return null; // No item at the position
         }
-
+        private void LoadItemData()
+        {
+                string jsonFilePath = "JSON\\Items.json";
+                string jsonString = File.ReadAllText(jsonFilePath);
+                gameItems = JsonSerializer.Deserialize<GameItems>(jsonString);
+        }
     }
 }

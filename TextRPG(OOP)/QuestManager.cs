@@ -8,26 +8,38 @@ namespace TextRPG_OOP_
 {
     internal class QuestManager
     {
+        private QuestData questData;
+
         private List<Quest> quests;
         public GameManager gameManager;
-        public string questCollectCoins = $"Collect {Settings.questTargetCoin} coins";
-        public string questKillEnemyType = $"Kill {Settings.questTargetEnemy1} {Settings.questEnemyType}";
-        public string questKillEnemyType2 = $"Kill {Settings.questTargetEnemy2} {Settings.questEnemyType2}";
-        public string questKillEnemies = $"Kill {Settings.questTargetMulti} enemies";
         
-        public QuestManager(GameManager gameManager)
+        
+        public QuestManager(GameManager gameManager, QuestData questData)
         {
             this.gameManager = gameManager;
+            this.questData = questData;
+
             quests = new List<Quest>
-        {
-            new Quest(questCollectCoins, Settings.questTargetCoin, gameManager), // Collect coins quest
-            new Quest(questKillEnemyType, Settings.questTargetEnemy1, gameManager),    // Kill specific enemy quest
-            new Quest(questKillEnemyType2 , Settings.questTargetEnemy2, gameManager), // kill other specific enemy quest
-            new Quest(questKillEnemies, Settings.questTargetMulti, gameManager)   // Kill more enemies quest
-        };
+            {
+                new Quest(questData.Quest["CoinQuest"].Description,
+                          questData.Quest["CoinQuest"].TargetAmount.ToString(),
+                          gameManager), // Collect coins quest
+                          
+                new Quest(questData.Quest["EnemyQuest1"].Description,
+                          questData.Quest["EnemyQuest1"].TargetAmount.ToString(),
+                          gameManager), // Kill specific enemy quest
+                          
+                new Quest(questData.Quest["EnemyQuest2"].Description,
+                          questData.Quest["EnemyQuest2"].TargetAmount.ToString(),
+                          gameManager), // Kill another specific enemy quest
+                          
+                new Quest(questData.Quest["EnemyMultiQuest"].Description,
+                          questData.Quest["EnemyMultiQuest"].TargetAmount.ToString(),
+                          gameManager)   // Kill multiple enemies quest
+            };
         }
 
- 
+
 
         public void UpdateQuestProgress(string questDescription, int amount)
         {

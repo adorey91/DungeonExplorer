@@ -9,13 +9,13 @@ namespace TextRPG_OOP_
 {
     internal class Health : Item
     {
-        public Health()
+        public Health(ItemAttributes attributes)
         {
-            gainAmount = Settings.healthGain;
-            avatar = Settings.healthChar;
-            color = Settings.healthColor;
+            gainAmount = attributes.ItemGain;
+            avatar = attributes.ItemChar;
+            color = ConvertToConsoleColor(attributes.ItemColor);
             itemType = "Health";
-            cost = Settings.healthCost;
+            cost = attributes.ItemCost;
         }
 
 

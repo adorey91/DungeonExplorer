@@ -13,16 +13,17 @@ namespace TextRPG_OOP_
     /// </summary>
     internal class Construct : Enemy
     {
-        private int ChaseRange = 7;
+        private int chaseRange;
 
-        public Construct(ConsoleColor color, Random sharedRandom, GameManager gameManager) : base(color, sharedRandom, gameManager)
+        public Construct(ConsoleColor color, Random sharedRandom, GameManager gameManager, EnemyAttributes attributes) : base(color, sharedRandom, gameManager)
         {
             enemyType = "Construct";
-            damage = Settings.ConstructBaseDamage;
-            avatar = Settings.ConstructChar ;  // ASCII character for Construct
+            damage = attributes.BaseDamage;
+            avatar = attributes.Character;  // ASCII character for Construct
             healthSystem = new HealthSystem();
-            healthSystem.SetHealth(Settings.ConstructBaseHP);
+            healthSystem.SetHealth(attributes.BaseHP);
             healthSystem.IsAlive = true;
+            chaseRange = attributes.ChaseRange;
         }
 
         public override void Update(Map gameMap)
@@ -32,7 +33,7 @@ namespace TextRPG_OOP_
             int rangeY = position.y - player.position.y;
 
             // Check if the player is within the chase range
-            if (Math.Abs(rangeX) < ChaseRange && Math.Abs(rangeY) < ChaseRange)
+            if (Math.Abs(rangeX) < chaseRange && Math.Abs(rangeY) < chaseRange)
                 MoveTowardPlayer(rangeX, rangeY, gameMap);
         }
 

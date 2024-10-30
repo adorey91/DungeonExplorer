@@ -1,0 +1,8 @@
+{
+  "PlayerStats": {
+    "MaxHP": 15,
+    "StartingCoins": 0,
+    "BaseDamage": 1,
+    "Name": "Guard",
+  }
+}

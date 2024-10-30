@@ -13,16 +13,17 @@ namespace TextRPG_OOP_
     /// </summary>
     internal class GoblinFolk : Enemy
     {
-        private int fleeRange = 5;
+        private int fleeRange;
 
-        public GoblinFolk(ConsoleColor color, Random sharedRandom, GameManager gameManager) : base(color, sharedRandom, gameManager)
+        public GoblinFolk(ConsoleColor color, Random sharedRandom, GameManager gameManager, EnemyAttributes attributes) : base(color, sharedRandom, gameManager)
         {
             enemyType = "GoblinFolk";
-            damage = Settings.GoblinFolkBaseDamage;
-            avatar = Settings.GoblinFolkChar;  // ASCII character for Goblin
+            damage = attributes.BaseDamage;
+            avatar = attributes.Character;  // ASCII character for Goblin
             healthSystem = new HealthSystem();
-            healthSystem.SetHealth(Settings.GoblinFolkBaseHP);
+            healthSystem.SetHealth(attributes.BaseHP);
             healthSystem.IsAlive = true;
+            fleeRange = attributes.FleeRange;
         }
 
         public override void Update(Map gameMap)

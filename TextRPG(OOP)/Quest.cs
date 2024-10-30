@@ -16,10 +16,10 @@ namespace TextRPG_OOP_
         public UIManager uiManager;
         public GameManager gameManager;
 
-        public Quest(string description, int targetAmount, GameManager gameManager)
+        public Quest(string description, string targetAmount, GameManager gameManager)
         {
             Description = description;
-            TargetAmount = targetAmount;
+            TargetAmount = int.Parse(targetAmount);
             CurrentProgress = 0;
             IsCompleted = false;
             this.gameManager = gameManager;

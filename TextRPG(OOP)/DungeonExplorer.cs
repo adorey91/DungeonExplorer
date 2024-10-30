@@ -25,5 +25,5 @@ namespace TextRPG_OOP_
             //Plays game...
             gameManager.PlayGame();
         }
-    }
+            }
 }
