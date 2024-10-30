@@ -1,0 +1,11 @@
+{
+	"MapSettings":{
+		"StoreChar": "S",
+		"StoreFloor": "%",
+		"DungeonWall": "#",
+		"DungeonFloor": "-",
+		"Stairs": "~",
+		"NewStairs": 30,
+		"StartingPosition": "="
+	}
+}
